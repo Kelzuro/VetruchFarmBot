@@ -5424,6 +5424,7 @@
 
         function selectAdminPredMode(mode, fillDefaults) {
             currentAdminPredMode = mode;
+            sessionStorage.setItem('vetruch_admin_active_mode', mode);
             const classicBtn = document.getElementById('adminPredStyleClassicBtn');
             const battleBtn = document.getElementById('adminPredStyleBattleBtn');
             const badgeInp = document.getElementById('adminPredBadgeInput');
@@ -5504,46 +5505,15 @@
             }
         }
 
-        function populateAdminPredictionForm() {
+        function updateAdminPredictionStatsUI() {
             const data = getPredictionData();
-            currentAdminPredMode = data.mode || 'classic';
-            selectAdminPredMode(currentAdminPredMode, false);
-
-            const badgeInp = document.getElementById('adminPredBadgeInput');
-            if (badgeInp) badgeInp.value = data.badge || (data.mode === 'battle' ? '⚔️ БАТЛ' : 'ПРОГНОЗ');
-
-            const titleInp = document.getElementById('adminPredTitleInput');
-            if (titleInp) titleInp.value = data.title || '';
-
-            const statusInp = document.getElementById('adminPredStatusInput');
-            if (statusInp) statusInp.value = data.status || 'Ставки открыты';
-
-            const durInp = document.getElementById('adminPredDurationInput');
-            if (durInp) durInp.value = data.durationMinutes !== undefined ? data.durationMinutes : 15;
-
-            const btnLeftInp = document.getElementById('adminPredBtnLeftInput');
-            if (btnLeftInp) btnLeftInp.value = data.btnLeft || (data.mode === 'battle' ? 'Игрок 1' : 'Да');
-
-            const pctLeftInp = document.getElementById('adminPredPercentLeftInput');
-            if (pctLeftInp) pctLeftInp.value = data.percentLeft || '50%';
-
-            const coinsLeftInp = document.getElementById('adminPredCoinsLeftInput');
-            if (coinsLeftInp) coinsLeftInp.value = data.coinsLeft || '15 000';
-
-            const btnRightInp = document.getElementById('adminPredBtnRightInput');
-            if (btnRightInp) btnRightInp.value = data.btnRight || (data.mode === 'battle' ? 'Игрок 2' : 'Нет');
-
-            const pctRightInp = document.getElementById('adminPredPercentRightInput');
-            if (pctRightInp) pctRightInp.value = data.percentRight || '50%';
-
-            const coinsRightInp = document.getElementById('adminPredCoinsRightInput');
-            if (coinsRightInp) coinsRightInp.value = data.coinsRight || '15 000';
-
-            // Обновляем блок подведения итогов
             const poolStats = getPredictionPoolStats(data);
-            const isBattle = (data.mode === 'battle');
-            const labelLeft = data.btnLeft || (isBattle ? 'Игрок 1' : 'Да');
-            const labelRight = data.btnRight || (isBattle ? 'Игрок 2' : 'Нет');
+            const isBattle = (currentAdminPredMode === 'battle' || data.mode === 'battle');
+
+            const inpLeft = document.getElementById('adminPredBtnLeftInput');
+            const inpRight = document.getElementById('adminPredBtnRightInput');
+            const labelLeft = (inpLeft && inpLeft.value.trim()) ? inpLeft.value.trim() : (data.btnLeft || (isBattle ? 'Игрок 1' : 'Да'));
+            const labelRight = (inpRight && inpRight.value.trim()) ? inpRight.value.trim() : (data.btnRight || (isBattle ? 'Игрок 2' : 'Нет'));
 
             const summaryEl = document.getElementById('adminPredBankSummary');
             if (summaryEl) {
@@ -5574,6 +5544,55 @@
             if (resRightBank) resRightBank.textContent = `${formatCoins(poolStats.sumRight)} 🪙 (${poolStats.countRight} чел.)`;
 
             updatePredictionTimer();
+        }
+
+        function populateAdminPredictionForm(force = false) {
+            const activeEl = document.activeElement;
+            const admPredSec = document.getElementById('adm-prediction');
+            const isUserTyping = activeEl && admPredSec && admPredSec.contains(activeEl) && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+            // Защита от сброса: если админ прямо сейчас редактирует поля, не перезаписываем текст!
+            if (!force && isUserTyping) {
+                updateAdminPredictionStatsUI();
+                return;
+            }
+
+            const data = getPredictionData();
+            const savedDraftMode = sessionStorage.getItem('vetruch_admin_active_mode');
+            currentAdminPredMode = force ? (data.mode || 'classic') : (savedDraftMode || currentAdminPredMode || data.mode || 'classic');
+            selectAdminPredMode(currentAdminPredMode, false);
+
+            const badgeInp = document.getElementById('adminPredBadgeInput');
+            if (badgeInp) badgeInp.value = data.badge || (currentAdminPredMode === 'battle' ? '⚔️ БАТЛ' : 'ПРОГНОЗ');
+
+            const titleInp = document.getElementById('adminPredTitleInput');
+            if (titleInp) titleInp.value = data.title || '';
+
+            const statusInp = document.getElementById('adminPredStatusInput');
+            if (statusInp) statusInp.value = data.status || 'Ставки открыты';
+
+            const durInp = document.getElementById('adminPredDurationInput');
+            if (durInp) durInp.value = data.durationMinutes !== undefined ? data.durationMinutes : 15;
+
+            const btnLeftInp = document.getElementById('adminPredBtnLeftInput');
+            if (btnLeftInp) btnLeftInp.value = data.btnLeft || (currentAdminPredMode === 'battle' ? 'Игрок 1' : 'Да');
+
+            const pctLeftInp = document.getElementById('adminPredPercentLeftInput');
+            if (pctLeftInp) pctLeftInp.value = data.percentLeft || '50%';
+
+            const coinsLeftInp = document.getElementById('adminPredCoinsLeftInput');
+            if (coinsLeftInp) coinsLeftInp.value = data.coinsLeft || '15 000';
+
+            const btnRightInp = document.getElementById('adminPredBtnRightInput');
+            if (btnRightInp) btnRightInp.value = data.btnRight || (currentAdminPredMode === 'battle' ? 'Игрок 2' : 'Нет');
+
+            const pctRightInp = document.getElementById('adminPredPercentRightInput');
+            if (pctRightInp) pctRightInp.value = data.percentRight || '50%';
+
+            const coinsRightInp = document.getElementById('adminPredCoinsRightInput');
+            if (coinsRightInp) coinsRightInp.value = data.coinsRight || '15 000';
+
+            updateAdminPredictionStatsUI();
         }
 
         async function saveAdminPrediction() {
@@ -5609,6 +5628,7 @@
                 durationMinutes: duration
             };
 
+            sessionStorage.removeItem('vetruch_admin_active_mode');
             localStorage.setItem('vetruch_prediction_data', JSON.stringify(updatedData));
             renderPredictionCard(updatedData);
 
@@ -6202,7 +6222,7 @@
             if (refreshAdmin) {
                 renderAdminLists();
                 renderAdminBalancesTable();
-                populateAdminPredictionForm();
+                updateAdminPredictionStatsUI();
             }
         }
 
@@ -6408,8 +6428,8 @@
             openPage('admin');
             renderAdminLists();
             renderAdminBalancesTable();
-            populateAdminPredictionForm();
-            await syncFromCloud(true);
+            populateAdminPredictionForm(true);
+            await syncFromCloud(false);
         }
 
         function switchAdminTab(tabId, btnEl) {
@@ -6418,9 +6438,9 @@
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             btnEl.classList.add('active');
             if (tabId === 'adm-prediction') {
-                populateAdminPredictionForm();
+                populateAdminPredictionForm(false);
             }
-            syncFromCloud(true);
+            syncFromCloud(false);
         }
 
         let adminToastTimer = null;
