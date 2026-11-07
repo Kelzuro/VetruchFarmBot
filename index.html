@@ -3890,7 +3890,7 @@
                 <div class="user-info">
                     <span class="greeting-text">Добро пожаловать,</span>
                     <span class="user-name" id="homeUserName">Пользователь</span>
-                    <div class="user-tier-badge">👑 VIP DIAMOND <span class="tier-boost">1.5x</span></div>
+                    <div class="user-tier-badge" id="homeUserTierBadge">👤 ОБЫЧНЫЙ АККАУНТ <span class="tier-boost">1.0x</span></div>
                 </div>
             </div>
         </div>
@@ -3903,43 +3903,37 @@
 
         <!-- ЖИВАЯ СТРОКА ВЫИГРЫШЕЙ ОНЛАЙН -->
         <div class="lux-live-ticker anim-item" style="animation-delay: 0.12s;">
-            <div class="lux-ticker-badge"><span class="pulse-dot"></span> LIVE ПОБЕДЫ</div>
+            <div class="lux-ticker-badge"><span class="pulse-dot"></span> LIVE ПОКУПКИ</div>
             <div class="lux-ticker-track-wrap">
-                <div class="lux-ticker-track">
-                    <span class="win-user">@dexter</span> <span class="win-sum">+1 450 🪙</span> в Башни · 
-                    <span class="win-user">@vladimir</span> получил <span class="win-sum">VIP OG</span> · 
-                    <span class="win-user">@kristi</span> <span class="win-sum">+4 800 🪙</span> в Мины · 
-                    <span class="win-user">@veter</span> джекпот <span class="win-sum">15 000 🪙</span> · 
-                    <span class="win-user">@mikhail</span> прогноз <span class="win-sum">+2 100 🪙</span> · 
-                    <span class="win-user">@olga</span> <span class="win-sum">+3 200 🪙</span> в Шарик · 
-                    <span class="win-user">@artem</span> <span class="win-sum">+9 500 🪙</span> в Карты · 
-                    <span class="win-user">@dexter</span> <span class="win-sum">+1 450 🪙</span> в Башни · 
-                    <span class="win-user">@vladimir</span> получил <span class="win-sum">VIP OG</span> · 
-                    <span class="win-user">@kristi</span> <span class="win-sum">+4 800 🪙</span> в Мины · 
-                    <span class="win-user">@veter</span> джекпот <span class="win-sum">15 000 🪙</span> · 
-                    <span class="win-user">@mikhail</span> прогноз <span class="win-sum">+2 100 🪙</span> · 
-                    <span class="win-user">@olga</span> <span class="win-sum">+3 200 🪙</span> в Шарик
+                <div class="lux-ticker-track" id="livePurchaseTrack">
+                    <span class="win-user">@vetruch</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">VIP либо OG в чате</span> за <span class="win-sum">5 000 монет</span> · 
+                    <span class="win-user">@alex</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">Telegram Premium</span> за <span class="win-sum">12 000 монет</span> · 
+                    <span class="win-user">@vetruch</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">VIP либо OG в чате</span> за <span class="win-sum">5 000 монет</span>
                 </div>
             </div>
         </div>
 
-        <!-- ЕЖЕДНЕВНЫЙ VIP КЕЙС / БОНУС -->
+        <!-- ЕЖЕДНЕВНЫЙ VIP КЕЙС / БОНУС (28 ДНЕЙ) -->
         <div class="lux-daily-card anim-item" style="animation-delay: 0.14s;">
             <div class="lux-daily-head">
-                <div class="lux-daily-title">🎁 ЕЖЕДНЕВНЫЙ VIP БОНУС</div>
-                <span class="lux-daily-tag">СТАТУС: АКТИВЕН</span>
+                <div class="lux-daily-title" id="dailyBonusTitle">🎁 ЕЖЕДНЕВНЫЙ VIP БОНУС (ДЕНЬ 1/28)</div>
+                <span class="lux-daily-tag" id="dailyBonusTag">НЕДЕЛЯ 1</span>
             </div>
-            <div class="lux-streak-row">
+            <div class="lux-streak-row" id="dailyStreakRow">
                 <div class="lux-streak-day active"><span class="lux-streak-num">1Д</span><span class="lux-streak-reward">+50</span></div>
-                <div class="lux-streak-day active"><span class="lux-streak-num">2Д</span><span class="lux-streak-reward">+75</span></div>
-                <div class="lux-streak-day active"><span class="lux-streak-num">3Д</span><span class="lux-streak-reward">+100</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">4Д</span><span class="lux-streak-reward">+150</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">5Д</span><span class="lux-streak-reward">+200</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">6Д</span><span class="lux-streak-reward">+300</span></div>
-                <div class="lux-streak-day crown"><span class="lux-streak-num">7Д 👑</span><span class="lux-streak-reward">+500</span></div>
+                <div class="lux-streak-day"><span class="lux-streak-num">2Д</span><span class="lux-streak-reward">+60</span></div>
+                <div class="lux-streak-day"><span class="lux-streak-num">3Д</span><span class="lux-streak-reward">+70</span></div>
+                <div class="lux-streak-day"><span class="lux-streak-num">4Д</span><span class="lux-streak-reward">+80</span></div>
+                <div class="lux-streak-day"><span class="lux-streak-num">5Д</span><span class="lux-streak-reward">+90</span></div>
+                <div class="lux-streak-day"><span class="lux-streak-num">6Д</span><span class="lux-streak-reward">+100</span></div>
+                <div class="lux-streak-day crown"><span class="lux-streak-num">7Д 👑</span><span class="lux-streak-reward">+150</span></div>
+            </div>
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                <span>Серия: с 1 дня · Пропуск = сброс</span>
+                <span style="color: #ffd700; font-weight: 700;">День 28: 1 000 монет!</span>
             </div>
             <button type="button" class="lux-claim-btn" id="homeDailyClaimBtn" onclick="claimDailyReward(this)">
-                ⚡ ЗАБРАТЬ +100 🪙 СЕЙЧАС
+                ⚡ ЗАБРАТЬ НАГРАДУ (ДЕНЬ 1)
             </button>
         </div>
 
@@ -3949,7 +3943,7 @@
             <div class="stats-row">
                 <div class="stat-item"><span class="stat-val">👥 14 820+</span><span class="stat-label">игроков в клубе</span></div>
                 <div class="stat-item"><span class="stat-val">🪙 8.9M+</span><span class="stat-label">монет выплачено</span></div>
-                <div class="stat-item"><span class="stat-val" style="color: #00ff88;">🟢 1 410</span><span class="stat-label">онлайн сейчас</span></div>
+                <div class="stat-item"><span class="stat-val" id="homeOnlineCountVal" style="color: #00ff88;">🟢 4</span><span class="stat-label">онлайн сейчас</span></div>
             </div>
         </div>
 
@@ -3978,14 +3972,14 @@
         <div class="games-grid" style="clear: both;">
             <!-- Новая игра: БАШНИ (Широкая кнопка) -->
             <div class="game-card wide-card anim-item" style="animation-delay: 0.05s;" onclick="window.location.href='towers.html'">
-                <span class="game-card-ribbon ribbon-fire">🔥 ХИТ · x1000 MAX</span>
+                <span class="game-card-ribbon ribbon-fire">🔥 ХИТ</span>
                 <div class="game-icon tower-preview">
                     <div class="tower-bar"></div>
                     <div class="tower-bar"></div>
                     <div class="tower-bar"></div>
                 </div>
                 <div class="wide-card-info">
-                    <div class="game-online-tag" style="justify-content: flex-start;">🟢 820 игроков онлайн</div>
+                    <div class="game-online-tag" id="onlineTagTowers" style="justify-content: flex-start;">🟢 2 в игре</div>
                     <div class="game-title">БАШНИ</div>
                     <div class="game-subtitle">аркада · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                     <div class="game-play-btn">ИГРАТЬ ➔</div>
@@ -4000,7 +3994,7 @@
                     <span class="bomb-body"></span>
                 </div>
                 <div class="game-title">Мины</div>
-                <div class="game-online-tag">🟢 540 в игре</div>
+                <div class="game-online-tag" id="onlineTagMines">🟢 1 в игре</div>
                 <div class="game-subtitle">мины · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
@@ -4014,7 +4008,7 @@
                     <span class="mini-card card-club"><b>A</b><i>♣</i></span>
                 </div>
                 <div class="game-title">Карты</div>
-                <div class="game-online-tag">🟢 310 в игре</div>
+                <div class="game-online-tag" id="onlineTagCards">🟢 1 в игре</div>
                 <div class="game-subtitle">карты · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
@@ -4026,7 +4020,7 @@
                     <svg class="balloon-string" viewBox="0 0 12 30" aria-hidden="true"><path d="M6 0 C6 7 1 8 6 14 C11 20 6 23 4 30" /></svg>
                 </div>
                 <div class="game-title">Шарик</div>
-                <div class="game-online-tag">🟢 690 в игре</div>
+                <div class="game-online-tag" id="onlineTagBalloon">🟢 1 в игре</div>
                 <div class="game-subtitle">краш · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
@@ -4044,7 +4038,7 @@
                     </div>
                 </div>
                 <div class="game-title">Кости</div>
-                <div class="game-online-tag">🟢 250 в игре</div>
+                <div class="game-online-tag" id="onlineTagDice">🟢 1 в игре</div>
                 <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"></div>
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
@@ -4553,11 +4547,8 @@
 
             <div class="profile-hero-top">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="profile-vip-badge">
-                        <span class="profile-online-dot"></span>
-                        BLACK VIP
-                    </div>
-                    <span class="profile-card-chip">💳 EMV CHIP</span>
+                    <div class="profile-vip-badge" id="profileVipBadge"><span class="profile-online-dot"></span> 👤 ОБЫЧНЫЙ АККАУНТ</div>
+                    
                 </div>
                 <button type="button" class="profile-id-pill" onclick="copyProfileId()">
                     <span>ID: <b id="profileUserId">00000000</b></span>
@@ -4588,11 +4579,15 @@
 
                 <div class="profile-xp-box">
                     <div class="profile-xp-head">
-                        <span class="profile-xp-rank">🏆 Лига: Новичок</span>
-                        <span class="profile-xp-nums">120 / 500 XP</span>
+                        <span class="profile-xp-rank" id="profileXpRank">👤 VIP Статус: Обычный аккаунт</span>
+                        <span class="profile-xp-nums" id="profileXpNums">0 / 500 EXP</span>
                     </div>
                     <div class="profile-xp-track">
-                        <div class="profile-xp-fill"></div>
+                        <div class="profile-xp-fill" id="profileXpFill" style="width: 0%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: #8da2ba; margin-top: 6px;">
+                        <span>Бронзовый: 500 · Серебряный: 5k</span>
+                        <span>Золотой: 25k · Алмазный: 100k</span>
                     </div>
                 </div>
             </div>
@@ -6139,6 +6134,7 @@
 
             // Списываем монеты
             const newBal = myBal - amount;
+            if (typeof addExp === 'function') addExp(amount);
             localStorage.setItem('vetruch_balance', newBal);
             localStorage.setItem('vetruch_cloud_synced_bal', newBal);
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = newBal);
@@ -6965,6 +6961,27 @@
             const gameDelta = localBal - lastSyncedBal;
 
             const cloudState = await cloudGet('vetruch_app');
+
+            // 1. Отправка heartbeat присутствия и подсчет реального онлайна (+2..3 игрока сверху)
+            try {
+                await cloudPut(`vetruch_app/online_presence/${myId}`, Date.now());
+                const presMap = (cloudState && cloudState.online_presence) ? cloudState.online_presence : {};
+                const nowTs = Date.now();
+                let realOnline = 0;
+                for (let uid in presMap) {
+                    if (nowTs - presMap[uid] < 45000) realOnline++;
+                }
+                const boostedOnline = Math.max(1, realOnline) + (Math.floor(Math.random() * 2) + 2);
+                updateOnlineUsersUI(boostedOnline);
+            } catch(e) {}
+
+            // 2. Синхронизация Live покупок
+            try {
+                if (cloudState && cloudState.live_purchase) {
+                    updateLivePurchaseUI(cloudState.live_purchase);
+                }
+            } catch(e) {}
+
             let balancesMap = (cloudState && cloudState.balances) ? cloudState.balances : JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
             let tasksList = (cloudState && Array.isArray(cloudState.tasks)) ? cloudState.tasks : [];
             let shopList = (cloudState && Array.isArray(cloudState.shop)) ? cloudState.shop : [];
@@ -7139,6 +7156,33 @@
 
             await cloudPut(`vetruch_app/balances/${myId}`, curBal);
             await cloudPut('vetruch_app/shop', orders);
+
+            // Обновление LIVE ПОКУПКИ (правило: висит 15 мин, заменяется если цена >= текущей)
+            try {
+                const nowTs = Date.now();
+                let curLive = (cloudState && cloudState.live_purchase) ? cloudState.live_purchase : (await cloudGet('vetruch_app/live_purchase'));
+                let shouldReplace = true;
+                if (curLive && curLive.timestamp) {
+                    const isWithin15Min = (nowTs - curLive.timestamp) < (15 * 60 * 1000);
+                    if (isWithin15Min && price < (curLive.price || 0)) {
+                        shouldReplace = false;
+                    }
+                }
+                if (shouldReplace) {
+                    const newLive = {
+                        user: username,
+                        item: selectedShopItem,
+                        price: price,
+                        timestamp: nowTs
+                    };
+                    await cloudPut('vetruch_app/live_purchase', newLive);
+                    updateLivePurchaseUI(newLive);
+                }
+            } catch(e) {}
+
+            // Начисление EXP за покупку в магазине
+            if (typeof addExp === 'function') addExp(Math.max(10, Math.floor(price / 10)));
+
             await cloudPut(`vetruch_app/purchases/${myId}`, myPurchases);
 
             initBalance();
@@ -7905,56 +7949,354 @@ if (document.readyState === 'loading') {
 }
         
     
-// ================= ЕЖЕДНЕВНЫЙ VIP БОНУС =================
-function claimDailyReward(btn) {
-    const today = new Date().toISOString().slice(0, 10);
-    const lastClaim = localStorage.getItem('vetruch_last_daily_claim');
-    if (lastClaim === today) {
-        alert('🎁 Вы уже забрали ежедневный бонус сегодня! Возвращайтесь завтра за следующей наградой.');
+
+
+
+// ================= СИСТЕМА VIP СТАТУСОВ И ПОДАРКОВ =================
+const VIP_TIERS = [
+    { name: 'Обычный аккаунт', minExp: 0, maxExp: 500, icon: '👤', boost: '1.0x' },
+    { name: 'VIP Бронзовый', minExp: 500, maxExp: 5000, icon: '🥉', boost: '1.1x' },
+    { name: 'VIP Серебряный', minExp: 5000, maxExp: 25000, icon: '🥈', boost: '1.25x' },
+    { name: 'VIP Золотой', minExp: 25000, maxExp: 100000, icon: '🥇', boost: '1.5x' },
+    { name: 'VIP Алмазный', minExp: 100000, maxExp: Infinity, icon: '💎', boost: '2.0x' }
+];
+
+function getUserExp() {
+    return parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10);
+}
+
+function addExp(amount) {
+    if (!amount || amount <= 0) return;
+    let cur = getUserExp() + amount;
+    localStorage.setItem('vetruch_user_xp', cur);
+    const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'guest';
+    if (typeof cloudPut === 'function') {
+        cloudPut(`vetruch_app/users/${myId}/xp`, cur).catch(() => {});
+    }
+    updateVipStatusUI();
+    checkDiamondGift();
+}
+
+function getVipTier(exp) {
+    for (let i = VIP_TIERS.length - 1; i >= 0; i--) {
+        if (exp >= VIP_TIERS[i].minExp) return VIP_TIERS[i];
+    }
+    return VIP_TIERS[0];
+}
+
+function updateVipStatusUI() {
+    const exp = getUserExp();
+    const tier = getVipTier(exp);
+
+    // 1. Home header badge
+    const homeBadge = document.getElementById('homeUserTierBadge');
+    if (homeBadge) {
+        homeBadge.innerHTML = `${tier.icon} ${tier.name.toUpperCase()} <span class="tier-boost">${tier.boost}</span>`;
+    }
+
+    // 2. Profile top badge
+    const profBadge = document.getElementById('profileVipBadge');
+    if (profBadge) {
+        profBadge.innerHTML = `<span class="profile-online-dot"></span> ${tier.icon} ${tier.name.toUpperCase()}`;
+    }
+
+    // 3. Profile XP progress
+    const rankEl = document.getElementById('profileXpRank');
+    const numsEl = document.getElementById('profileXpNums');
+    const fillEl = document.getElementById('profileXpFill');
+
+    if (tier.name === 'VIP Алмазный') {
+        const extra = exp - 100000;
+        const progressIn10k = extra % 10000;
+        const pct = Math.min(100, Math.round((progressIn10k / 10000) * 100));
+        if (rankEl) rankEl.innerHTML = `💎 VIP Алмазный · До подарка «Колл бонуски»`;
+        if (numsEl) numsEl.textContent = `${progressIn10k} / 10 000 EXP`;
+        if (fillEl) fillEl.style.width = `${pct}%`;
+    } else {
+        const range = tier.maxExp - tier.minExp;
+        const progress = exp - tier.minExp;
+        const pct = Math.min(100, Math.max(0, Math.round((progress / range) * 100)));
+        if (rankEl) rankEl.innerHTML = `${tier.icon} VIP Статус: ${tier.name}`;
+        if (numsEl) numsEl.textContent = `${exp} / ${tier.maxExp} EXP`;
+        if (fillEl) fillEl.style.width = `${pct}%`;
+    }
+}
+
+function checkDiamondGift() {
+    const exp = getUserExp();
+    if (exp < 100000) return;
+    const extra = exp - 100000;
+    const giftsEarned = Math.floor(extra / 10000);
+    const giftsClaimed = parseInt(localStorage.getItem('vetruch_gifts_claimed') || '0', 10);
+    if (giftsEarned > giftsClaimed) {
+        openGiftRewardModal();
+    }
+}
+
+function openGiftRewardModal() {
+    const modal = document.getElementById('giftRewardModal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeGiftRewardModal() {
+    const modal = document.getElementById('giftRewardModal');
+    if (modal) modal.classList.remove('active');
+}
+
+async function confirmGiftClaim() {
+    let username = document.getElementById('giftRewardUsername').value.trim();
+    if (!username) {
+        alert('⚠️ Пожалуйста, введите ваш @username в Telegram!');
         return;
     }
-    const bonus = 100;
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'guest';
+    const giftsClaimed = parseInt(localStorage.getItem('vetruch_gifts_claimed') || '0', 10);
+    localStorage.setItem('vetruch_gifts_claimed', giftsClaimed + 1);
+
+    const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    const giftOrder = {
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        item: 'Колл бонуски (VIP Подарок)',
+        price: 0,
+        date: `Сегодня, ${nowStr}`,
+        isGift: true
+    };
+
+    try {
+        let orders = (await cloudGet('vetruch_app/shop')) || [];
+        if (!Array.isArray(orders)) orders = [];
+        orders.unshift(giftOrder);
+        await cloudPut('vetruch_app/shop', orders);
+    } catch(e) {}
+
+    closeGiftRewardModal();
+    alert('🎉 Поздравляем! Заявка на получение подарка «Колл бонуски» успешно отправлена администраторам!');
+}
+
+// ================= ЕЖЕДНЕВНЫЙ БОНУС (28 ДНЕЙ СЕРИИ) =================
+function getDailyBonusReward(day) {
+    if (day >= 28) return 1000;
+    const completedWeeks = Math.floor((day - 1) / 7);
+    const dayInWeek = ((day - 1) % 7) + 1;
+    let base = 50 + (dayInWeek - 1) * 10;
+    if (dayInWeek === 7) base = 150;
+    return base + (completedWeeks * 100);
+}
+
+function getDailyStreakData() {
+    const streak = parseInt(localStorage.getItem('vetruch_daily_streak') || '0', 10);
+    const lastDate = localStorage.getItem('vetruch_last_daily_date') || '';
+    return { streak, lastDate };
+}
+
+function calculateCurrentStreakStatus() {
+    const today = new Date().toISOString().slice(0, 10);
+    let { streak, lastDate } = getDailyStreakData();
+    let isClaimedToday = false;
+    let currentDayNumber = 1;
+
+    if (!lastDate) {
+        currentDayNumber = 1;
+        streak = 0;
+    } else if (lastDate === today) {
+        isClaimedToday = true;
+        currentDayNumber = streak === 0 ? 1 : streak;
+    } else {
+        const d1 = new Date(today);
+        const d2 = new Date(lastDate);
+        const diffDays = Math.round((d1 - d2) / 86400000);
+
+        if (diffDays === 1) {
+            currentDayNumber = (streak % 28) + 1;
+        } else {
+            // Пропустил день — серия сбрасывается с 1 дня!
+            streak = 0;
+            currentDayNumber = 1;
+            localStorage.setItem('vetruch_daily_streak', '0');
+        }
+    }
+    return { streak, lastDate, isClaimedToday, currentDayNumber };
+}
+
+function renderDailyBonusUI() {
+    const { streak, isClaimedToday, currentDayNumber } = calculateCurrentStreakStatus();
+    const todayReward = getDailyBonusReward(currentDayNumber);
+
+    const currentWeek = Math.min(4, Math.floor((currentDayNumber - 1) / 7) + 1);
+    const startDayOfWeek = (currentWeek - 1) * 7 + 1;
+
+    const streakRow = document.getElementById('dailyStreakRow');
+    if (streakRow) {
+        let html = '';
+        for (let i = 0; i < 7; i++) {
+            const dayNum = startDayOfWeek + i;
+            const isCrown = (dayNum === 28);
+            const isPast = isClaimedToday ? (dayNum <= currentDayNumber) : (dayNum < currentDayNumber);
+            const isCurrent = (dayNum === currentDayNumber);
+            const reward = getDailyBonusReward(dayNum);
+
+            let cls = 'lux-streak-day';
+            if (isPast) cls += ' claimed';
+            if (isCurrent) cls += ' active';
+            if (isCrown) cls += ' crown';
+
+            html += `
+                <div class="${cls}">
+                    <span class="lux-streak-num">${isCrown ? '28Д 👑' : dayNum + 'Д'}</span>
+                    <span class="lux-streak-reward">+${reward}</span>
+                </div>
+            `;
+        }
+        streakRow.innerHTML = html;
+    }
+
+    const titleEl = document.getElementById('dailyBonusTitle');
+    if (titleEl) {
+        titleEl.textContent = `🎁 ЕЖЕДНЕВНЫЙ VIP БОНУС (ДЕНЬ ${currentDayNumber}/28)`;
+    }
+
+    const tagEl = document.getElementById('dailyBonusTag');
+    if (tagEl) {
+        tagEl.textContent = isClaimedToday ? '✅ ЗАБРАНО' : `НЕДЕЛЯ ${currentWeek}`;
+    }
+
+    const btn = document.getElementById('homeDailyClaimBtn');
+    if (btn) {
+        if (isClaimedToday) {
+            btn.textContent = `✅ НАГРАДА ПОЛУЧЕНА СЕГОДНЯ (ДЕНЬ ${currentDayNumber})`;
+            btn.disabled = true;
+            btn.classList.add('claimed');
+        } else {
+            btn.textContent = `⚡ ЗАБРАТЬ +${todayReward} 🪙 (ДЕНЬ ${currentDayNumber})`;
+            btn.disabled = false;
+            btn.classList.remove('claimed');
+        }
+    }
+}
+
+async function claimDailyReward(btn) {
+    const today = new Date().toISOString().slice(0, 10);
+    const status = calculateCurrentStreakStatus();
+
+    if (status.isClaimedToday) {
+        alert('🎁 Вы уже забрали награду сегодня! Возвращайтесь завтра за следующим днем.');
+        return;
+    }
+
+    const dayNum = status.currentDayNumber;
+    const reward = getDailyBonusReward(dayNum);
+
     const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'guest';
     let bal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
-    bal += bonus;
+    bal += reward;
     localStorage.setItem('vetruch_balance', bal);
-    localStorage.setItem('vetruch_last_daily_claim', today);
-    try {
-        let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
-        balancesMap[myId] = bal;
-        localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
-    } catch(e) {}
-    
-    document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
+    localStorage.setItem('vetruch_last_daily_date', today);
+    localStorage.setItem('vetruch_daily_streak', dayNum);
+
+    let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    balancesMap[myId] = bal;
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+    // +50 EXP за вход в игру
+    addExp(50);
+
     if (typeof cloudPut === 'function') {
         cloudPut(`vetruch_app/balances/${myId}`, bal).catch(() => {});
+        cloudPut(`vetruch_app/users/${myId}/daily_streak`, { streak: dayNum, lastDate: today }).catch(() => {});
     }
-    
-    if (btn) {
-        btn.textContent = '✅ НАГРАДА ПОЛУЧЕНА (+100 🪙)';
-        btn.disabled = true;
-        btn.classList.add('claimed');
-    }
+
+    document.querySelectorAll('.app-balance').forEach(el => el.textContent = bal);
+    renderDailyBonusUI();
+
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
         try { window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); } catch(e) {}
     }
-    alert('🎉 Поздравляем! Вы получили ежедневную VIP-награду: +100 монет! Баланс пополнен.');
+
+    alert(`🎉 Поздравляем! День ${dayNum}/28 успешно пройден!\nВам начислено +${reward} монет и +50 EXP.`);
 }
 
-function initDailyBonusButton() {
-    const today = new Date().toISOString().slice(0, 10);
-    const lastClaim = localStorage.getItem('vetruch_last_daily_claim');
-    const btn = document.getElementById('homeDailyClaimBtn');
-    if (btn && lastClaim === today) {
-        btn.textContent = '✅ НАГРАДА ПОЛУЧЕНА СЕГОДНЯ';
-        btn.disabled = true;
-        btn.classList.add('claimed');
+// ================= LIVE ПОКУПКИ (15 МИНУТ ХРАНЕНИЯ) =================
+function updateLivePurchaseUI(data) {
+    const track = document.getElementById('livePurchaseTrack');
+    if (!track) return;
+    if (!data || !data.user || !data.item) {
+        track.innerHTML = `<span class="win-user">@vetruch</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">VIP либо OG в чате</span> за <span class="win-sum">5 000 монет</span> · <span class="win-user">@alex</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">Telegram Premium</span> за <span class="win-sum">12 000 монет</span>`;
+        return;
     }
+    const now = Date.now();
+    const minsAgo = Math.max(0, Math.floor((now - (data.timestamp || now)) / 60000));
+    const timeText = minsAgo === 0 ? 'только что' : `${minsAgo} мин. назад`;
+    const single = `<span class="win-user">${data.user}</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">${data.item}</span> за <span class="win-sum">${formatCoins(data.price)} монет</span> (${timeText})`;
+    track.innerHTML = `${single} &nbsp;·&nbsp; ${single} &nbsp;·&nbsp; ${single} &nbsp;·&nbsp; ${single}`;
 }
-window.addEventListener('DOMContentLoaded', initDailyBonusButton);
-setTimeout(initDailyBonusButton, 500);
+
+// ================= ОНЛАЙН СТАТИСТИКА (РЕАЛЬНЫЕ + 2..3 СВЕРХУ) =================
+function updateOnlineUsersUI(count) {
+    const statEl = document.getElementById('homeOnlineCountVal');
+    if (statEl) statEl.textContent = `🟢 ${count}`;
+    const gamesHeadTag = document.getElementById('gamesOnlineHeaderTag');
+    if (gamesHeadTag) gamesHeadTag.textContent = `🟢 ${count} игроков онлайн`;
+
+    const c1 = Math.max(1, Math.round(count * 0.35));
+    const c2 = Math.max(1, Math.round(count * 0.25));
+    const c3 = Math.max(1, Math.round(count * 0.15));
+    const c4 = Math.max(1, Math.round(count * 0.15));
+    const c5 = Math.max(1, Math.round(count * 0.10));
+
+    const t1 = document.getElementById('onlineTagTowers');
+    const t2 = document.getElementById('onlineTagMines');
+    const t3 = document.getElementById('onlineTagCards');
+    const t4 = document.getElementById('onlineTagBalloon');
+    const t5 = document.getElementById('onlineTagDice');
+
+    if (t1) t1.textContent = `🟢 ${c1} в игре`;
+    if (t2) t2.textContent = `🟢 ${c2} в игре`;
+    if (t3) t3.textContent = `🟢 ${c3} в игре`;
+    if (t4) t4.textContent = `🟢 ${c4} в игре`;
+    if (t5) t5.textContent = `🟢 ${c5} в игре`;
+}
+
+// Инициализация систем при старте
+function initAdvancedSystems() {
+    updateVipStatusUI();
+    renderDailyBonusUI();
+    checkDiamondGift();
+}
+window.addEventListener('DOMContentLoaded', initAdvancedSystems);
+setTimeout(initAdvancedSystems, 300);
 
 </script>
+
+
+    <!-- МОДАЛКА: ПОДАРОК КОЛЛ БОНУСКИ (ЗА 10 000 EXP ПОСЛЕ АЛМАЗНОГО VIP) -->
+    <div id="giftRewardModal" class="modal-overlay" onclick="if(event.target === this) closeGiftRewardModal()">
+        <div class="modal-content" style="border-color: #ffd700; box-shadow: 0 0 45px rgba(255, 215, 0, 0.4); max-width: 380px;">
+            <button class="modal-close" onclick="closeGiftRewardModal()">✖</button>
+            <div style="font-size: 34px; margin-bottom: 6px;">🎉</div>
+            <h3 style="margin-top: 0; margin-bottom: 6px; color: #ffd700; font-size: 19px;">ВЫ ПОЛУЧИЛИ ПОДАРОК!</h3>
+            <p style="font-size: 12.5px; color: #94a3b8; margin-bottom: 14px; line-height: 1.4;">
+                Награда за достижение +10 000 EXP в Алмазном VIP-статусе!
+            </p>
+
+            <div style="background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255, 215, 0, 0.35); border-radius: 16px; padding: 14px; margin-bottom: 16px; text-align: center;">
+                <img src="IMG_1074.PNG" alt="Колл бонуски" style="width: 140px; height: 140px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255, 215, 0, 0.5); box-shadow: 0 0 16px rgba(255, 215, 0, 0.3);">
+                <div style="font-size: 17px; font-weight: 800; color: #ffffff;">Колл бонуски</div>
+                <div style="font-size: 12px; color: #ffd700; font-weight: 700; margin-top: 3px;">БЕСПЛАТНО · VIP НАГРАДА</div>
+            </div>
+
+            <div class="verify-box">
+                <h5>ДАННЫЕ ДЛЯ ВЫДАЧИ ПОДАРКА:</h5>
+                <input type="text" class="task-input" id="giftRewardUsername" placeholder="Ваш @username в Telegram">
+                <button type="button" class="submit-task-btn" onclick="confirmGiftClaim()" style="background: linear-gradient(135deg, #ffd700, #f59e0b); color: #0b0c10; font-weight: 900; border: none; box-shadow: 0 4px 16px rgba(255, 215, 0, 0.4);">
+                    ПОДТВЕРДИТЬ ПОЛУЧЕНИЕ
+                </button>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
