@@ -14,15 +14,32 @@
 
     <style>
 
-/* ================= ПРОГНОЗ ================= */
+/* ================= ПРОГНОЗ (CYBER BLUE REDESIGN) ================= */
 .prediction-card {
-    background: rgba(12, 14, 20, 0.85); /* Темный аккуратный фон */
-    border: 2px solid #003388; /* Темно-синие края */
-    border-radius: 18px;
-    padding: 16px;
+    background: linear-gradient(165deg, rgba(14, 22, 36, 0.9) 0%, rgba(8, 12, 20, 0.98) 100%);
+    border: 1.5px solid rgba(0, 160, 255, 0.38);
+    border-radius: 22px;
+    padding: 18px;
     margin-top: 20px;
     margin-bottom: 24px;
     clear: both;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 14px 38px rgba(0, 0, 0, 0.8),
+        0 0 25px rgba(0, 136, 255, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.prediction-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 217, 255, 0.7) 50%, transparent 100%);
+    pointer-events: none;
 }
 
 .prediction-header {
@@ -33,26 +50,31 @@
 }
 
 .prediction-badge {
-    background: rgba(0, 136, 255, 0.12);
-    color: #0088ff; /* Слово прогноз в темно-голубом цвете */
+    background: linear-gradient(135deg, rgba(0, 136, 255, 0.22) 0%, rgba(0, 217, 255, 0.1) 100%);
+    color: #38bdf8;
+    border: 1px solid rgba(0, 180, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 136, 255, 0.25);
     padding: 5px 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 11px;
     font-weight: 800;
+    letter-spacing: 0.6px;
     text-transform: uppercase;
 }
 
 .prediction-status {
-    color: var(--secondary);
+    color: #94a3b8;
     font-size: 12px;
     font-weight: 600;
 }
 
 .prediction-title {
-    font-size: 17px;
+    font-size: 17.5px;
     font-weight: 800;
-    color: #fff;
+    color: #ffffff;
+    line-height: 1.35;
     margin-bottom: 16px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
 
 .prediction-stats {
@@ -63,20 +85,43 @@
     margin-bottom: 8px;
 }
 
-.prediction-yes { color: #00e676; display: flex; align-items: center; gap: 5px; }
-.prediction-no { color: #ff3366; display: flex; align-items: center; gap: 5px; }
+.prediction-yes { 
+    color: #00ff88; 
+    display: flex; 
+    align-items: center; 
+    gap: 5px; 
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.35);
+}
+.prediction-no { 
+    color: #ff3b6b; 
+    display: flex; 
+    align-items: center; 
+    gap: 5px; 
+    text-shadow: 0 0 10px rgba(255, 59, 107, 0.35);
+}
 
 .prediction-bar {
     display: flex;
-    height: 6px;
-    border-radius: 6px;
+    height: 7px;
+    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 16px;
-    background: #2a2d35;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-.prediction-bar-yes { background: #00e676; width: 15%; }
-.prediction-bar-no { background: #ff3366; width: 85%; }
+.prediction-bar-yes { 
+    background: linear-gradient(90deg, #00d977, #00ff88); 
+    width: 50%; 
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    transition: width 0.3s ease;
+}
+.prediction-bar-no { 
+    background: linear-gradient(90deg, #ff3b6b, #ff5277); 
+    width: 50%; 
+    box-shadow: 0 0 10px rgba(255, 59, 107, 0.5);
+    transition: width 0.3s ease;
+}
 
 .prediction-actions {
     display: flex;
@@ -85,111 +130,127 @@
 
 .prediction-btn {
     flex: 1;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 13px 12px;
+    border-radius: 14px;
     font-size: 14px;
     font-weight: 800;
+    letter-spacing: 0.3px;
     cursor: pointer;
     text-align: center;
     border: none;
     font-family: 'Inter', sans-serif;
-    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.18s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
 .prediction-btn:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
 }
 
 /* Режим 1: ДА / НЕТ (Зелёный и Красный) */
 .prediction-btn.btn-yes {
-    color: #00e676;
-    border: 1.5px solid rgba(0, 230, 118, 0.4);
-    background: rgba(0, 230, 118, 0.08);
-    box-shadow: 0 2px 10px rgba(0, 230, 118, 0.1);
+    color: #00ff88;
+    border: 1.5px solid rgba(0, 255, 136, 0.5);
+    background: linear-gradient(180deg, rgba(0, 255, 136, 0.16) 0%, rgba(0, 200, 100, 0.05) 100%);
+    box-shadow: 0 4px 18px rgba(0, 255, 136, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .prediction-btn.btn-yes:active {
-    background: rgba(0, 230, 118, 0.2);
+    background: rgba(0, 255, 136, 0.28);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.45);
 }
 
 .prediction-btn.btn-no {
-    color: #ff3366;
-    border: 1.5px solid rgba(255, 51, 102, 0.4);
-    background: rgba(255, 51, 102, 0.08);
-    box-shadow: 0 2px 10px rgba(255, 51, 102, 0.1);
+    color: #ff3b6b;
+    border: 1.5px solid rgba(255, 59, 107, 0.5);
+    background: linear-gradient(180deg, rgba(255, 59, 107, 0.16) 0%, rgba(200, 30, 70, 0.05) 100%);
+    box-shadow: 0 4px 18px rgba(255, 59, 107, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .prediction-btn.btn-no:active {
-    background: rgba(255, 51, 102, 0.2);
+    background: rgba(255, 59, 107, 0.28);
+    box-shadow: 0 0 20px rgba(255, 59, 107, 0.45);
 }
 
 .prediction-btn.my-voted {
     outline: 2px solid currentColor !important;
-    outline-offset: 2px !important;
-    box-shadow: 0 0 16px currentColor !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 20px currentColor !important;
     font-weight: 900 !important;
 }
 
 /* Режим 2: БАТЛЫ (Золото и Серебро) */
 .prediction-card.mode-battle {
-    border: 2px solid rgba(255, 215, 0, 0.5) !important;
-    background: linear-gradient(180deg, rgba(22, 18, 12, 0.92) 0%, rgba(12, 14, 20, 0.9) 100%) !important;
-    box-shadow: 0 0 28px rgba(255, 215, 0, 0.12) !important;
+    border: 1.5px solid rgba(255, 215, 0, 0.6) !important;
+    background: linear-gradient(165deg, rgba(26, 21, 14, 0.94) 0%, rgba(12, 14, 22, 0.98) 100%) !important;
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.85),
+        0 0 30px rgba(255, 215, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+.prediction-card.mode-battle::before {
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.8) 50%, transparent 100%) !important;
 }
 
 .prediction-card.mode-battle .prediction-badge {
-    background: rgba(255, 215, 0, 0.18) !important;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(245, 158, 11, 0.12) 100%) !important;
     color: #ffd700 !important;
-    border: 1px solid rgba(255, 215, 0, 0.4) !important;
+    border: 1px solid rgba(255, 215, 0, 0.5) !important;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.3) !important;
 }
 
 .prediction-card.mode-battle .prediction-yes {
     color: #ffd700 !important;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+    text-shadow: 0 0 12px rgba(255, 215, 0, 0.45);
 }
 
 .prediction-card.mode-battle .prediction-no {
-    color: #e2e8f0 !important;
-    text-shadow: 0 0 10px rgba(226, 232, 240, 0.35);
+    color: #f1f5f9 !important;
+    text-shadow: 0 0 12px rgba(241, 245, 249, 0.45);
 }
 
 .prediction-card.mode-battle .prediction-bar-yes {
     background: linear-gradient(90deg, #f59e0b, #ffd700) !important;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5) !important;
 }
 
 .prediction-card.mode-battle .prediction-bar-no {
     background: linear-gradient(90deg, #94a3b8, #e2e8f0) !important;
+    box-shadow: 0 0 12px rgba(226, 232, 240, 0.5) !important;
 }
 
 .prediction-card.mode-battle .prediction-btn.btn-yes {
     color: #ffd700 !important;
-    border: 1.5px solid rgba(255, 215, 0, 0.55) !important;
-    background: linear-gradient(180deg, rgba(255, 215, 0, 0.16) 0%, rgba(245, 158, 11, 0.06) 100%) !important;
-    box-shadow: 0 2px 14px rgba(255, 215, 0, 0.2) !important;
+    border: 1.5px solid rgba(255, 215, 0, 0.65) !important;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.22) 0%, rgba(245, 158, 11, 0.08) 100%) !important;
+    box-shadow: 0 4px 18px rgba(255, 215, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
 .prediction-card.mode-battle .prediction-btn.btn-yes:active {
-    background: rgba(255, 215, 0, 0.28) !important;
+    background: rgba(255, 215, 0, 0.35) !important;
+    box-shadow: 0 0 22px rgba(255, 215, 0, 0.5) !important;
 }
 
 .prediction-card.mode-battle .prediction-btn.btn-no {
     color: #f8fafc !important;
-    border: 1.5px solid rgba(226, 232, 240, 0.55) !important;
-    background: linear-gradient(180deg, rgba(226, 232, 240, 0.16) 0%, rgba(148, 163, 184, 0.06) 100%) !important;
-    box-shadow: 0 2px 14px rgba(226, 232, 240, 0.2) !important;
+    border: 1.5px solid rgba(226, 232, 240, 0.65) !important;
+    background: linear-gradient(180deg, rgba(226, 232, 240, 0.2) 0%, rgba(148, 163, 184, 0.08) 100%) !important;
+    box-shadow: 0 4px 18px rgba(226, 232, 240, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
 .prediction-card.mode-battle .prediction-btn.btn-no:active {
-    background: rgba(226, 232, 240, 0.28) !important;
+    background: rgba(226, 232, 240, 0.32) !important;
+    box-shadow: 0 0 22px rgba(226, 232, 240, 0.5) !important;
 }
 
 /* ================= СТИЛИ СТАВОК И ТАЙМЕРА ПРОГНОЗА ================= */
 .pred-timer-badge {
-    background: rgba(0, 217, 255, 0.12);
-    color: #00d9ff;
-    border: 1px solid rgba(0, 217, 255, 0.35);
-    padding: 3px 8px;
-    border-radius: 8px;
+    background: rgba(0, 217, 255, 0.14);
+    color: #00e5ff;
+    border: 1px solid rgba(0, 217, 255, 0.45);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.25);
+    padding: 3px 9px;
+    border-radius: 9px;
     font-size: 11px;
     font-weight: 800;
     font-family: monospace;
@@ -199,23 +260,24 @@
 }
 
 .pred-timer-badge.pulse-urgent {
-    background: rgba(255, 51, 102, 0.2) !important;
+    background: rgba(255, 51, 102, 0.22) !important;
     color: #ff3366 !important;
-    border-color: rgba(255, 51, 102, 0.55) !important;
+    border-color: rgba(255, 51, 102, 0.6) !important;
     animation: predPulseUrgent 1s infinite alternate;
 }
 
 @keyframes predPulseUrgent {
-    from { transform: scale(1); box-shadow: 0 0 4px rgba(255, 51, 102, 0.3); }
-    to { transform: scale(1.04); box-shadow: 0 0 12px rgba(255, 51, 102, 0.7); }
+    from { transform: scale(1); box-shadow: 0 0 4px rgba(255, 51, 102, 0.35); }
+    to { transform: scale(1.04); box-shadow: 0 0 14px rgba(255, 51, 102, 0.75); }
 }
 
 .pred-bet-box {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 14px;
-    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 160, 255, 0.22);
+    border-radius: 16px;
+    padding: 12px 14px;
     margin-bottom: 14px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .pred-bet-row {
@@ -229,25 +291,26 @@
 .pred-bet-label {
     font-size: 12px;
     font-weight: 700;
-    color: var(--secondary);
+    color: #94a3b8;
 }
 
 .pred-bet-input-wrap {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: rgba(0, 0, 0, 0.45);
-    border: 1.5px solid rgba(0, 217, 255, 0.35);
-    border-radius: 8px;
-    padding: 4px 8px;
-    width: 90px;
+    background: rgba(0, 15, 30, 0.75);
+    border: 1.5px solid rgba(0, 217, 255, 0.45);
+    border-radius: 10px;
+    padding: 5px 9px;
+    width: 95px;
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.15);
 }
 
 .pred-bet-input {
     background: transparent;
     border: none;
-    color: #fff;
-    font-size: 13px;
+    color: #ffffff;
+    font-size: 13.5px;
     font-weight: 800;
     width: 100%;
     outline: none;
@@ -256,20 +319,20 @@
 
 .pred-chips-group {
     display: flex;
-    gap: 5px;
+    gap: 6px;
     align-items: center;
 }
 
 .pred-chip-btn {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #e2e8f0;
-    border-radius: 7px;
-    padding: 5px 8px;
+    background: rgba(14, 23, 38, 0.85);
+    border: 1px solid rgba(0, 160, 255, 0.25);
+    color: #cbd5e1;
+    border-radius: 9px;
+    padding: 5px 9px;
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.15s ease;
+    transition: 0.18s ease;
     font-family: 'Inter', sans-serif;
 }
 
@@ -277,25 +340,28 @@
     transform: scale(0.92);
     background: #0088ff;
     color: #fff;
+    box-shadow: 0 0 10px rgba(0, 136, 255, 0.5);
 }
 
 .pred-chip-btn.pred-chip-max {
     color: #ffd700;
-    border-color: rgba(255, 215, 0, 0.45);
-    background: rgba(255, 215, 0, 0.12);
+    border-color: rgba(255, 215, 0, 0.55);
+    background: rgba(255, 215, 0, 0.15);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
 }
 
 .pred-user-bet-status {
-    background: rgba(0, 217, 255, 0.08);
-    border: 1px solid rgba(0, 217, 255, 0.25);
-    border-radius: 10px;
-    padding: 8px 12px;
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid rgba(0, 217, 255, 0.35);
+    border-radius: 12px;
+    padding: 9px 12px;
     margin-bottom: 12px;
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 700;
-    color: #00d9ff;
+    color: #00e5ff;
     text-align: center;
     line-height: 1.4;
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.15);
 }
 
 .prediction-btn.disabled-pred-btn {
@@ -305,21 +371,27 @@
     filter: grayscale(40%);
 }
 
-        
 /* ================= ШИРОКАЯ КАРТОЧКА ИГРЫ (БАШНИ) ================= */
 .game-card.wide-card {
     grid-column: span 2;
     flex-direction: row;
     text-align: left;
-    padding: 24px 20px; /* Увеличил паддинг для баланса */
+    padding: 24px 20px;
     justify-content: flex-start;
     gap: 24px;
-    /* Убираем кастомный фон и рамку, оставляем те, что прописаны в .game-card */
+    background: linear-gradient(165deg, rgba(16, 26, 44, 0.88) 0%, rgba(8, 14, 24, 0.97) 100%);
+    border: 1.5px solid rgba(0, 180, 255, 0.38);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 0 28px rgba(0, 140, 255, 0.1),
+        0 10px 30px rgba(0, 0, 0, 0.7);
 }
 
 .game-card.wide-card:active {
-    border-color: rgba(0, 217, 255, 0.8);
-    box-shadow: inset 0 0 20px rgba(0, 217, 255, 0.15), 0 0 15px rgba(0, 217, 255, 0.3);
+    border-color: rgba(0, 220, 255, 0.9);
+    box-shadow:
+        inset 0 0 25px rgba(0, 217, 255, 0.2),
+        0 0 25px rgba(0, 217, 255, 0.4);
 }
 
 .wide-card-info {
@@ -331,16 +403,21 @@
 
 .wide-card .game-title {
     font-size: 20px;
+    font-weight: 800;
     margin-bottom: 4px;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .wide-card .game-subtitle {
     margin-bottom: 8px;
+    color: #94a3b8;
+    font-size: 13px;
 }
 
 .tower-preview {
     position: relative;
-    width: 65px; /* Сделал чуть больше, как на скрине */
+    width: 65px;
     height: 60px;
     display: flex;
     align-items: flex-end;
@@ -351,9 +428,9 @@
 
 .tower-bar {
     width: 16px;
-    background: linear-gradient(180deg, #00d9ff 0%, #0099ff 100%);
+    background: linear-gradient(180deg, #00f0ff 0%, #0094ff 100%);
     border-radius: 6px 6px 0 0; 
-    box-shadow: 0 0 15px rgba(0, 217, 255, 0.8), 0 0 30px rgba(0, 153, 255, 0.5); 
+    box-shadow: 0 0 16px rgba(0, 225, 255, 0.85), 0 0 32px rgba(0, 148, 255, 0.55); 
     animation: towerPulse 2s infinite alternate ease-in-out;
 }
 
@@ -362,10 +439,10 @@
 .tower-bar:nth-child(3) { height: 64px; animation-delay: 0.8s; }
 
 @keyframes towerPulse {
-    0% { filter: brightness(0.9) drop-shadow(0 0 5px rgba(0, 217, 255, 0.5)); transform: scaleY(1); }
-    100% { filter: brightness(1.3) drop-shadow(0 0 15px rgba(0, 217, 255, 0.9)); transform: scaleY(1.05); }
+    0% { filter: brightness(0.95) drop-shadow(0 0 6px rgba(0, 217, 255, 0.6)); transform: scaleY(1); }
+    100% { filter: brightness(1.35) drop-shadow(0 0 18px rgba(0, 240, 255, 0.95)); transform: scaleY(1.05); }
 }
-        
+
 /* Анимация переключения категорий магазина */
 @keyframes cardFilterIn {
     0% {
@@ -378,15 +455,15 @@
     }
 }
         
-/* ================= КАТЕГОРИИ МАГАЗИНА ================= */
+/* ================= КАТЕГОРИИ МАГАЗИНА (CYBER CHIPS) ================= */
 .shop-tabs {
     display: flex;
     gap: 8px;
     overflow-x: auto;
     padding-bottom: 12px;
     margin-bottom: 5px;
-    scrollbar-width: none; /* Скрываем скроллбар в Firefox */
-    -ms-overflow-style: none; /* Скрываем скроллбар в IE/Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     width: 100%;
     position: relative;
     z-index: 9999;
@@ -401,22 +478,25 @@
 }
 
 .shop-tabs::-webkit-scrollbar {
-    display: none; /* Скрываем скроллбар в Chrome/Safari/Webkit */
+    display: none;
 }
 
 .shop-tab {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--secondary);
-    padding: 8px 16px;
-    border-radius: 20px;
+    background: rgba(14, 21, 33, 0.72);
+    border: 1px solid rgba(0, 150, 255, 0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #8fa0b5;
+    padding: 8px 18px;
+    border-radius: 22px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
     user-select: none;
     -webkit-user-select: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .shop-tab:active {
@@ -424,11 +504,14 @@
 }
 
 .shop-tab.active {
-    background: rgba(0, 136, 255, 0.15); /* Синий фон под стиль твоего бота */
-    border-color: var(--blue-main);
-    color: #fff;
+    background: linear-gradient(135deg, rgba(0, 140, 255, 0.3) 0%, rgba(0, 210, 255, 0.15) 100%);
+    border-color: #00d2ff;
+    color: #ffffff;
+    box-shadow:
+        0 0 16px rgba(0, 170, 255, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
-        
+
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
@@ -436,22 +519,23 @@
 
         :root {
             --text: #ffffff;
-            --secondary: #8c97a7;
-            --card-bg: rgba(20, 22, 28, 0.65);
-            --card-border: rgba(255, 255, 255, 0.08);
+            --secondary: #8c9cb0;
+            --card-bg: rgba(16, 24, 38, 0.75);
+            --card-border: rgba(0, 160, 255, 0.22);
             --blue-main: #0088ff;
             --blue-glow: rgba(0, 136, 255, 0.5);
-            --shop-card-bg: #0c0e14; 
-            --shop-card-border: rgba(255, 255, 255, 0.07);
+            --shop-card-bg: #090d15; 
+            --shop-card-border: rgba(0, 160, 255, 0.2);
         }
 
         html, body {
             margin: 0; 
             min-height: 100vh; 
-            background: #000000;
+            background: #060911;
             color: var(--text); 
-            font-family: 'Inter', sans-serif; 
-            padding-bottom: 90px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            padding-bottom: 96px;
+            overflow-x: hidden;
         }
 
         body.is-loading { 
@@ -473,7 +557,11 @@
             position: fixed; 
             z-index: 1; 
             inset: 0; 
-            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%); 
+            background:
+                radial-gradient(ellipse 90% 40% at 50% 0%, rgba(0, 102, 255, 0.16) 0%, transparent 70%),
+                radial-gradient(circle 350px at 100% 40%, rgba(0, 195, 255, 0.08) 0%, transparent 80%),
+                radial-gradient(circle 350px at 0% 75%, rgba(0, 110, 255, 0.09) 0%, transparent 80%),
+                linear-gradient(180deg, rgba(6, 9, 17, 0.1) 0%, rgba(6, 9, 17, 0.85) 100%);
             pointer-events: none; 
         }
 
@@ -720,15 +808,26 @@
         .balance-pill {
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(0, 136, 255, 0.15);
+            gap: 7px;
+            background: linear-gradient(135deg, rgba(14, 24, 40, 0.88) 0%, rgba(7, 13, 23, 0.96) 100%);
             padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 15px;
-            color: #fff;
-            border: 1px solid rgba(0, 136, 255, 0.3);
-            box-shadow: 0 0 10px rgba(0, 136, 255, 0.2);
+            border-radius: 24px;
+            font-weight: 800;
+            font-size: 14.5px;
+            color: #ffffff;
+            border: 1px solid rgba(0, 180, 255, 0.38);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 6px 20px rgba(0, 0, 0, 0.6),
+                0 0 14px rgba(0, 140, 255, 0.22);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .balance-pill:active {
+            transform: scale(0.96);
+            border-color: rgba(0, 210, 255, 0.8);
         }
 
         /* ================= ПРИЛИПАЮЩИЙ БАЛАНС (ФИКС СКРОЛЛА) ================= */
@@ -739,31 +838,46 @@
             float: right;
             z-index: 1000;
             margin-left: 10px;
-            background: rgba(14, 20, 30, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 12px rgba(0, 136, 255, 0.25);
+            background: linear-gradient(135deg, rgba(14, 24, 40, 0.95) 0%, rgba(7, 13, 23, 0.98) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 180, 255, 0.38);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 8px 24px rgba(0, 0, 0, 0.7),
+                0 0 16px rgba(0, 140, 255, 0.28);
+            border-radius: 24px;
+            padding: 6px 14px;
+            font-weight: 800;
+            font-size: 14.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 7px;
         }
 
         .page.active .sticky-pill {
             animation: pageFadeIn 0.3s ease backwards;
         }
+
         .coin-icon {
             width: 18px;
             height: 18px;
             object-fit: contain;
             flex-shrink: 0; 
+            filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.75));
         }
 
         .coin-icon-sm { 
-            width: 11px; 
-            height: 11px; 
+            width: 12px; 
+            height: 12px; 
             object-fit: contain; 
             flex-shrink: 0; 
             vertical-align: middle; 
             position: relative; 
             top: -1px; 
             margin-left: 2px; 
+            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
         }
 
         .promo-banner {
@@ -971,9 +1085,9 @@
         }
 
         .game-card {
-            background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
-            border: 2px solid rgba(0, 136, 255, 0.35);
-            border-radius: 16px;
+            background: linear-gradient(165deg, rgba(16, 25, 42, 0.84) 0%, rgba(8, 13, 22, 0.95) 100%);
+            border: 1.5px solid rgba(0, 160, 255, 0.32);
+            border-radius: 20px;
             padding: 24px 10px 16px 10px;
             display: flex;
             flex-direction: column;
@@ -981,21 +1095,39 @@
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.05), 0 4px 15px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.14),
+                inset 0 0 22px rgba(0, 140, 255, 0.08),
+                0 8px 26px rgba(0, 0, 0, 0.65);
+        }
+
+        .game-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 217, 255, 0.65) 50%, transparent 100%);
+            pointer-events: none;
         }
 
         .game-card:active {
             transform: scale(0.95);
-            border-color: rgba(0, 136, 255, 0.8);
-            box-shadow: inset 0 0 20px rgba(0, 136, 255, 0.15), 0 0 15px rgba(0, 136, 255, 0.3);
+            border-color: rgba(0, 210, 255, 0.85);
+            box-shadow:
+                inset 0 0 24px rgba(0, 140, 255, 0.2),
+                0 0 22px rgba(0, 170, 255, 0.45);
         }
 
         .game-icon {
             font-size: 42px;
             margin-bottom: 12px;
             line-height: 1;
-            filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.8));
+            filter: drop-shadow(0 0 16px rgba(0, 150, 255, 0.85));
         }
 
         .cards-preview {
@@ -1290,7 +1422,7 @@
             opacity: 0.8;
         }
 
-        /* ================= МАГАЗИН (КАРТИНКА ДО НИЗА, В СЕРОЙ ЧАСТИ ТОЛЬКО КНОПКА) ================= */
+        /* ================= МАГАЗИН (CYBER WEB3 REDESIGN) ================= */
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1301,21 +1433,24 @@
         }
 
         .shop-card {
-            background: var(--shop-card-bg);
-            border: 1px solid var(--shop-card-border);
-            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(14, 19, 29, 0.92) 0%, rgba(8, 11, 18, 0.98) 100%);
+            border: 1.5px solid rgba(0, 160, 255, 0.24);
+            border-radius: 20px;
             padding: 0;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.78),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .shop-card:active { 
             transform: scale(0.96); 
-            border-color: rgba(0, 136, 255, 0.5); 
+            border-color: rgba(0, 210, 255, 0.65); 
+            box-shadow: 0 0 20px rgba(0, 160, 255, 0.35);
         }
 
         .shop-card-img-wrap {
@@ -1326,15 +1461,14 @@
             background: #08090d;
         }
 
-        /* Мягкое затемнение низа картинки под текст и переход в плашку кнопки */
         .shop-card-img-wrap::after {
             content: "";
             position: absolute;
             left: 0;
             right: 0;
             bottom: 0;
-            height: 48%;
-            background: linear-gradient(180deg, rgba(12, 14, 20, 0) 0%, rgba(12, 14, 20, 0.88) 70%, #0c0e14 100%);
+            height: 52%;
+            background: linear-gradient(180deg, rgba(12, 16, 25, 0) 0%, rgba(10, 14, 22, 0.85) 65%, rgba(8, 11, 18, 1) 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -1344,56 +1478,58 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.3s ease;
         }
 
-        /* Название лежит поверх самого низа картинки, чтобы не создавать лишнюю серую зону */
         .shop-card-title {
             position: absolute;
             left: 10px;
             right: 10px;
             bottom: 6px;
             z-index: 2;
-            font-size: 12.5px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 800;
             color: #ffffff;
             margin: 0;
             padding: 0;
             text-align: left;
-            line-height: 1.2;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+            line-height: 1.25;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
         }
 
-        /* В нижней серой части карточки находится только компактная кнопка */
         .shop-btn {
             width: calc(100% - 16px);
             margin: 4px 8px 8px 8px;
-            background: linear-gradient(180deg, #0099ff 0%, #0066cc 100%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 10px;
-            padding: 5px 8px;
+            background: linear-gradient(135deg, #0094ff 0%, #0060db 55%, #0045ad 100%);
+            border: 1px solid rgba(120, 210, 255, 0.5);
+            border-radius: 12px;
+            padding: 6px 8px;
             color: #ffffff;
             cursor: pointer;
-            box-shadow: 0 3px 12px rgba(0, 136, 255, 0.3);
+            box-shadow:
+                0 4px 18px rgba(0, 136, 255, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.32);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 1px;
             flex-shrink: 0;
-            transition: transform 0.2s ease, opacity 0.2s ease;
+            transition: transform 0.18s ease, box-shadow 0.2s ease, opacity 0.2s ease;
         }
 
         .shop-btn:active { 
             transform: scale(0.95); 
-            opacity: 0.9; 
+            box-shadow: 0 2px 10px rgba(0, 136, 255, 0.3);
+            opacity: 0.95; 
         }
 
         .shop-btn-label {
             font-size: 9px;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
-            opacity: 0.92;
+            opacity: 0.95;
             line-height: 1.1;
         }
 
@@ -1402,33 +1538,38 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            font-size: 12.5px;
+            font-size: 13px;
             font-weight: 800;
             line-height: 1.15;
         }
 
         .shop-btn-price .coin-icon {
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
+            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.7));
         }
 
-        /* НИЖНЕЕ МЕНЮ */
+        /* НИЖНЕЕ МЕНЮ (FLOATING CYBER DOCK) */
         .bottom-nav {
             position: fixed; 
             z-index: 10; 
-            right: 12px; 
-            bottom: 15px; 
-            left: 12px; 
+            right: 14px; 
+            bottom: 14px; 
+            left: 14px; 
             display: flex; 
             align-items: center; 
             justify-content: space-around;
-            height: 65px; 
-            padding: 0 5px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 20px; 
-            background: rgba(15, 18, 22, 0.95);
-            backdrop-filter: blur(15px); 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); 
+            height: 64px; 
+            padding: 0 6px; 
+            border: 1px solid rgba(0, 160, 255, 0.24); 
+            border-radius: 24px; 
+            background: linear-gradient(180deg, rgba(13, 19, 32, 0.9) 0%, rgba(8, 11, 18, 0.98) 100%);
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow:
+                0 14px 40px rgba(0, 0, 0, 0.85),
+                0 0 25px rgba(0, 136, 255, 0.16),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15); 
             opacity: 0; 
             visibility: hidden; 
             transition: opacity 0.5s ease; 
@@ -1447,23 +1588,23 @@
             align-items: center; 
             justify-content: center; 
             gap: 4px; 
-            height: 55px; 
+            height: 54px; 
             border: 0; 
-            border-radius: 16px; 
+            border-radius: 18px; 
             background: transparent; 
-            color: #626a7d; 
+            color: #64748b; 
             font-size: 10px; 
-            font-weight: 600; 
+            font-weight: 700; 
             font-family: 'Inter', sans-serif; 
             cursor: pointer; 
-            transition: all 0.2s ease; 
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
         .nav-button svg { 
             width: 24px; 
             height: 24px; 
-            stroke: #626a7d; 
-            transition: all 0.2s ease; 
+            stroke: #64748b; 
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1); 
         }
 
         .nav-button:active { 
@@ -1471,12 +1612,13 @@
         }
 
         .nav-button.active { 
-            color: var(--blue-main); 
+            color: #38bdf8; 
+            background: radial-gradient(circle at 50% 88%, rgba(0, 150, 255, 0.24) 0%, transparent 72%);
         }
 
         .nav-button.active svg { 
-            stroke: var(--blue-main); 
-            filter: drop-shadow(0 0 6px var(--blue-glow)); 
+            stroke: #38bdf8; 
+            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.85)); 
             transform: translateY(-2px); 
         }
 
@@ -1484,13 +1626,17 @@
             text-align: left !important;
             margin-left: 0 !important;
             color: transparent !important;
-            background: linear-gradient(90deg, #ffffff 0%, #73caff 55%, #168bff 100%) !important;
+            background: linear-gradient(90deg, #ffffff 0%, #8ee1ff 50%, #0099ff 100%) !important;
             -webkit-background-clip: text !important;
             background-clip: text !important;
             -webkit-text-fill-color: transparent !important;
+            font-weight: 800 !important;
+            font-size: 24px !important;
+            letter-spacing: -0.4px !important;
             display: inline-block;
             margin-top: 5px !important;
             margin-bottom: 20px !important;
+            filter: drop-shadow(0 2px 10px rgba(0, 136, 255, 0.3));
         }
 
         .games-history {
@@ -1529,46 +1675,51 @@
             font-size: 16px;
         }
 
-        /* ================= ДИЗАЙН ЗАДАНИЙ ================= */
+        /* ================= ДИЗАЙН ЗАДАНИЙ (CYBER QUESTS) ================= */
         .featured-task {
             display: flex;
             align-items: flex-start;
             gap: 12px;
             padding: 16px;
-            border: 1px solid #0875c9;
-            border-radius: 18px;
-            background: linear-gradient(180deg, rgba(20, 22, 28, 0.8) 0%, rgba(10, 12, 16, 0.9) 100%);
+            border: 1.5px solid rgba(0, 150, 255, 0.32);
+            border-radius: 20px;
+            background: linear-gradient(165deg, rgba(16, 24, 38, 0.85) 0%, rgba(8, 13, 22, 0.96) 100%);
             box-sizing: border-box;
             margin-bottom: 15px;
             cursor: pointer;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
             clear: both;
+            box-shadow:
+                0 10px 28px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
         }
 
         .featured-task:active { 
             transform: scale(0.97); 
-            border-color: var(--blue-main); 
+            border-color: #00d2ff; 
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.35);
         }
 
         .featured-task-icon {
-            flex: 0 0 44px;
-            width: 44px;
-            height: 44px;
+            flex: 0 0 46px;
+            width: 46px;
+            height: 46px;
             display: grid;
             place-items: center;
-            border-radius: 13px;
-            background: #071a2c !important;
-            color: #168bff !important;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.25) 0%, rgba(0, 70, 160, 0.35) 100%) !important;
+            border: 1px solid rgba(0, 180, 255, 0.45);
+            color: #38bdf8 !important;
             font-size: 25px;
-            filter: drop-shadow(0 0 7px rgba(0, 136, 255, 0.45));
+            filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.5));
         }
-        
+
         .featured-task-icon svg { 
-            width: 22px; 
-            height: 22px; 
+            width: 24px; 
+            height: 24px; 
             fill: none; 
-            stroke: #168bff; 
-            stroke-width: 1.8; 
+            stroke: #38bdf8; 
+            stroke-width: 2; 
             stroke-linecap: round; 
             stroke-linejoin: round; 
         }
@@ -1587,35 +1738,38 @@
         }
 
         .featured-task-label { 
-            padding: 3px 9px; 
+            padding: 3px 10px; 
             border-radius: 12px; 
-            background: #071a2c; 
-            color: #168bff; 
-            font-size: 12px; 
+            background: rgba(0, 136, 255, 0.16); 
+            border: 1px solid rgba(0, 170, 255, 0.35);
+            color: #38bdf8; 
+            font-size: 11.5px; 
+            font-weight: 700;
         }
 
         .featured-task-reward { 
             color: #ffffff !important; 
-            font-weight: 700; 
+            font-weight: 800; 
             white-space: nowrap; 
             display: flex; 
             align-items: center; 
             gap: 4px;
+            text-shadow: 0 0 10px rgba(0, 136, 255, 0.4);
         }
 
         .featured-task-title { 
-            color: #f1f1f5; 
+            color: #f1f5f9; 
             font-size: 16px; 
-            line-height: 1.2; 
-            font-weight: 700; 
+            line-height: 1.25; 
+            font-weight: 800; 
         }
 
         .featured-task-description { 
-            margin: 12px 0 0 -56px; 
-            width: calc(100% + 56px); 
-            color: #85859f; 
-            font-size: 14px; 
-            line-height: 1.3; 
+            margin: 12px 0 0 -58px; 
+            width: calc(100% + 58px); 
+            color: #8da2ba; 
+            font-size: 13.5px; 
+            line-height: 1.4; 
         }
 
         /* Задания UPX (С замками) */
@@ -1942,8 +2096,9 @@
             left: 0; 
             right: 0; 
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7); 
-            backdrop-filter: blur(10px); 
+            background: rgba(3, 6, 12, 0.78); 
+            backdrop-filter: blur(20px) brightness(0.65); 
+            -webkit-backdrop-filter: blur(20px) brightness(0.65);
             z-index: 9999; 
             display: none; 
             align-items: center; 
@@ -1956,41 +2111,44 @@
             display: flex; 
             opacity: 1; 
         }
-        
+
         .modal-content {
-            background: linear-gradient(180deg, #121822 0%, #0a0c10 100%);
-            border: 2px solid #0088ff; 
-            box-shadow: 0 0 35px rgba(0, 136, 255, 0.3);
-            border-radius: 20px; 
+            background: linear-gradient(180deg, rgba(15, 23, 38, 0.96) 0%, rgba(8, 12, 20, 0.99) 100%);
+            border: 1.5px solid rgba(0, 180, 255, 0.42); 
+            box-shadow:
+                0 24px 60px rgba(0, 0, 0, 0.9),
+                0 0 40px rgba(0, 140, 255, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 24px; 
             width: 90%; 
             max-width: 400px; 
-            padding: 30px 20px;
+            padding: 30px 22px;
             position: relative; 
             text-align: center; 
-            transform: translateY(20px); 
-            transition: transform 0.3s ease;
+            transform: translateY(20px) scale(0.96); 
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .modal-overlay.active .modal-content { 
-            transform: translateY(0); 
+            transform: translateY(0) scale(1); 
         }
-        
+
         .modal-close { 
             position: absolute; 
             top: 15px; 
             right: 15px; 
-            background: rgba(0, 136, 255, 0.1); 
-            border: none; 
-            color: #0088ff; 
+            background: rgba(0, 136, 255, 0.14); 
+            border: 1px solid rgba(0, 180, 255, 0.35); 
+            color: #38bdf8; 
             width: 32px; 
             height: 32px; 
-            border-radius: 8px; 
-            font-size: 18px; 
+            border-radius: 10px; 
+            font-size: 16px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             cursor: pointer; 
-            transition: 0.2s; 
+            transition: 0.2s ease; 
         }
 
         .modal-close:active { 
@@ -1998,29 +2156,32 @@
             background: #0088ff; 
             color: #fff; 
         }
-        
+
         .modal-link-btn { 
-            background: rgba(0, 136, 255, 0.1); 
-            border: 2px solid #0088ff; 
-            color: #0088ff; 
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.22) 0%, rgba(0, 180, 255, 0.12) 100%); 
+            border: 1.5px solid rgba(0, 180, 255, 0.5); 
+            color: #38bdf8; 
             padding: 14px; 
-            border-radius: 12px; 
+            border-radius: 14px; 
             width: 100%; 
             font-weight: 800; 
             font-size: 15px; 
             text-transform: uppercase; 
+            letter-spacing: 0.5px;
             text-align: center; 
             display: block; 
             text-decoration: none; 
-            transition: 0.2s; 
+            transition: 0.2s ease; 
             margin-bottom: 20px; 
             cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 136, 255, 0.25);
         }
 
         .modal-link-btn:active { 
             background: #0088ff; 
             color: #fff; 
             transform: scale(0.97); 
+            box-shadow: 0 0 20px rgba(0, 136, 255, 0.5);
         }
 
         .verify-box { 
@@ -3967,10 +4128,22 @@
             float: right;
             z-index: 1000;
             margin-left: 10px;
-            background: rgba(14, 20, 30, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 12px rgba(0, 136, 255, 0.25);
+            background: linear-gradient(135deg, rgba(14, 24, 40, 0.95) 0%, rgba(7, 13, 23, 0.98) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 180, 255, 0.38);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 8px 24px rgba(0, 0, 0, 0.7),
+                0 0 16px rgba(0, 140, 255, 0.28);
+            border-radius: 24px;
+            padding: 6px 14px;
+            font-weight: 800;
+            font-size: 14.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 7px;
         }
 
         .page.active .sticky-pill {
