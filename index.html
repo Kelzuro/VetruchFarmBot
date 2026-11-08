@@ -2535,30 +2535,39 @@
         .profile-bento-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 14px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .profile-bento-item {
-            background: linear-gradient(180deg, rgba(20, 23, 31, 0.85) 0%, rgba(11, 13, 19, 0.95) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 14px 13px;
+            background: linear-gradient(165deg, rgba(16, 26, 46, 0.92) 0%, rgba(8, 14, 25, 0.98) 100%);
+            border: 1.5px solid rgba(0, 180, 255, 0.35);
+            border-radius: 18px;
+            padding: 16px 14px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 8px;
+            gap: 10px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65), 0 0 16px rgba(0, 140, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-bento-item::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 220, 255, 0.6) 50%, transparent 100%);
         }
 
         .profile-bento-item.accent-balance {
-            border-color: rgba(0, 136, 255, 0.38);
+            border-color: rgba(0, 200, 255, 0.55);
             background:
-                radial-gradient(100% 100% at 100% 0%, rgba(0, 136, 255, 0.16) 0%, rgba(0, 0, 0, 0) 70%),
-                linear-gradient(180deg, rgba(20, 23, 31, 0.9) 0%, rgba(11, 13, 19, 0.96) 100%);
+                radial-gradient(100% 100% at 100% 0%, rgba(0, 180, 255, 0.22) 0%, rgba(0, 0, 0, 0) 70%),
+                linear-gradient(165deg, rgba(16, 28, 52, 0.95) 0%, rgba(8, 14, 25, 0.98) 100%);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7), 0 0 22px rgba(0, 180, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22);
         }
 
         .profile-bento-top {
@@ -2569,19 +2578,20 @@
         }
 
         .profile-bento-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            background: rgba(0, 136, 255, 0.12);
-            border: 1px solid rgba(0, 136, 255, 0.25);
-            color: #29a9ff;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.25) 0%, rgba(0, 217, 255, 0.12) 100%);
+            border: 1px solid rgba(0, 200, 255, 0.45);
+            color: #38bdf8;
             display: grid;
             place-items: center;
+            box-shadow: 0 0 14px rgba(0, 160, 255, 0.3);
         }
 
         .profile-bento-icon svg {
-            width: 17px;
-            height: 17px;
+            width: 18px;
+            height: 18px;
             stroke: currentColor;
             fill: none;
             stroke-width: 2;
@@ -2590,31 +2600,49 @@
         }
 
         .profile-bento-val {
-            font-size: 19px;
-            font-weight: 800;
+            font-size: 20px;
+            font-weight: 900;
             color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             line-height: 1.1;
+            text-shadow: 0 0 12px rgba(0, 180, 255, 0.35);
+        }
+
+        .profile-bento-val .coin-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
         }
 
         .profile-bento-label {
             font-size: 11.5px;
-            color: var(--secondary);
-            font-weight: 600;
+            color: #94a3b8;
+            font-weight: 700;
+            letter-spacing: 0.2px;
         }
 
         /* Реферальный VIP-блок в профиле */
         .profile-ref-card {
             background:
-                radial-gradient(110% 120% at 0% 0%, rgba(0, 136, 255, 0.18) 0%, rgba(168, 85, 247, 0.12) 55%, rgba(12, 14, 20, 0.96) 100%);
-            border: 1px solid rgba(0, 153, 255, 0.35);
-            border-radius: 18px;
-            padding: 16px;
-            margin-bottom: 14px;
+                radial-gradient(110% 120% at 0% 0%, rgba(0, 180, 255, 0.2) 0%, rgba(168, 85, 247, 0.15) 55%, rgba(9, 14, 25, 0.98) 100%);
+            border: 1.5px solid rgba(0, 180, 255, 0.4);
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-bottom: 16px;
             text-align: left;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 140, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        }
+
+        .profile-ref-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 220, 255, 0.8) 50%, transparent 100%);
         }
 
         .profile-ref-head {
@@ -2622,7 +2650,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 8px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .profile-ref-title {
@@ -2638,20 +2666,21 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            padding: 3px 9px;
+            padding: 4px 10px;
             border-radius: 10px;
-            background: rgba(0, 136, 255, 0.18);
-            border: 1px solid rgba(0, 162, 255, 0.35);
+            background: rgba(0, 136, 255, 0.2);
+            border: 1px solid rgba(0, 200, 255, 0.5);
             color: #8ce0ff;
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 800;
+            box-shadow: 0 0 12px rgba(0, 180, 255, 0.3);
         }
 
         .profile-ref-desc {
             font-size: 12.5px;
-            color: #93a0b4;
-            line-height: 1.35;
-            margin: 0 0 13px 0;
+            color: #94a3b8;
+            line-height: 1.4;
+            margin: 0 0 14px 0;
         }
 
         .profile-ref-actions {
@@ -2663,14 +2692,15 @@
             flex: 1;
             border: none;
             border-radius: 12px;
-            padding: 11px 14px;
-            background: linear-gradient(90deg, #0088ff 0%, #00c6ff 100%);
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #0088ff 0%, #005fd2 100%);
+            border: 1px solid rgba(120, 210, 255, 0.5);
             color: #ffffff;
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 136, 255, 0.35);
+            box-shadow: 0 4px 18px rgba(0, 136, 255, 0.45);
             transition: transform 0.2s ease;
         }
 
@@ -2679,22 +2709,23 @@
         }
 
         .profile-ref-copy-btn {
-            width: 44px;
-            height: 42px;
+            width: 46px;
+            height: 44px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 153, 255, 0.4);
-            background: rgba(0, 136, 255, 0.12);
+            border: 1px solid rgba(0, 180, 255, 0.45);
+            background: rgba(0, 136, 255, 0.16);
             color: #5bc6ff;
             display: grid;
             place-items: center;
             cursor: pointer;
             flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(0, 160, 255, 0.25);
             transition: transform 0.2s ease, background 0.2s ease;
         }
 
         .profile-ref-copy-btn:active {
             transform: scale(0.93);
-            background: rgba(0, 136, 255, 0.28);
+            background: rgba(0, 136, 255, 0.35);
         }
 
         .profile-ref-copy-btn svg {
@@ -2707,51 +2738,69 @@
             stroke-linejoin: round;
         }
 
-        /* Секция интеграций / привязок и покупок */
+        /* Секция интеграций / привязок и покупок (Luxury Web3) */
         .profile-section-card {
-            background: linear-gradient(180deg, rgba(20, 22, 28, 0.82) 0%, rgba(11, 13, 18, 0.94) 100%);
-            border: 1px solid var(--card-border);
-            border-radius: 18px;
-            padding: 16px;
-            margin-bottom: 14px;
+            background: linear-gradient(165deg, rgba(16, 26, 46, 0.92) 0%, rgba(9, 14, 25, 0.98) 100%);
+            border: 1.5px solid rgba(0, 180, 255, 0.35);
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-bottom: 16px;
             text-align: left;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 140, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+        }
+
+        .profile-section-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 220, 255, 0.7) 50%, transparent 100%);
         }
 
         .profile-section-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .profile-section-title {
-            font-size: 14.5px;
+            font-size: 15px;
             font-weight: 800;
             color: #ffffff;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .profile-section-sub {
-            font-size: 11.5px;
-            color: var(--secondary);
-            font-weight: 600;
+            font-size: 11px;
+            color: #38bdf8;
+            font-weight: 800;
+            background: rgba(0, 136, 255, 0.15);
+            border: 1px solid rgba(0, 180, 255, 0.35);
+            padding: 3px 9px;
+            border-radius: 8px;
         }
 
         .profile-bind-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .profile-bind-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 12px;
-            border-radius: 13px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(20, 30, 50, 0.6) 0%, rgba(12, 18, 30, 0.8) 100%);
+            border: 1px solid rgba(0, 160, 255, 0.22);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .profile-bind-row.clickable {
@@ -2760,107 +2809,114 @@
 
         .profile-bind-row.clickable:active {
             transform: scale(0.98);
-            border-color: rgba(0, 136, 255, 0.45);
+            border-color: rgba(0, 180, 255, 0.55);
+            box-shadow: 0 0 14px rgba(0, 160, 255, 0.3);
         }
 
         .profile-bind-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .profile-bind-ico {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
             display: grid;
             place-items: center;
-            font-size: 15px;
-            font-weight: 800;
+            font-size: 14px;
+            font-weight: 900;
         }
 
         .profile-bind-ico.tg-ico {
-            background: rgba(0, 136, 255, 0.16);
-            color: #29a9ff;
-            border: 1px solid rgba(0, 136, 255, 0.3);
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+            color: #ffffff;
+            border: 1px solid rgba(120, 210, 255, 0.5);
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.4);
         }
 
         .profile-bind-ico.kick-ico {
-            background: rgba(83, 252, 24, 0.12);
-            color: #53fc18;
-            border: 1px solid rgba(83, 252, 24, 0.28);
+            background: linear-gradient(135deg, #53fc18 0%, #2e8b0b 100%);
+            color: #051402;
+            border: 1px solid rgba(150, 255, 100, 0.6);
+            box-shadow: 0 0 12px rgba(83, 252, 24, 0.4);
         }
 
         .profile-bind-ico.upx-ico {
-            background: rgba(189, 85, 255, 0.15);
-            color: #c975ff;
-            border: 1px solid rgba(189, 85, 255, 0.3);
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+            color: #ffffff;
+            border: 1px solid rgba(216, 180, 254, 0.6);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
         }
 
         .profile-bind-name {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #f1f5f9;
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
         }
 
         .profile-bind-desc {
-            font-size: 11px;
-            color: var(--secondary);
-            margin-top: 1px;
+            font-size: 11.5px;
+            color: #94a3b8;
+            margin-top: 2px;
         }
 
         .profile-status-pill {
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 10px;
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 11.5px;
+            font-weight: 800;
             white-space: nowrap;
         }
 
         .profile-status-pill.connected {
-            background: rgba(0, 230, 118, 0.12);
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            color: #00e676;
+            background: rgba(0, 230, 118, 0.14);
+            border: 1px solid rgba(0, 230, 118, 0.45);
+            color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
         }
 
         .profile-status-pill.action {
-            background: rgba(0, 136, 255, 0.14);
-            border: 1px solid rgba(0, 136, 255, 0.32);
-            color: #5bc6ff;
+            background: linear-gradient(135deg, #0088ff 0%, #005fd2 100%);
+            border: 1px solid rgba(120, 210, 255, 0.5);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(0, 136, 255, 0.35);
         }
 
         /* Пустой стейт инвентаря */
         .profile-inventory-empty {
-            padding: 18px 12px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed rgba(255, 255, 255, 0.1);
+            padding: 24px 14px;
+            border-radius: 16px;
+            background: rgba(8, 14, 25, 0.55);
+            border: 1px dashed rgba(0, 180, 255, 0.35);
             text-align: center;
         }
 
         .profile-inventory-empty-text {
-            font-size: 12.5px;
-            color: var(--secondary);
-            margin: 6px 0 12px 0;
+            font-size: 13px;
+            color: #94a3b8;
+            margin: 8px 0 14px 0;
         }
 
         .profile-shop-Action {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(0, 136, 255, 0.4);
-            background: rgba(0, 136, 255, 0.14);
-            color: #6fd0ff;
-            font-size: 12px;
-            font-weight: 700;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(120, 210, 255, 0.5);
+            background: linear-gradient(135deg, #0088ff 0%, #005fd2 100%);
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 800;
             cursor: pointer;
+            box-shadow: 0 0 16px rgba(0, 136, 255, 0.4);
             transition: transform 0.2s ease;
         }
 
         .profile-shop-Action:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
         /* ================= КНОПКА АДМИН-ПАНЕЛИ ================= */
@@ -3901,39 +3957,22 @@
             </video>
         </div>
 
-        <!-- ЖИВАЯ СТРОКА ВЫИГРЫШЕЙ ОНЛАЙН -->
-        <div class="lux-live-ticker anim-item" style="animation-delay: 0.12s;">
+        <!-- ЖИВАЯ СТРОКА ПОКУПОК ОНЛАЙН -->
+        <div class="lux-live-ticker anim-item" id="livePurchaseTicker" style="animation-delay: 0.12s; display: none;">
             <div class="lux-ticker-badge"><span class="pulse-dot"></span> LIVE ПОКУПКИ</div>
             <div class="lux-ticker-track-wrap">
-                <div class="lux-ticker-track" id="livePurchaseTrack">
-                    <span class="win-user">@vetruch</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">VIP либо OG в чате</span> за <span class="win-sum">5 000 монет</span> · 
-                    <span class="win-user">@alex</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">Telegram Premium</span> за <span class="win-sum">12 000 монет</span> · 
-                    <span class="win-user">@vetruch</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">VIP либо OG в чате</span> за <span class="win-sum">5 000 монет</span>
-                </div>
+                <div class="lux-ticker-track" id="livePurchaseTrack"></div>
             </div>
         </div>
 
-        <!-- ЕЖЕДНЕВНЫЙ VIP КЕЙС / БОНУС (28 ДНЕЙ) -->
+        <!-- ЕЖЕДНЕВНЫЙ БОНУС -->
         <div class="lux-daily-card anim-item" style="animation-delay: 0.14s;">
             <div class="lux-daily-head">
-                <div class="lux-daily-title" id="dailyBonusTitle">🎁 ЕЖЕДНЕВНЫЙ VIP БОНУС (ДЕНЬ 1/28)</div>
-                <span class="lux-daily-tag" id="dailyBonusTag">НЕДЕЛЯ 1</span>
-            </div>
-            <div class="lux-streak-row" id="dailyStreakRow">
-                <div class="lux-streak-day active"><span class="lux-streak-num">1Д</span><span class="lux-streak-reward">+50</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">2Д</span><span class="lux-streak-reward">+60</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">3Д</span><span class="lux-streak-reward">+70</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">4Д</span><span class="lux-streak-reward">+80</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">5Д</span><span class="lux-streak-reward">+90</span></div>
-                <div class="lux-streak-day"><span class="lux-streak-num">6Д</span><span class="lux-streak-reward">+100</span></div>
-                <div class="lux-streak-day crown"><span class="lux-streak-num">7Д 👑</span><span class="lux-streak-reward">+150</span></div>
-            </div>
-            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px; display: flex; justify-content: space-between;">
-                <span>Серия: с 1 дня · Пропуск = сброс</span>
-                <span style="color: #ffd700; font-weight: 700;">День 28: 1 000 монет!</span>
+                <div class="lux-daily-title" id="dailyBonusTitle">🎁 Ежедневный бонус</div>
+                <span class="lux-daily-tag" id="dailyBonusTag">День 1</span>
             </div>
             <button type="button" class="lux-claim-btn" id="homeDailyClaimBtn" onclick="claimDailyReward(this)">
-                ⚡ ЗАБРАТЬ НАГРАДУ (ДЕНЬ 1)
+                ⚡ Забрать награду
             </button>
         </div>
 
@@ -3942,7 +3981,7 @@
             <div class="stats-main-sum">24 714 120 ₽</div>
             <div class="stats-row">
                 <div class="stat-item"><span class="stat-val">👥 14 820+</span><span class="stat-label">игроков в клубе</span></div>
-                <div class="stat-item"><span class="stat-val">🪙 8.9M+</span><span class="stat-label">монет выплачено</span></div>
+                <div class="stat-item"><span class="stat-val"><img src="coins.png" class="coin-icon-sm" alt="монет"> 8.9M+</span><span class="stat-label">монет выплачено</span></div>
                 <div class="stat-item"><span class="stat-val" id="homeOnlineCountVal" style="color: #00ff88;">🟢 4</span><span class="stat-label">онлайн сейчас</span></div>
             </div>
         </div>
@@ -4114,18 +4153,14 @@
 
         <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Задания</h2>
 
-        <!-- СЕЗОННЫЙ BATTLE PASS ЗАДАНИЙ -->
-        <div class="season-pass-card anim-item" style="animation-delay: 0.08s;">
-            <div class="season-pass-top">
-                <div class="season-pass-title">⭐ СЕЗОН 1: VETRUCH GENESIS</div>
-                <span class="season-pass-badge">ПРИЗЫ 2 500 🪙</span>
+        <!-- ПРОГРЕСС ВЫПОЛНЕНИЯ ЗАДАНИЙ -->
+        <div class="tasks-progress-wrap anim-item" style="clear: both; margin-bottom: 20px; animation-delay: 0.08s;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 13.5px; font-weight: 700; color: #94a3b8;">Выполнено заданий:</span>
+                <span id="tasksProgressText" style="font-size: 14px; font-weight: 800; color: #38bdf8;">0 из 8</span>
             </div>
-            <div class="season-pass-progress-box">
-                <div class="season-pass-progress-fill"></div>
-            </div>
-            <div class="season-pass-sub">
-                <span>Прогресс: 3 из 8 заданий выполнено</span>
-                <span style="color: #00ff88;">+650 🪙 получено</span>
+            <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; border: 1px solid rgba(0, 180, 255, 0.2);">
+                <div id="tasksProgressFill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0088ff 0%, #00d9ff 100%); border-radius: 999px; transition: width 0.4s ease; box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);"></div>
             </div>
         </div>
 
@@ -4384,12 +4419,12 @@
         
         <div class="shop-grid">
             <div class="shop-card" style="animation-delay: 0.1s;">
-                <span class="shop-rarity-ribbon rarity-mythic">👑 MYTHIC · 1/5</span>
+                <span class="shop-rarity-ribbon rarity-mythic">👑 MYTHIC</span>
                 <div class="shop-card-img-wrap">
                     <img src="IMG_1068.PNG" alt="iPhone 18 PRO MAX">
                     <div class="shop-card-title">iPhone 18 PRO MAX</div>
                 </div>
-                <div class="shop-item-meta"><span class="meta-stock">🟢 В наличии: 1 шт.</span><span class="meta-delivery">⚡ Экспресс</span></div>
+                
                 <button class="shop-btn" onclick="buyItem('iPhone 18 PRO MAX')">
                     <span class="shop-btn-label">КУПИТЬ</span>
                     <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
@@ -4402,7 +4437,7 @@
                     <img src="IMG_1073.PNG" alt="iPhone DUO">
                     <div class="shop-card-title">iPhone DUO</div>
                 </div>
-                <div class="shop-item-meta"><span class="meta-stock">🟢 В наличии: 2 шт.</span><span class="meta-delivery">⚡ Экспресс</span></div>
+                
                 <button class="shop-btn" onclick="buyItem('iPhone DUO')">
                     <span class="shop-btn-label">КУПИТЬ</span>
                     <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
@@ -5315,7 +5350,7 @@
             <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; text-align: left; font-size: 12px;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
                     <span style="color: var(--secondary);">Общий банк прогноза:</span>
-                    <span id="adminModalTotalBank" style="font-weight: 800; color: #fff;">0 🪙</span>
+                    <span id="adminModalTotalBank" style="font-weight: 800; color: #fff;">0 <img src="coins.png" class="coin-icon-sm" alt="монет"></span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
                     <span style="color: var(--secondary);">Количество победителей:</span>
@@ -5548,11 +5583,11 @@
                 <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
                     <button type="button" id="adminResolveBtnLeft" class="admin-btn-approve" onclick="openAdminResolveModal('left')" style="padding: 12px 14px; font-size: 13px; text-align: left; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 230, 118, 0.15); border-color: #00e676;">
                         <span>🟢 Победил: <b id="adminResolveLeftLabel">Да</b></span>
-                        <span id="adminResolveLeftBank" style="font-size: 12px; font-weight: 800;">0 🪙</span>
+                        <span id="adminResolveLeftBank" style="font-size: 12px; font-weight: 800;">0 <img src="coins.png" class="coin-icon-sm" alt="монет"></span>
                     </button>
                     <button type="button" id="adminResolveBtnRight" class="admin-btn-reject" onclick="openAdminResolveModal('right')" style="padding: 12px 14px; font-size: 13px; text-align: left; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 51, 102, 0.15); border-color: #ff3366;">
                         <span>🔴 Победил: <b id="adminResolveRightLabel">Нет</b></span>
-                        <span id="adminResolveRightBank" style="font-size: 12px; font-weight: 800;">0 🪙</span>
+                        <span id="adminResolveRightBank" style="font-size: 12px; font-weight: 800;">0 <img src="coins.png" class="coin-icon-sm" alt="монет"></span>
                     </button>
                 </div>
 
@@ -6015,15 +6050,15 @@
                         if (p.winner === myBet.side) {
                             userBetStatusEl.style.borderColor = 'rgba(0, 230, 118, 0.4)';
                             userBetStatusEl.style.color = '#00e676';
-                            userBetStatusEl.innerHTML = `🏆 <b>Ваша ставка победила!</b> Исход «${votedLabel}» — ставка ${formatCoins(myBet.amount)} 🪙`;
+                            userBetStatusEl.innerHTML = `🏆 <b>Ваша ставка победила!</b> Исход «${votedLabel}» — ставка ${formatCoins(myBet.amount)} <img src="coins.png" class="coin-icon-sm" alt="монет">`;
                         } else if (p.winner === 'cancel') {
                             userBetStatusEl.style.borderColor = 'rgba(0, 217, 255, 0.4)';
                             userBetStatusEl.style.color = '#00d9ff';
-                            userBetStatusEl.innerHTML = `↩️ <b>Прогноз отменён:</b> ваша ставка ${formatCoins(myBet.amount)} 🪙 возвращена`;
+                            userBetStatusEl.innerHTML = `↩️ <b>Прогноз отменён:</b> ваша ставка ${formatCoins(myBet.amount)} <img src="coins.png" class="coin-icon-sm" alt="монет"> возвращена`;
                         } else {
                             userBetStatusEl.style.borderColor = 'rgba(255, 51, 102, 0.4)';
                             userBetStatusEl.style.color = '#ff5277';
-                            userBetStatusEl.innerHTML = `❌ <b>Ставка не сыграла:</b> вы ставили на «${votedLabel}» (${formatCoins(myBet.amount)} 🪙)`;
+                            userBetStatusEl.innerHTML = `❌ <b>Ставка не сыграла:</b> вы ставили на «${votedLabel}» (${formatCoins(myBet.amount)} <img src="coins.png" class="coin-icon-sm" alt="монет">)`;
                         }
                     } else {
                         userBetStatusEl.style.borderColor = 'rgba(0, 217, 255, 0.25)';
@@ -6062,7 +6097,7 @@
 
             const myBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
             if (amount > myBal) {
-                tg.showAlert(`⚠️ Недостаточно монет! Ваш текущий баланс: ${formatCoins(myBal)} 🪙`);
+                tg.showAlert(`⚠️ Недостаточно монет! Ваш текущий баланс: ${formatCoins(myBal)} монет`);
                 return;
             }
 
@@ -6134,7 +6169,8 @@
 
             // Списываем монеты
             const newBal = myBal - amount;
-            if (typeof addExp === 'function') addExp(amount);
+            const expEarned = Math.floor(amount / 50);
+            if (expEarned > 0 && typeof addExp === 'function') addExp(expEarned);
             localStorage.setItem('vetruch_balance', newBal);
             localStorage.setItem('vetruch_cloud_synced_bal', newBal);
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = newBal);
@@ -6335,15 +6371,15 @@
                 summaryEl.innerHTML = `
                     <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
                         <span style="color: var(--secondary);">Общий банк ставок:</span>
-                        <span style="font-weight: 800; color: #ffd700; font-size: 13.5px;">${formatCoins(poolStats.totalBank)} 🪙</span>
+                        <span style="font-weight: 800; color: #ffd700; font-size: 13.5px;">${formatCoins(poolStats.totalBank)} <img src="coins.png" class="coin-icon-sm" alt="монет"></span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #00e676;">
                         <span>${labelLeft}:</span>
-                        <span><b>${formatCoins(poolStats.sumLeft)} 🪙</b> (${poolStats.countLeft} чел. · ${poolStats.pctLeft}%)</span>
+                        <span><b>${formatCoins(poolStats.sumLeft)} <img src="coins.png" class="coin-icon-sm" alt="монет"></b> (${poolStats.countLeft} чел. · ${poolStats.pctLeft}%)</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; color: ${isBattle ? '#e2e8f0' : '#ff3366'};">
                         <span>${labelRight}:</span>
-                        <span><b>${formatCoins(poolStats.sumRight)} 🪙</b> (${poolStats.countRight} чел. · ${poolStats.pctRight}%)</span>
+                        <span><b>${formatCoins(poolStats.sumRight)} <img src="coins.png" class="coin-icon-sm" alt="монет"></b> (${poolStats.countRight} чел. · ${poolStats.pctRight}%)</span>
                     </div>
                 `;
             }
@@ -6351,12 +6387,12 @@
             const resLeftLabel = document.getElementById('adminResolveLeftLabel');
             if (resLeftLabel) resLeftLabel.textContent = labelLeft;
             const resLeftBank = document.getElementById('adminResolveLeftBank');
-            if (resLeftBank) resLeftBank.textContent = `${formatCoins(poolStats.sumLeft)} 🪙 (${poolStats.countLeft} чел.)`;
+            if (resLeftBank) resLeftBank.textContent = `${formatCoins(poolStats.sumLeft)} монет (${poolStats.countLeft} чел.)`;
 
             const resRightLabel = document.getElementById('adminResolveRightLabel');
             if (resRightLabel) resRightLabel.textContent = labelRight;
             const resRightBank = document.getElementById('adminResolveRightBank');
-            if (resRightBank) resRightBank.textContent = `${formatCoins(poolStats.sumRight)} 🪙 (${poolStats.countRight} чел.)`;
+            if (resRightBank) resRightBank.textContent = `${formatCoins(poolStats.sumRight)} монет (${poolStats.countRight} чел.)`;
 
             updatePredictionTimer();
         }
@@ -6521,7 +6557,7 @@
 
             const poolStats = getPredictionPoolStats(p);
             const totalBankEl = document.getElementById('adminModalTotalBank');
-            if (totalBankEl) totalBankEl.textContent = `${formatCoins(poolStats.totalBank)} 🪙`;
+            if (totalBankEl) totalBankEl.textContent = `${formatCoins(poolStats.totalBank)} <img src="coins.png" class="coin-icon-sm" alt="монет">`;
 
             const winnersCountEl = document.getElementById('adminModalWinnersCount');
             if (winnersCountEl) {
@@ -6924,6 +6960,16 @@
                     val.textContent = `${tasksDoneCount} / 8`;
                 }
             });
+
+            const tasksProgText = document.getElementById('tasksProgressText');
+            const tasksProgFill = document.getElementById('tasksProgressFill');
+            if (tasksProgText) {
+                tasksProgText.textContent = `${tasksDoneCount} из 8`;
+            }
+            if (tasksProgFill) {
+                const pct = Math.min(100, Math.round((tasksDoneCount / 8) * 100));
+                tasksProgFill.style.width = pct + '%';
+            }
         }
 
         function initBalance() {
@@ -7569,6 +7615,7 @@
             
             if (pageId !== 'admin') {
                 sessionStorage.setItem('vetruch_active_tab', pageId);
+                if (typeof updateVipStatusUI === 'function') updateVipStatusUI();
             }
             
             initBalance();
@@ -8123,55 +8170,27 @@ function calculateCurrentStreakStatus() {
 }
 
 function renderDailyBonusUI() {
-    const { streak, isClaimedToday, currentDayNumber } = calculateCurrentStreakStatus();
+    const { isClaimedToday, currentDayNumber } = calculateCurrentStreakStatus();
     const todayReward = getDailyBonusReward(currentDayNumber);
-
-    const currentWeek = Math.min(4, Math.floor((currentDayNumber - 1) / 7) + 1);
-    const startDayOfWeek = (currentWeek - 1) * 7 + 1;
-
-    const streakRow = document.getElementById('dailyStreakRow');
-    if (streakRow) {
-        let html = '';
-        for (let i = 0; i < 7; i++) {
-            const dayNum = startDayOfWeek + i;
-            const isCrown = (dayNum === 28);
-            const isPast = isClaimedToday ? (dayNum <= currentDayNumber) : (dayNum < currentDayNumber);
-            const isCurrent = (dayNum === currentDayNumber);
-            const reward = getDailyBonusReward(dayNum);
-
-            let cls = 'lux-streak-day';
-            if (isPast) cls += ' claimed';
-            if (isCurrent) cls += ' active';
-            if (isCrown) cls += ' crown';
-
-            html += `
-                <div class="${cls}">
-                    <span class="lux-streak-num">${isCrown ? '28Д 👑' : dayNum + 'Д'}</span>
-                    <span class="lux-streak-reward">+${reward}</span>
-                </div>
-            `;
-        }
-        streakRow.innerHTML = html;
-    }
 
     const titleEl = document.getElementById('dailyBonusTitle');
     if (titleEl) {
-        titleEl.textContent = `🎁 ЕЖЕДНЕВНЫЙ VIP БОНУС (ДЕНЬ ${currentDayNumber}/28)`;
+        titleEl.textContent = '🎁 Ежедневный бонус';
     }
 
     const tagEl = document.getElementById('dailyBonusTag');
     if (tagEl) {
-        tagEl.textContent = isClaimedToday ? '✅ ЗАБРАНО' : `НЕДЕЛЯ ${currentWeek}`;
+        tagEl.textContent = isClaimedToday ? '✅ Забрано' : `День ${currentDayNumber}`;
     }
 
     const btn = document.getElementById('homeDailyClaimBtn');
     if (btn) {
         if (isClaimedToday) {
-            btn.textContent = `✅ НАГРАДА ПОЛУЧЕНА СЕГОДНЯ (ДЕНЬ ${currentDayNumber})`;
+            btn.innerHTML = `✅ Награда получена (День ${currentDayNumber})`;
             btn.disabled = true;
             btn.classList.add('claimed');
         } else {
-            btn.textContent = `⚡ ЗАБРАТЬ +${todayReward} 🪙 (ДЕНЬ ${currentDayNumber})`;
+            btn.innerHTML = `⚡ Забрать +${todayReward} <img src="coins.png" class="coin-icon-sm" alt="монет"> (День ${currentDayNumber})`;
             btn.disabled = false;
             btn.classList.remove('claimed');
         }
@@ -8221,17 +8240,20 @@ async function claimDailyReward(btn) {
 
 // ================= LIVE ПОКУПКИ (15 МИНУТ ХРАНЕНИЯ) =================
 function updateLivePurchaseUI(data) {
+    const ticker = document.getElementById('livePurchaseTicker');
     const track = document.getElementById('livePurchaseTrack');
     if (!track) return;
-    if (!data || !data.user || !data.item) {
-        track.innerHTML = `<span class="win-user">@vetruch</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">VIP либо OG в чате</span> за <span class="win-sum">5 000 монет</span> · <span class="win-user">@alex</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">Telegram Premium</span> за <span class="win-sum">12 000 монет</span>`;
+    const now = Date.now();
+    if (!data || !data.user || !data.item || (now - (data.timestamp || 0)) > 15 * 60 * 1000) {
+        track.innerHTML = '';
+        if (ticker) ticker.style.display = 'none';
         return;
     }
-    const now = Date.now();
     const minsAgo = Math.max(0, Math.floor((now - (data.timestamp || now)) / 60000));
     const timeText = minsAgo === 0 ? 'только что' : `${minsAgo} мин. назад`;
     const single = `<span class="win-user">${data.user}</span> купил <span class="win-item" style="color: #38bdf8; font-weight: 800;">${data.item}</span> за <span class="win-sum">${formatCoins(data.price)} монет</span> (${timeText})`;
     track.innerHTML = `${single} &nbsp;·&nbsp; ${single} &nbsp;·&nbsp; ${single} &nbsp;·&nbsp; ${single}`;
+    if (ticker) ticker.style.display = 'flex';
 }
 
 // ================= ОНЛАЙН СТАТИСТИКА (РЕАЛЬНЫЕ + 2..3 СВЕРХУ) =================
@@ -8267,6 +8289,8 @@ function initAdvancedSystems() {
     checkDiamondGift();
 }
 window.addEventListener('DOMContentLoaded', initAdvancedSystems);
+window.addEventListener('pageshow', initAdvancedSystems);
+window.addEventListener('focus', initAdvancedSystems);
 setTimeout(initAdvancedSystems, 300);
 
 </script>
