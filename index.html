@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="vetruch-economy.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -3104,7 +3105,7 @@
         .admin-tabs {
             clear: both;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 6px;
             margin-bottom: 18px;
             background: rgba(15, 18, 25, 0.9);
@@ -3865,7 +3866,2836 @@
     margin-top: 6px;
 }
 
+
+/* ================= КАРУСЕЛЬ БАННЕРОВ ================= */
+        .banner-carousel-wrap {
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative;
+            box-sizing: border-box;
+        }
+                .banner-carousel {
+            width: 100%;
+            aspect-ratio: 2 / 1;
+            border-radius: 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            border: 1px solid rgba(0, 136, 255, 0.28);
+            display: flex;
+            position: relative;
+            background: #000;
+            box-shadow: 0 4px 22px rgba(0, 0, 0, 0.55);
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: grab;
+        }
+        .banner-carousel:active {
+            cursor: grabbing;
+        }
+        .banner-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        .banner-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            overflow: hidden;
+        }
+        .banner-slide img, .banner-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+        .banner-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 10px;
+        }
+        .banner-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .banner-dot.active {
+            width: 22px;
+            border-radius: 10px;
+            background: #53fc18;
+            box-shadow: 0 0 10px rgba(83, 252, 24, 0.7);
+        }
+        .banner-dot:nth-child(2).active {
+            background: #00d9ff;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.7);
+        }
+
+        .global-stats {
+            margin-bottom: 20px;
+            border: 1px solid #142b43;
+            background: rgba(10, 10, 12, 0.58);
+            box-shadow:
+                0 0 14px rgba(0, 110, 210, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+        }
+
+        .stats-title { 
+            font-size: 12px; 
+            color: var(--secondary); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+        }
+
+        .stats-main-sum {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #ffffff;
+            background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #a9eaff 35%,
+                #45caff 55%,
+                #ffffff 75%,
+                #a9eaff 100%
+            );
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: numberShimmer 4s linear infinite;
+        }
+
+        @keyframes numberShimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .stats-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            border-top: 1px solid var(--card-border); 
+            padding-top: 15px; 
+        }
+
+        .stat-item { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 4px; 
+            align-items: center;
+        }
+
+        .stat-val { 
+            font-weight: 700; 
+            font-size: 16px; 
+            color: var(--blue-main); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 4px;
+        }
+
+        .stat-label { 
+            font-size: 11px; 
+            color: var(--secondary); 
+            font-weight: 500; 
+        }
+        
+        .leaderboard-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px; 
+        }
+
+        .leaderboard-title { 
+            font-size: 16px; 
+            font-weight: 700; 
+        }
+
+        .leaderboard-link { 
+            font-size: 12px; 
+            color: var(--blue-main); 
+            text-decoration: none; 
+            font-weight: 600; 
+        }
+
+        .podium { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            gap: 10px; 
+            height: 140px; 
+            margin-top: 20px; 
+        }
+
+        .podium-item { 
+            flex: 1; 
+            background: linear-gradient(180deg, rgba(0, 136, 255, 0.1) 0%, rgba(20, 22, 28, 0.8) 100%); 
+            border: 1px solid var(--card-border); 
+            border-radius: 12px 12px 6px 6px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 10px 5px; 
+            position: relative; 
+        }
+
+        .podium-item.first { 
+            height: 100%; 
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.12) 0%, rgba(20, 22, 28, 0.8) 100%); 
+            border-color: rgba(255, 215, 0, 0.2); 
+        }
+
+        .podium-item.second { 
+            height: 85%; 
+        }
+
+        .podium-item.third { 
+            height: 75%; 
+        }
+
+        .podium-avatar { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 10px; 
+            background: #2a2d35; 
+            position: absolute; 
+            top: -20px; 
+            border: 2px solid #000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 12px; 
+            color: var(--secondary); 
+        }
+
+        .podium-item.first .podium-avatar { 
+            border-color: rgba(255, 215, 0, 0.5); 
+            width: 48px; 
+            height: 48px; 
+            top: -24px;
+        }
+
+        .podium-name { 
+            margin-top: 25px; 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #fff;
+        }
+
+        .podium-item.first .podium-name { 
+            margin-top: 30px; 
+        }
+
+        .podium-score { 
+            font-size: 12px; 
+            color: var(--secondary); 
+            margin-top: 5px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 4px; 
+        }
+
+        .podium-score .coin-icon { 
+            width: 14px; 
+            height: 14px; 
+        }
+
+        
+
+/* ================= СЕКЦИЯ РОЗЫГРЫШИ (VETRUCH BLUE) ================= */
+        .giveaways-section {
+            margin: 18px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .giveaways-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 0 4px;
+        }
+        .giveaways-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .giveaways-title-bar {
+            width: 4px;
+            height: 18px;
+            background: #00d9ff;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.7);
+        }
+        .giveaways-main-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            margin: 0;
+            line-height: 1;
+        }
+        .giveaways-all-link {
+            font-size: 14px;
+            color: #8c97a7;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .giveaways-all-link:hover {
+            color: #00d9ff;
+        }
+
+        /* Табы: Активные / Завершённые */
+        .giveaways-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+        .giveaways-tab-btn {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(20, 26, 38, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #8c97a7;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .giveaways-tab-btn:active {
+            transform: scale(0.97);
+        }
+        .giveaways-tab-btn.active {
+            background: linear-gradient(135deg, #0070f3 0%, #00b4d8 100%);
+            border-color: rgba(0, 217, 255, 0.5);
+            color: #ffffff;
+            box-shadow: 0 4px 18px rgba(0, 136, 255, 0.4);
+        }
+        .giveaways-tab-btn svg {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+        }
+
+        /* Сетка карточек розыгрышей */
+        .gw-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .gw-card {
+            background: linear-gradient(180deg, rgba(16, 24, 40, 0.85) 0%, rgba(10, 15, 26, 0.95) 100%);
+            border: 1px solid rgba(0, 136, 255, 0.25);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .gw-card:active {
+            transform: scale(0.97);
+            border-color: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.35);
+        }
+        .gw-card-thumb {
+            width: 100%;
+            height: 96px;
+            position: relative;
+            overflow: hidden;
+            background: #0d1322;
+        }
+        .gw-card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gw-card-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            color: #00d9ff;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .gw-dot-pulse {
+            width: 6px;
+            height: 6px;
+            background: #00e676;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00e676;
+            display: inline-block;
+        }
+        .gw-card-body {
+            padding: 10px 10px 8px 10px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+        .gw-card-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.35;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+        .gw-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .gw-card-status {
+            color: #00d9ff;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .gw-card-users {
+            color: #8c97a7;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        /* Карточка пустого состояния */
+        .giveaways-empty-card {
+            background: linear-gradient(180deg, rgba(16, 24, 40, 0.75) 0%, rgba(10, 15, 26, 0.85) 100%);
+            border: 1px solid rgba(0, 136, 255, 0.22);
+            border-radius: 20px;
+            padding: 36px 16px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(0, 136, 255, 0.04);
+            box-sizing: border-box;
+        }
+        .giveaways-empty-icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: radial-gradient(circle at 50% 40%, rgba(0, 217, 255, 0.2) 0%, rgba(0, 102, 255, 0.08) 70%, transparent 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            box-shadow: 0 0 20px rgba(0, 136, 255, 0.25);
+        }
+        .giveaways-empty-icon-wrap svg {
+            width: 34px;
+            height: 34px;
+            display: block;
+        }
+        .giveaways-empty-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.2px;
+        }
+        .giveaways-empty-sub {
+            font-size: 13px;
+            color: #8c97a7;
+            margin-top: 6px;
+        }
+
+        /* Модалка поездки мечты */
+        .gw-modal-content {
+            padding: 0 !important;
+            overflow: hidden;
+            max-width: 360px;
+            border: 1.5px solid #0088ff !important;
+        }
+        .gw-modal-banner {
+            width: 100%;
+            height: 155px;
+            position: relative;
+            background: #000;
+        }
+        .gw-modal-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gw-modal-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(0, 217, 255, 0.4);
+            color: #00d9ff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 7px;
+            letter-spacing: 0.5px;
+        }
+        .gw-modal-body {
+            padding: 16px 16px 18px 16px;
+            text-align: left;
+        }
+        .gw-modal-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+            text-align: center;
+        }
+        .gw-modal-pills {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        .gw-pill {
+            background: rgba(0, 136, 255, 0.12);
+            border: 1px solid rgba(0, 136, 255, 0.28);
+            color: #8acaff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+        .gw-modal-perks {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+        .gw-perk-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #d1d9e6;
+        }
+        .gw-perk-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .gw-modal-notice {
+            font-size: 11px;
+            color: #8c97a7;
+            background: rgba(0, 217, 255, 0.05);
+            border: 1px dashed rgba(0, 217, 255, 0.25);
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin-bottom: 14px;
+            line-height: 1.35;
+        }
+        .gw-modal-notice b {
+            color: #00d9ff;
+        }
+        .gw-modal-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0070f3 0%, #00d9ff 100%);
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 18px rgba(0, 136, 255, 0.45);
+            letter-spacing: 0.3px;
+            box-sizing: border-box;
+            transition: transform 0.2s;
+        }
+        .gw-modal-action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .game-card:active {
+            transform: scale(0.96) !important;
+            transition: transform 0.08s ease;
+        }
+
+
+
+/* ================= ПАРТНЁР ARKADA (КАК НА ВИДЕО) ================= */
+.partner-section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    clear: both;
+}
+
+.partner-section-pill {
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(0, 136, 255, 0.16);
+    border: 1px solid rgba(0, 217, 255, 0.35);
+    color: #00d9ff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.partner-section-sub {
+    font-size: 12.5px;
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.arkada-partner-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 18px 16px 16px 16px;
+    margin-bottom: 18px;
+    background:
+        radial-gradient(90% 110% at 95% 90%, rgba(0, 136, 255, 0.32) 0%, rgba(0, 80, 180, 0.08) 55%, rgba(12, 15, 24, 0.96) 100%),
+        linear-gradient(145deg, rgba(16, 22, 36, 0.96), rgba(9, 12, 20, 0.98));
+    border: 1.5px solid rgba(0, 153, 255, 0.45);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    min-height: 154px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.arkada-partner-card:active {
+    transform: scale(0.97);
+    border-color: #00d9ff;
+}
+
+.arkada-card-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.arkada-card-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+}
+
+.arkada-card-sub {
+    font-size: 13px;
+    color: #9ba8ba;
+    font-weight: 500;
+    max-width: 65%;
+}
+
+.arkada-card-reward-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.arkada-card-from {
+    font-size: 10px;
+    font-weight: 800;
+    color: #9ba8ba;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.arkada-card-amount {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #ffd700;
+    text-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+}
+
+.arkada-dots-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 16px 0 14px 0;
+    max-width: 62%;
+    flex-wrap: wrap;
+}
+
+.arkada-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    transition: all 0.25s ease;
+}
+
+.arkada-dot.done {
+    background: #00d9ff;
+    box-shadow: 0 0 8px rgba(0, 217, 255, 0.8);
+}
+
+.arkada-dot.pending {
+    background: #fbbf24;
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+}
+
+.arkada-card-cta {
+    position: relative;
+    z-index: 2;
+    font-size: 13px;
+    font-weight: 700;
+    color: #e2eeff;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.arkada-card-girl {
+    position: absolute;
+    right: -2px;
+    bottom: 0;
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 0 18px rgba(0, 170, 255, 0.55));
+}
+
+/* ================= МОДАЛКА ARKADA ================= */
+.arkada-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10000;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.arkada-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.arkada-modal-sheet {
+    width: 100%;
+    max-width: 460px;
+    max-height: 88vh;
+    background: linear-gradient(180deg, #141926 0%, #0b0e16 100%);
+    border-top: 1.5px solid rgba(0, 153, 255, 0.45);
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(35px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.arkada-modal-overlay.active .arkada-modal-sheet {
+    transform: translateY(0);
+}
+
+.arkada-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 18px 14px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+}
+
+.arkada-modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+}
+
+.arkada-modal-close {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-size: 16px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.arkada-modal-body {
+    padding: 14px 16px 28px 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.arkada-intro-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 14px;
+}
+
+.arkada-intro-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    object-fit: cover;
+    object-position: top center;
+    background: radial-gradient(circle, rgba(0, 136, 255, 0.35), rgba(10, 14, 24, 0.9));
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.arkada-intro-text {
+    font-size: 12.5px;
+    color: #cbd5e1;
+    line-height: 1.4;
+}
+
+.arkada-bind-card {
+    background: linear-gradient(145deg, rgba(0, 112, 243, 0.16), rgba(13, 20, 36, 0.95));
+    border: 1.5px solid rgba(0, 170, 255, 0.5);
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 18px;
+}
+
+.arkada-bind-card.is-done {
+    border-color: rgba(0, 230, 118, 0.5);
+    background: linear-gradient(145deg, rgba(0, 230, 118, 0.12), rgba(13, 20, 36, 0.95));
+}
+
+.arkada-bind-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.arkada-step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 170, 255, 0.2);
+    border: 1px solid rgba(0, 217, 255, 0.5);
+    color: #00d9ff;
+    font-size: 13px;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.arkada-bind-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.arkada-bind-desc {
+    font-size: 12.5px;
+    color: #9ba8ba;
+    line-height: 1.35;
+    margin-bottom: 10px;
+}
+
+.arkada-bind-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.arkada-bind-reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffd700;
+}
+
+.arkada-link-btn {
+    background: transparent;
+    border: none;
+    color: #00d9ff;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 4px 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.arkada-inline-form {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(0, 217, 255, 0.3);
+    display: none;
+}
+
+.arkada-inline-form.open {
+    display: block;
+}
+
+.arkada-dep-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 0 2px;
+}
+
+.arkada-dep-header-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.arkada-dep-header-sub {
+    font-size: 12px;
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.arkada-dep-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.arkada-dep-item {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 12px 13px;
+    transition: border-color 0.2s ease;
+}
+
+.arkada-dep-item.unlocked {
+    cursor: pointer;
+    border-color: rgba(0, 136, 255, 0.28);
+}
+
+.arkada-dep-item.unlocked:active {
+    background: rgba(0, 136, 255, 0.08);
+}
+
+.arkada-dep-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.arkada-dep-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.arkada-dep-rub {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.arkada-hot-badge {
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(255, 51, 102, 0.18);
+    border: 1px solid rgba(255, 51, 102, 0.45);
+    color: #ff4d79;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.arkada-dep-reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #ffd700;
+}
+
+.arkada-dep-status {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--secondary);
+    white-space: nowrap;
+}
+
+.arkada-dep-status.ready {
+    color: #00d9ff;
+    font-weight: 700;
+}
+
+.arkada-dep-status.pending {
+    color: #fbbf24;
+}
+
+.arkada-dep-status.done {
+    color: #00e676;
+    font-weight: 700;
+}
+
+/* ================= ПАРТНЁР #2 (РОЗОВЫЙ СТИЛЬ) ================= */
+.p2-partner-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 18px 16px 16px 16px;
+    margin-bottom: 18px;
+    background:
+        radial-gradient(90% 110% at 95% 90%, rgba(255, 46, 147, 0.32) 0%, rgba(180, 20, 120, 0.08) 55%, rgba(16, 11, 20, 0.96) 100%),
+        linear-gradient(145deg, rgba(28, 14, 28, 0.96), rgba(12, 9, 18, 0.98));
+    border: 1.5px solid rgba(255, 46, 147, 0.5);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    min-height: 154px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.p2-partner-card:active {
+    transform: scale(0.97);
+    border-color: #ff66b2;
+}
+
+.p2-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    transition: all 0.25s ease;
+}
+
+.p2-dot.done {
+    background: #ff2e93;
+    box-shadow: 0 0 8px rgba(255, 46, 147, 0.85);
+}
+
+.p2-dot.pending {
+    background: #fbbf24;
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+}
+
+.p2-card-girl {
+    position: absolute;
+    right: -6px;
+    bottom: 0;
+    height: 105px;
+    width: auto;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 0 16px rgba(255, 46, 147, 0.55));
+}
+
+.p2-modal-sheet {
+    width: 100%;
+    max-width: 460px;
+    max-height: 88vh;
+    background: linear-gradient(180deg, #1d1222 0%, #0d0912 100%);
+    border-top: 1.5px solid rgba(255, 46, 147, 0.5);
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(35px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.arkada-modal-overlay.active .p2-modal-sheet {
+    transform: translateY(0);
+}
+
+.p2-intro-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    object-fit: cover;
+    object-position: 86% 12%;
+    background: radial-gradient(circle, rgba(255, 46, 147, 0.35), rgba(18, 10, 22, 0.9));
+    border: 1px solid rgba(255, 46, 147, 0.5);
+    flex-shrink: 0;
+}
+
+.p2-bind-card {
+    background: linear-gradient(145deg, rgba(255, 46, 147, 0.16), rgba(24, 12, 28, 0.95));
+    border: 1.5px solid rgba(255, 46, 147, 0.55);
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 18px;
+}
+
+.p2-bind-card.is-done {
+    border-color: rgba(0, 230, 118, 0.5);
+    background: linear-gradient(145deg, rgba(0, 230, 118, 0.12), rgba(24, 12, 28, 0.95));
+}
+
+.p2-step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 46, 147, 0.2);
+    border: 1px solid rgba(255, 46, 147, 0.55);
+    color: #ff66b2;
+    font-size: 13px;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.p2-link-btn {
+    background: transparent;
+    border: none;
+    color: #ff66b2;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 4px 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.p2-dep-item {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 12px 13px;
+    transition: border-color 0.2s ease;
+}
+
+.p2-dep-item.unlocked {
+    cursor: pointer;
+    border-color: rgba(255, 46, 147, 0.35);
+}
+
+.p2-dep-item.unlocked:active {
+    background: rgba(255, 46, 147, 0.08);
+}
+
+.p2-dep-status-ready {
+    color: #ff66b2;
+    font-weight: 700;
+}
+        
 </style>
+    
+</head>
+
+<body class="is-loading">
+
+    <!-- ПРЕМИАЛЬНОЕ Модальное окно (Меню заданий) -->
+        <!-- МОДАЛЬНОЕ ОКНО РОЗЫГРЫША "ПОЕЗДКА МЕЧТЫ" -->
+    <div id="gwTripModal" class="modal-overlay" onclick="if(event.target === this) closeGwTripModal()">
+        <div class="modal-content gw-modal-content">
+            <button class="modal-close" onclick="closeGwTripModal()">✖</button>
+            <div class="gw-modal-banner">
+                <img src="giveaway_trip.jpg" alt="Поездка мечты">
+                <div class="gw-modal-badge">🔥 РОЗЫГРЫШ</div>
+            </div>
+            <div class="gw-modal-body">
+                <h3 class="gw-modal-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</h3>
+                <div class="gw-modal-pills">
+                    <span class="gw-pill">🟢 Активен</span>
+                    <span class="gw-pill">👥 128 участников</span>
+                    <span class="gw-pill">🎟️ 500 ₽ = 1 билет</span>
+                </div>
+                
+                <div class="gw-modal-perks">
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">✈️</span>
+                        <span>Дорога и отдых полностью оплачены</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🏝️</span>
+                        <span>Город на ваш выбор</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🎥</span>
+                        <span>Совместный стрим со стримером</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🎁</span>
+                        <span>Подарки и развлечения от стримера</span>
+                    </div>
+                </div>
+
+                <div class="gw-modal-notice">
+                    ⚠️ Новые билеты начисляются за депозиты на <b>UP-X</b> или <b>Ton Play</b>. Количество билетов не ограничено!
+                </div>
+
+                <a href="https://t.me/vetruchtut/1558" target="_blank" onclick="if(window.tg && tg.openTelegramLink) { tg.openTelegramLink('https://t.me/vetruchtut/1558'); return false; }" class="gw-modal-action-btn">
+                    УЧАСТВОВАТЬ В РОЗЫГРЫШЕ ➔
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="taskModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTaskModal()">✖</button>
+            <h3 id="modalTitle" style="margin-top:0; margin-bottom: 25px; color:#fff;">Задание</h3>
+            
+            <a href="#" id="modalLink" target="_blank" class="modal-link-btn">ПЕРЕЙТИ НА КАНАЛ</a>
+            
+            <p id="modalHint" style="font-size: 11px; color: #ff3366; margin-bottom: 20px; display: none; font-weight: 600;">* Telegram закроет приложение. После подписки зайдите снова!</p>
+            
+            <div class="verify-box">
+                <h5>ПОДТВЕРЖДЕНИЕ ВЫПОЛНЕНИЯ:</h5>
+                <input type="text" class="task-input" id="modalUsername" placeholder="Ваш @username">
+                
+                <label class="file-upload-lbl">
+                    <input type="file" accept="image/*" onchange="updateModalFileName(this)">
+                    <span id="modalFileName">📷 Загрузить скриншот</span>
+                </label>
+                
+                <button class="submit-task-btn" onclick="submitTask()">Отправить на проверку</button>
+            </div>
+        </div>
+    </div>
+
+<!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА #2 -->
+    <div id="p2Modal" class="arkada-modal-overlay" onclick="if(event.target === this) closeP2Modal()">
+        <div class="p2-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title" id="p2ModalTitle">ПАРТНЁР</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeP2Modal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <div class="arkada-intro-box">
+                    <img id="p2ModalAvatar" class="p2-intro-avatar" src="" alt="">
+                    <div class="arkada-intro-text">
+                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
+                    </div>
+                </div>
+
+                <!-- Шаг 1: Привязка аккаунта -->
+                <div class="p2-bind-card" id="p2BindCard">
+                    <div class="arkada-bind-top">
+                        <div class="p2-step-num" id="p2BindStepNum">1</div>
+                        <div style="flex: 1;">
+                            <div class="arkada-bind-title" id="p2BindTitle">Привяжи аккаунт</div>
+                            <div class="arkada-bind-desc">
+                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
+                            </div>
+                            <div class="arkada-bind-actions">
+                                <span class="arkada-bind-reward">
+                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
+                                </span>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button type="button" class="p2-link-btn" id="p2OpenSiteBtn" onclick="openP2Site()">Открыть ❯</button>
+                                    <button type="button" class="p2-link-btn" id="p2ToggleBindBtn" style="color: #fff;" onclick="toggleP2BindForm()">Прислать ID</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arkada-inline-form" id="p2BindForm" style="border-top-color: rgba(255, 46, 147, 0.35);">
+                        <input type="text" class="task-input" id="p2BindIdInput" placeholder="Ваш ID профиля">
+                        <input type="text" class="task-input" id="p2BindUserInput" placeholder="Ваш @username в Telegram">
+                        <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #ff2e93, #a855f7); box-shadow: 0 0 20px rgba(255, 46, 147, 0.4);" onclick="submitP2Bind()">Отправить ID на проверку</button>
+                    </div>
+                </div>
+
+                <div class="arkada-dep-header">
+                    <span class="arkada-dep-header-title">Депозиты</span>
+                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
+                </div>
+
+                <div class="arkada-dep-list" id="p2DepositsList"></div>
+            </div>
+        </div>
+    </div>
+    
+<!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА ARKADA -->
+    <div id="arkadaModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeArkadaModal()">
+        <div class="arkada-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title">ARKADA</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeArkadaModal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <!-- Интро с девушкой -->
+                <div class="arkada-intro-box">
+                    <img id="arkadaModalAvatar" class="arkada-intro-avatar" src="" alt="ARKADA">
+                    <div class="arkada-intro-text">
+                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
+                    </div>
+                </div>
+
+                <!-- Шаг 1: Привязка аккаунта -->
+                <div class="arkada-bind-card" id="arkadaBindCard">
+                    <div class="arkada-bind-top">
+                        <div class="arkada-step-num" id="arkadaBindStepNum">1</div>
+                        <div style="flex: 1;">
+                            <div class="arkada-bind-title">Привяжи аккаунт ARKADA</div>
+                            <div class="arkada-bind-desc">
+                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
+                            </div>
+                            <div class="arkada-bind-actions">
+                                <span class="arkada-bind-reward">
+                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
+                                </span>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button type="button" class="arkada-link-btn" onclick="openArkadaSite()">Открыть ARKADA ❯</button>
+                                    <button type="button" class="arkada-link-btn" id="arkadaToggleBindBtn" style="color: #fff;" onclick="toggleArkadaBindForm()">Прислать ID</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Форма отправки ID привязки -->
+                    <div class="arkada-inline-form" id="arkadaBindForm">
+                        <input type="text" class="task-input" id="arkadaBindIdInput" placeholder="Ваш ID профиля на ARKADA">
+                        <input type="text" class="task-input" id="arkadaBindUserInput" placeholder="Ваш @username в Telegram">
+                        <button type="button" class="submit-task-btn" onclick="submitArkadaBind()">Отправить ID на проверку</button>
+                    </div>
+                </div>
+
+                <!-- Секция депозитов -->
+                <div class="arkada-dep-header">
+                    <span class="arkada-dep-header-title">Депозиты</span>
+                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
+                </div>
+
+                <div class="arkada-dep-list" id="arkadaDepositsList"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ТАБЛИЧКА "АДМИН-ПАНЕЛЬ В РАЗРАБОТКЕ" -->
+    <div id="adminDevModal" class="modal-overlay" onclick="if(event.target === this) closeAdminDevModal()">
+        <div class="modal-content" style="border-color: #a855f7; box-shadow: 0 0 40px rgba(168, 85, 247, 0.35);">
+            <button class="modal-close" onclick="closeAdminDevModal()">✖</button>
+            <div class="dev-badge-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
+            <div class="dev-status-chip">🛠 В РАЗРАБОТКЕ</div>
+            <h3 style="margin: 0 0 10px 0; color: #ffffff; font-size: 20px; font-weight: 800;">Админ-панель</h3>
+            <p class="dev-modal-text">
+                Панель администратора сейчас находится в разработке.<br><br>
+                Скоро здесь появится проверка скриншотов заданий, управление балансами игроков и выдача наград из магазина.
+            </p>
+            <button class="submit-task-btn" style="background: linear-gradient(90deg, #8b5cf6, #0088ff);" onclick="closeAdminDevModal()">ПОНЯТНО</button>
+        </div>
+    </div>
+
+    <!-- ОРИГИНАЛЬНАЯ БЫСТРАЯ ЗАСТАВКА -->
+    
+    <!-- МОДАЛЬНОЕ ОКНО РОЗЫГРЫША "ПОЕЗДКА МЕЧТЫ" -->
+<div id="gwTripModal" class="modal-overlay" onclick="if(event.target === this) closeGwTripModal()">
+        <div class="modal-content gw-modal-content">
+            <button class="modal-close" onclick="closeGwTripModal()">✖</button>
+            <div class="gw-modal-banner">
+                <img src="giveaway_trip.jpg" alt="Поездка мечты">
+                <div class="gw-modal-badge">🔥 РОЗЫГРЫШ</div>
+            </div>
+            <div class="gw-modal-body">
+                <h3 class="gw-modal-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</h3>
+                <div class="gw-modal-pills">
+                    <span class="gw-pill">🟢 Активен</span>
+                    <span class="gw-pill">👥 128 участников</span>
+                    <span class="gw-pill">🎟️ 500 ₽ = 1 билет</span>
+                </div>
+                
+                <div class="gw-modal-perks">
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">✈️</span>
+                        <span>Дорога и отдых полностью оплачены</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🏝️</span>
+                        <span>Город на ваш выбор</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🎥</span>
+                        <span>Совместный стрим со стримером</span>
+                    </div>
+                    <div class="gw-perk-item">
+                        <span class="gw-perk-icon">🎁</span>
+                        <span>Подарки и развлечения от стримера</span>
+                    </div>
+                </div>
+
+                <div class="gw-modal-notice">
+                    ⚠️ Новые билеты начисляются за депозиты на <b>UP-X</b> или <b>Ton Play</b>. Количество билетов не ограничено!
+                </div>
+
+                <a href="https://t.me/vetruchtut/1558" target="_blank" onclick="if(window.tg && tg.openTelegramLink) { tg.openTelegramLink('https://t.me/vetruchtut/1558'); return false; }" class="gw-modal-action-btn">
+                    УЧАСТВОВАТЬ В РОЗЫГРЫШЕ ➔
+                </a>
+            </div>
+        </div>
+    </div>
+    
+
+<!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА #2 -->
+    <div id="p2Modal" class="arkada-modal-overlay" onclick="if(event.target === this) closeP2Modal()">
+        <div class="p2-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title" id="p2ModalTitle">ПАРТНЁР</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeP2Modal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <div class="arkada-intro-box">
+                    <img id="p2ModalAvatar" class="p2-intro-avatar" src="" alt="">
+                    <div class="arkada-intro-text">
+                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
+                    </div>
+                </div>
+
+                <!-- Шаг 1: Привязка аккаунта -->
+                <div class="p2-bind-card" id="p2BindCard">
+                    <div class="arkada-bind-top">
+                        <div class="p2-step-num" id="p2BindStepNum">1</div>
+                        <div style="flex: 1;">
+                            <div class="arkada-bind-title" id="p2BindTitle">Привяжи аккаунт</div>
+                            <div class="arkada-bind-desc">
+                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
+                            </div>
+                            <div class="arkada-bind-actions">
+                                <span class="arkada-bind-reward">
+                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
+                                </span>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button type="button" class="p2-link-btn" id="p2OpenSiteBtn" onclick="openP2Site()">Открыть ❯</button>
+                                    <button type="button" class="p2-link-btn" id="p2ToggleBindBtn" style="color: #fff;" onclick="toggleP2BindForm()">Прислать ID</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arkada-inline-form" id="p2BindForm" style="border-top-color: rgba(255, 46, 147, 0.35);">
+                        <input type="text" class="task-input" id="p2BindIdInput" placeholder="Ваш ID профиля">
+                        <input type="text" class="task-input" id="p2BindUserInput" placeholder="Ваш @username в Telegram">
+                        <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #ff2e93, #a855f7); box-shadow: 0 0 20px rgba(255, 46, 147, 0.4);" onclick="submitP2Bind()">Отправить ID на проверку</button>
+                    </div>
+                </div>
+
+                <div class="arkada-dep-header">
+                    <span class="arkada-dep-header-title">Депозиты</span>
+                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
+                </div>
+
+                <div class="arkada-dep-list" id="p2DepositsList"></div>
+            </div>
+        </div>
+    </div>
+    
+<!-- МОДАЛЬНОЕ ОКНО ПАРТНЁРА ARKADA -->
+    <div id="arkadaModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeArkadaModal()">
+        <div class="arkada-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title">ARKADA</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeArkadaModal()">✕</button>
+            </div>
+
+            <div class="arkada-modal-body">
+                <!-- Интро с девушкой -->
+                <div class="arkada-intro-box">
+                    <img id="arkadaModalAvatar" class="arkada-intro-avatar" src="" alt="ARKADA">
+                    <div class="arkada-intro-text">
+                        Сначала привяжи аккаунт — после этого любой депозит можно выполнять в любом порядке, ждать друг друга они не заставляют.
+                    </div>
+                </div>
+
+                <!-- Шаг 1: Привязка аккаунта -->
+                <div class="arkada-bind-card" id="arkadaBindCard">
+                    <div class="arkada-bind-top">
+                        <div class="arkada-step-num" id="arkadaBindStepNum">1</div>
+                        <div style="flex: 1;">
+                            <div class="arkada-bind-title">Привяжи аккаунт ARKADA</div>
+                            <div class="arkada-bind-desc">
+                                Привяжи аккаунт: перейди по нашей ссылке, заведи или войди в профиль и пришли свой ID.
+                            </div>
+                            <div class="arkada-bind-actions">
+                                <span class="arkada-bind-reward">
+                                    <img src="coins.png" alt="" class="coin-icon"> 1 000
+                                </span>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button type="button" class="arkada-link-btn" onclick="openArkadaSite()">Открыть ARKADA ❯</button>
+                                    <button type="button" class="arkada-link-btn" id="arkadaToggleBindBtn" style="color: #fff;" onclick="toggleArkadaBindForm()">Прислать ID</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Форма отправки ID привязки -->
+                    <div class="arkada-inline-form" id="arkadaBindForm">
+                        <input type="text" class="task-input" id="arkadaBindIdInput" placeholder="Ваш ID профиля на ARKADA">
+                        <input type="text" class="task-input" id="arkadaBindUserInput" placeholder="Ваш @username в Telegram">
+                        <button type="button" class="submit-task-btn" onclick="submitArkadaBind()">Отправить ID на проверку</button>
+                    </div>
+                </div>
+
+                <!-- Секция депозитов -->
+                <div class="arkada-dep-header">
+                    <span class="arkada-dep-header-title">Депозиты</span>
+                    <span class="arkada-dep-header-sub">15 депозитов · порядок любой</span>
+                </div>
+
+                <div class="arkada-dep-list" id="arkadaDepositsList"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <div id="loading-screen">
+        <div class="loader-container">
+            <svg class="loader-svg loader-logo" viewBox="0 0 190 190" aria-hidden="true">
+                <circle class="logo-circle" cx="95" cy="95" r="72"></circle>
+                <path class="logo-v" d="M47.5 53 L95 133 L142.5 53"></path>
+            </svg>
+            <div class="loader-wordmark" id="loader-wordmark" aria-label="Vetruch">
+                <span>V</span><span>e</span><span>t</span><span>r</span><span>u</span><span>c</span><span>h</span>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="stars"></canvas>
+    <div class="dark-overlay"></div>
+
+    <!-- 1. ГЛАВНАЯ -->
+    <main id="home" class="page">
+        <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
+            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+
+        <div class="top-header anim-item" style="animation-delay: 0.05s;">
+            <div class="header-left">
+                <div class="avatar-container">
+                    <img id="homeAvatarImg" class="avatar-img" src="" alt="Avatar" style="display: none;">
+                    <div id="homeAvatarFallback" class="avatar-fallback">V</div>
+                </div>
+                <div class="user-info">
+                    <span class="greeting-text">Добро пожаловать,</span>
+                    <span class="user-name" id="homeUserName">Пользователь</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= КАРУСЕЛЬ БАННЕРОВ ================= -->
+        <div class="banner-carousel-wrap anim-item" style="clear: both; animation-delay: 0.1s;">
+            <div class="banner-carousel" id="bannerCarousel">
+                <!-- Слайд 1: Kick Стримы (первый при заходе) -->
+                <div class="banner-slide" onclick="handleBannerSlideClick(0)">
+                    <img src="banner_kick.jpg?v=3" alt="Смотри стримы получай монеты">
+                </div>
+                <!-- Слайд 2: Поездка мечты (второй) -->
+                <div class="banner-slide" onclick="handleBannerSlideClick(1)">
+                    <img src="giveaway_trip.jpg?v=3" alt="Поездка мечты">
+                </div>
+            </div>
+            <!-- Индикаторы (точки) -->
+            <div class="banner-dots" id="bannerDots">
+                <span class="banner-dot active" onclick="goToBannerSlide(0)"></span>
+                <span class="banner-dot" onclick="goToBannerSlide(1)"></span>
+            </div>
+        </div>
+
+        <div class="card global-stats anim-item" style="animation-delay: 0.15s;">
+            <div class="stats-title">💵 Всего выплачено зрителям</div>
+            <div class="stats-main-sum">24 714 120 ₽</div>
+            <div class="stats-row">
+                <div class="stat-item"><span class="stat-val">👥 0</span><span class="stat-label">пользователей</span></div>
+                <div class="stat-item"><span class="stat-val">0 <img src="coins.png" alt="coins" class="coin-icon"></span><span class="stat-label">монет заработано</span></div>
+            </div>
+        </div>
+
+        
+                <!-- ================= РОЗЫГРЫШИ ================= -->
+        <div class="giveaways-section anim-item" style="animation-delay: 0.18s;">
+            <div class="giveaways-header">
+                <div class="giveaways-title-wrap">
+                    <div class="giveaways-title-bar"></div>
+                    <span class="giveaways-main-title">Розыгрыши</span>
+                </div>
+                <a href="#" class="giveaways-all-link" onclick="openGiveawaysAll(); return false;">Все</a>
+            </div>
+
+            <div class="giveaways-tabs">
+                <button class="giveaways-tab-btn active" id="gwTabActive" onclick="switchGwTab('active')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                        <rect x="2" y="7" width="20" height="5"></rect>
+                        <line x1="12" y1="22" x2="12" y2="7"></line>
+                        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                    </svg>
+                    <span>Активные</span>
+                </button>
+                <button class="giveaways-tab-btn" id="gwTabClosed" onclick="switchGwTab('closed')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                        <path d="M4 22h16"></path>
+                        <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1h10v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"></path>
+                        <path d="M6 4h12a2 2 0 0 1 2 2v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Завершённые</span>
+                </button>
+            </div>
+
+            <!-- Контейнер активных розыгрышей -->
+            <div id="gwActiveContainer">
+                <div class="gw-grid">
+                    <div class="gw-card" onclick="openGwTripModal()">
+                        <div class="gw-card-thumb">
+                            <img src="giveaway_trip.jpg" alt="Поездка мечты">
+                            <div class="gw-card-badge">
+                                <span class="gw-dot-pulse"></span>
+                                <span>Активен</span>
+                            </div>
+                        </div>
+                        <div class="gw-card-body">
+                            <div class="gw-card-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</div>
+                            <div class="gw-card-footer">
+                                <span class="gw-card-status">🔥 Идёт</span>
+                                <span class="gw-card-users">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <span>128</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Контейнер завершённых розыгрышей -->
+            <div id="gwClosedContainer" style="display: none;">
+                <div class="giveaways-empty-card">
+                    <div class="giveaways-empty-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00d9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                            <path d="M4 22h16"></path>
+                            <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1h10v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"></path>
+                            <path d="M6 4h12a2 2 0 0 1 2 2v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V6a2 2 0 0 1 2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="giveaways-empty-title">Завершённых розыгрышей пока нет</div>
+                    <div class="giveaways-empty-sub">Все предыдущие результаты будут сохраняться здесь</div>
+                </div>
+            </div>
+        </div>
+        <!-- ================= РОЗЫГРЫШИ ================= -->
+        <div class="giveaways-section anim-item" style="animation-delay: 0.18s;">
+            <div class="giveaways-header">
+                <div class="giveaways-title-wrap">
+                    <div class="giveaways-title-bar"></div>
+                    <span class="giveaways-main-title">Розыгрыши</span>
+                </div>
+                <a href="#" class="giveaways-all-link" onclick="openGiveawaysAll(); return false;">Все</a>
+            </div>
+
+            <div class="giveaways-tabs">
+                <button class="giveaways-tab-btn active" id="gwTabActive" onclick="switchGwTab('active')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                        <rect x="2" y="7" width="20" height="5"></rect>
+                        <line x1="12" y1="22" x2="12" y2="7"></line>
+                        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                    </svg>
+                    <span>Активные</span>
+                </button>
+                <button class="giveaways-tab-btn" id="gwTabClosed" onclick="switchGwTab('closed')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                        <path d="M4 22h16"></path>
+                        <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1h10v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"></path>
+                        <path d="M6 4h12a2 2 0 0 1 2 2v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Завершённые</span>
+                </button>
+            </div>
+
+            <!-- Контейнер активных розыгрышей -->
+            <div id="gwActiveContainer">
+                <div class="gw-grid">
+                    <div class="gw-card" onclick="openGwTripModal()">
+                        <div class="gw-card-thumb">
+                            <img src="giveaway_trip.jpg" alt="Поездка мечты">
+                            <div class="gw-card-badge">
+                                <span class="gw-dot-pulse"></span>
+                                <span>Активен</span>
+                            </div>
+                        </div>
+                        <div class="gw-card-body">
+                            <div class="gw-card-title">✈️ ПОЕЗДКА МЕЧТЫ ЗА СЧЁТ СТРИМЕРА! ✈️</div>
+                            <div class="gw-card-footer">
+                                <span class="gw-card-status">🔥 Идёт</span>
+                                <span class="gw-card-users">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <span>128</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Контейнер завершённых розыгрышей -->
+            <div id="gwClosedContainer" style="display: none;">
+                <div class="giveaways-empty-card">
+                    <div class="giveaways-empty-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00d9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                            <path d="M4 22h16"></path>
+                            <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1h10v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"></path>
+                            <path d="M6 4h12a2 2 0 0 1 2 2v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V6a2 2 0 0 1 2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="giveaways-empty-title">Завершённых розыгрышей пока нет</div>
+                    <div class="giveaways-empty-sub">Все предыдущие результаты будут сохраняться здесь</div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="card anim-item" style="animation-delay: 0.2s;">
+            <div class="leaderboard-header">
+                <div class="leaderboard-title">Рейтинг</div>
+                <a href="#" class="leaderboard-link" onclick="showLeaderboard(); return false;">Лидерборд ></a>
+            </div>
+            <div class="podium">
+                <div class="podium-item second"><div class="podium-avatar">?</div><div class="podium-name">#2</div><div class="podium-score">0 <img src="coins.png" alt="coins" class="coin-icon"></div></div>
+                <div class="podium-item first"><div class="podium-avatar">?</div><div class="podium-name">#1</div><div class="podium-score" style="color: gold;">0 <img src="coins.png" alt="coins" class="coin-icon"></div></div>
+                <div class="podium-item third"><div class="podium-avatar">?</div><div class="podium-name">#3</div><div class="podium-score">0 <img src="coins.png" alt="coins" class="coin-icon"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 2. ИГРЫ -->
+    <main id="games" class="page">
+        <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
+            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 16px !important; display: inline-block; animation-delay: 0.05s;">Игры</h2>
+        
+        <div class="games-grid" style="clear: both;">
+            <!-- Новая игра: БАШНИ (Широкая кнопка) -->
+            <div class="game-card wide-card anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html')" onclick="openGame('towers.html')">
+                <div class="game-icon tower-preview">
+                    <div class="tower-bar"></div>
+                    <div class="tower-bar"></div>
+                    <div class="tower-bar"></div>
+                </div>
+                <div class="wide-card-info">
+                    <div class="game-title">БАШНИ</div>
+                    <div class="game-subtitle">аркада · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                    <div class="game-extra">Играть ➔</div>
+                </div>
+            </div>
+            
+            <div class="game-card" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html')" onclick="openGame('mines.html')">
+                <div class="game-icon bomb-preview">
+                    <span class="bomb-fuse"></span>
+                    <span class="bomb-spark">✦</span>
+                    <span class="bomb-body"></span>
+                </div>
+                <div class="game-title">Мины</div>
+                <div class="game-subtitle">мины · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                <div class="game-extra">Играть</div>
+            </div>
+
+            <div class="game-card" style="animation-delay: 0.15s;" onpointerdown="preloadGame('cards.html')" onclick="openGame('cards.html')">
+                <div class="game-icon cards-preview">
+                    <span class="mini-card card-diamond"><b>A</b><i>♦</i></span>
+                    <span class="mini-card card-heart"><b>A</b><i>♥</i></span>
+                    <span class="mini-card card-spade"><b>A</b><i>♠</i></span>
+                    <span class="mini-card card-club"><b>A</b><i>♣</i></span>
+                </div>
+                <div class="game-title">Карты</div>
+                <div class="game-subtitle">карты · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                <div class="game-extra">Играть</div>
+            </div>
+
+            <div class="game-card" style="animation-delay: 0.2s;" onpointerdown="preloadGame('balloon.html')" onclick="openGame('balloon.html')">
+                <div class="game-icon balloon-preview">
+                    <span class="balloon-shape"></span>
+                    <svg class="balloon-string" viewBox="0 0 12 30" aria-hidden="true"><path d="M6 0 C6 7 1 8 6 14 C11 20 6 23 4 30" /></svg>
+                </div>
+                <div class="game-title">Шарик</div>
+                <div class="game-subtitle">краш · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                <div class="game-extra">Играть</div>
+            </div>
+
+            <div class="game-card" style="animation-delay: 0.25s;" onpointerdown="preloadGame('dice.html')" onclick="openGame('dice.html')">
+               <div class="game-icon dice-preview">
+                    <div class="preview-die" id="previewDie">
+                        <div class="die-face die-front"><span class="die-pips" data-value="1"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-back"><span class="die-pips" data-value="6"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-right"><span class="die-pips" data-value="3"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-left"><span class="die-pips" data-value="4"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-top"><span class="die-pips" data-value="2"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                        <div class="die-face die-bottom"><span class="die-pips" data-value="5"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                    </div>
+                </div>
+                <div class="game-title">Кости</div>
+                <div class="game-subtitle">кости · от 20 <img src="coins.png" class="coin-icon-sm"></div>
+                <div class="game-extra">Играть</div>
+            </div>
+        </div>
+
+<!-- БЛОК ПРОГНОЗА -->
+        <div class="prediction-card anim-item" id="mainPredictionCard" style="animation-delay: 0.45s;">
+            <div class="prediction-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="prediction-badge" id="predBadge">ПРОГНОЗ</span>
+                    <span class="pred-timer-badge" id="predTimerBadge">⏱ --:--</span>
+                </div>
+                <span class="prediction-status" id="predStatus" style="color: #00e676;">Ставки открыты</span>
+            </div>
+            
+            <div class="prediction-title" id="predTitle">Будет ли вывод 30 000?</div>
+            
+            <div class="prediction-stats">
+                <div class="prediction-yes" id="predStatsLeft">
+                    <span id="predTextLeft">Да 50%</span> · <img src="coins.png" class="coin-icon-sm"> <span id="predCoinsLeft">0</span>
+                </div>
+                <div class="prediction-no" id="predStatsRight">
+                    <img src="coins.png" class="coin-icon-sm"> <span id="predCoinsRight">0</span> · <span id="predTextRight">50% Нет</span>
+                </div>
+            </div>
+            
+            <div class="prediction-bar">
+                <div class="prediction-bar-yes" id="predBarLeft" style="width: 50%;"></div>
+                <div class="prediction-bar-no" id="predBarRight" style="width: 50%;"></div>
+            </div>
+
+            <!-- ВВОД СУММЫ СТАВКИ И БЫСТРЫЕ ЧИПЫ -->
+            <div class="pred-bet-box" id="predBetBox">
+                <div class="pred-bet-row">
+                    <span class="pred-bet-label">Ваша ставка:</span>
+                    <div class="pred-bet-input-wrap">
+                        <input type="number" id="predBetAmountInput" class="pred-bet-input" placeholder="50" min="1" value="50">
+                        <img src="coins.png" class="coin-icon-sm" alt="монеты">
+                    </div>
+                    <div class="pred-chips-group">
+                        <button type="button" class="pred-chip-btn" onclick="setPredBetAmount(50)">50</button>
+                        <button type="button" class="pred-chip-btn" onclick="setPredBetAmount(100)">100</button>
+                        <button type="button" class="pred-chip-btn" onclick="setPredBetAmount(250)">250</button>
+                        <button type="button" class="pred-chip-btn" onclick="setPredBetAmount(500)">500</button>
+                        <button type="button" class="pred-chip-btn pred-chip-max" onclick="setPredBetAmount('max')">MAX</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- СТАТУС СТАВКИ ПОЛЬЗОВАТЕЛЯ -->
+            <div id="predUserBetStatus" class="pred-user-bet-status" style="display: none;"></div>
+            
+            <div class="prediction-actions">
+                <button type="button" class="prediction-btn btn-yes" id="predBtnLeft" onclick="onPredictionVote('left')">Да</button>
+                <button type="button" class="prediction-btn btn-no" id="predBtnRight" onclick="onPredictionVote('right')">Нет</button>
+            </div>
+        </div>
+        
+        <section class="games-history anim-item" style="animation-delay: 0.5s;">
+            <h2 class="games-heading">Недавние выигрыши</h2>
+            <div id="gamesHistoryList" class="games-history-list">
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 3. ЗАДАНИЯ -->
+    <main id="tasks" class="page">
+        <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
+            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Задания</h2>
+
+<!-- ПАРТНЁРСКИЙ БЛОК: ARKADA -->
+        <div class="partner-section-head anim-item" style="animation-delay: 0.07s;">
+            <span class="partner-section-pill">ПАРТНЁРЫ</span>
+            <span class="partner-section-sub">самые крупные награды</span>
+        </div>
+
+        <div class="arkada-partner-card anim-item" style="animation-delay: 0.09s;" onclick="openArkadaModal()">
+            <div class="arkada-card-top">
+                <div>
+                    <div class="arkada-card-title">ARKADA</div>
+                    <div class="arkada-card-sub">Привяжи аккаунт и выполняй</div>
+                </div>
+                <div class="arkada-card-reward-box">
+                    <span class="arkada-card-from">ОТ</span>
+                    <span class="arkada-card-amount">
+                        <img src="coins.png" alt="" class="coin-icon"> 1000+
+                    </span>
+                </div>
+            </div>
+
+            <div class="arkada-dots-row" id="arkadaCardDots"></div>
+
+            <div class="arkada-card-cta">Смотреть задания ❯</div>
+
+            <img id="arkadaCardImg" class="arkada-card-girl" src="" alt="ARKADA">
+        </div>
+
+        <!-- ПАРТНЁРСКИЙ БЛОК #2 -->
+        <div class="p2-partner-card anim-item" style="animation-delay: 0.1s;" onclick="openP2Modal()">
+            <div class="arkada-card-top">
+                <div>
+                    <div class="arkada-card-title" id="p2CardTitle">ПАРТНЁР</div>
+                    <div class="arkada-card-sub">Привяжи аккаунт и выполняй</div>
+                </div>
+                <div class="arkada-card-reward-box">
+                    <span class="arkada-card-from">ОТ</span>
+                    <span class="arkada-card-amount">
+                        <img src="coins.png" alt="" class="coin-icon"> 1000+
+                    </span>
+                </div>
+            </div>
+
+            <div class="arkada-dots-row" id="p2CardDots"></div>
+
+            <div class="arkada-card-cta">Смотреть задания ❯</div>
+
+            <img id="p2CardImg" class="p2-card-girl" src="" alt="">
+        </div>
+        
+        <!-- ПАРТНЁРСКИЙ БЛОК: ARKADA -->
+        <div class="partner-section-head anim-item" style="animation-delay: 0.07s;">
+            <span class="partner-section-pill">ПАРТНЁРЫ</span>
+            <span class="partner-section-sub">самые крупные награды</span>
+        </div>
+
+        <div class="arkada-partner-card anim-item" style="animation-delay: 0.09s;" onclick="openArkadaModal()">
+            <div class="arkada-card-top">
+                <div>
+                    <div class="arkada-card-title">ARKADA</div>
+                    <div class="arkada-card-sub">Привяжи аккаунт и выполняй</div>
+                </div>
+                <div class="arkada-card-reward-box">
+                    <span class="arkada-card-from">ОТ</span>
+                    <span class="arkada-card-amount">
+                        <img src="coins.png" alt="" class="coin-icon"> 1000+
+                    </span>
+                </div>
+            </div>
+
+            <div class="arkada-dots-row" id="arkadaCardDots"></div>
+
+            <div class="arkada-card-cta">Смотреть задания ❯</div>
+
+            <img id="arkadaCardImg" class="arkada-card-girl" src="" alt="ARKADA">
+        </div>
+
+        <!-- ПАРТНЁРСКИЙ БЛОК #2 -->
+        <div class="p2-partner-card anim-item" style="animation-delay: 0.1s;" onclick="openP2Modal()">
+            <div class="arkada-card-top">
+                <div>
+                    <div class="arkada-card-title" id="p2CardTitle">ПАРТНЁР</div>
+                    <div class="arkada-card-sub">Привяжи аккаунт и выполняй</div>
+                </div>
+                <div class="arkada-card-reward-box">
+                    <span class="arkada-card-from">ОТ</span>
+                    <span class="arkada-card-amount">
+                        <img src="coins.png" alt="" class="coin-icon"> 1000+
+                    </span>
+                </div>
+            </div>
+
+            <div class="arkada-dots-row" id="p2CardDots"></div>
+
+            <div class="arkada-card-cta">Смотреть задания ❯</div>
+
+            <img id="p2CardImg" class="p2-card-girl" src="" alt="">
+        </div>
+        
+        
+        <!-- 1. Задание: Подписка ТГ -->
+        <div class="task-card featured-task anim-item" style="clear: both; animation-delay: 0.1s;" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 3 14.5 21l-3.8-7.7L3 9.5 21 3Z"></path>
+                    <path d="m10.7 13.3 4.1-4.1"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Подписка</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 100
+                    </span>
+                </div>
+                <div class="featured-task-title">Подпишись на тгк @vetruchtut</div>
+                <div class="featured-task-description">
+                    Главный источник информации: все анонсы, свежие новости и закрытые подгоны для тех, кто с нами в Telegram.
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Задание: Подписка YT -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.15s;" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="6" width="18" height="13" rx="2"></rect>
+                    <path d="M8 3v3M16 3v3M8 19v2M16 19v2"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Подписка</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 150
+                    </span>
+                </div>
+                <div class="featured-task-title">Подписка на YouTube</div>
+                <div class="featured-task-description">
+                    Подпишись на YouTube канал @vetruch
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Задание: Подписка Kick -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.2s;" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"></path>
+                    <rect x="3" y="6" width="12" height="12" rx="2"></rect>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Подписка</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 200
+                    </span>
+                </div>
+                <div class="featured-task-title">Подписаться на Kick</div>
+                <div class="featured-task-description">Зарегистрируйся на Kick и подпишись на канал для получения наград.</div>
+            </div>
+        </div>
+
+        <!-- 4. Задание: UP-X (Привязка 5 шагов) -->
+        <div class="task-card upx-task anim-item" style="animation-delay: 0.25s;">
+            <div class="upx-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
+                    <path d="M3 8h15a2 2 0 0 1 2 2v1h-4a2 2 0 0 0 0 4h4v1"></path>
+                    <circle cx="16" cy="13" r="1"></circle>
+                </svg>
+            </div>
+            <div class="upx-content">
+                <div class="upx-top">
+                    <span class="upx-label">5 шагов</span>
+                    <button class="upx-toggle" type="button" aria-label="Свернуть" onclick="toggleUpxTask(event, this)">
+                        <span class="upx-toggle-arrow">⌃</span>
+                    </button>
+                    <div class="upx-collapsed-details">
+                        <div class="upx-collapsed-title">UP-X</div>
+                        <div class="upx-collapsed-progress">0 из 5 наград получено</div>
+                    </div>
+                </div>
+                <div class="upx-title">UP-X</div>
+                <div class="upx-progress-text">0 из 5 наград получено</div>
+                <div class="upx-link-row">
+                    <span class="upx-link-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.71 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </span>
+                    <span>Привязка <b>UP-X</b></span>
+                    <span class="upx-arrow">➔</span>
+                    <span class="upx-link-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 1000
+                    </span>
+                </div>
+                <div class="upx-progress">
+                    <div class="upx-progress-line"></div>
+                    <div class="upx-locks">
+                        <span class="upx-open-circle"></span>
+                        <span>♙</span>
+                        <span>♙</span>
+                        <span>♙</span>
+                        <span>♙</span>
+                    </div>
+                </div>
+                <button class="upx-button" onclick="event.stopPropagation(); openTaskModal('Привязка UP-X', 'https://up-click-me.top/feygr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
+                    Привязать аккаунт  + 1 000
+                </button>
+                <div class="upx-hint">Шаги можно посмотреть, но они откроются после<br>привязки.</div>
+            </div>
+        </div>
+
+        <!-- 5. Задание: JetTon (Привязка 5 шагов) -->
+        <div class="task-card upx-task anim-item" style="animation-delay: 0.3s;">
+            <div class="upx-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
+                    <path d="M3 8h15a2 2 0 0 1 2 2v1h-4a2 2 0 0 0 0 4h4v1"></path>
+                    <circle cx="16" cy="13" r="1"></circle>
+                </svg>
+            </div>
+            <div class="upx-content">
+                <div class="upx-top">
+                    <span class="upx-label">5 шагов</span>
+                    <button class="upx-toggle" type="button" aria-label="Свернуть" onclick="toggleUpxTask(event, this)">
+                        <span class="upx-toggle-arrow">⌃</span>
+                    </button>
+                    <div class="upx-collapsed-details">
+                        <div class="upx-collapsed-title">JetTon</div>
+                        <div class="upx-collapsed-progress">0 из 5 наград получено</div>
+                    </div>
+                </div>
+                <div class="upx-title">JetTon</div>
+                <div class="upx-progress-text">0 из 5 наград получено</div>
+                <div class="upx-link-row">
+                    <span class="upx-link-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.71 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </span>
+                    <span>Привязка <b>JetTon</b></span>
+                    <span class="upx-arrow">→</span>
+                    <span class="upx-link-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 1000
+                    </span>
+                </div>
+                <div class="upx-progress">
+                    <div class="upx-progress-line"></div>
+                    <div class="upx-locks">
+                        <span class="upx-open-circle"></span>
+                        <span>🔒</span>
+                        <span>🔒</span>
+                        <span>🔒</span>
+                        <span>🔒</span>
+                    </div>
+                </div>
+                <button class="upx-button" onclick="event.stopPropagation(); openTaskModal('Привязка JetTon', 'https://jetrdnurev.com/cihFhEkPODc?click_id=%7Bclick_id%7D&target_id=/&target_type=registration', false, 'ПЕРЕЙТИ НА САЙТ')">
+                    Привязать аккаунт · +1000
+                </button>
+                <div class="upx-hint">Шаги можно посмотреть, но они откроются после<br>привязки.</div>
+            </div>
+        </div>
+
+        <!-- 6. Задание: 3 сообщения на стриме -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.35s;" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Активность</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 150
+                    </span>
+                </div>
+                <div class="featured-task-title">3 сообщения на стриме</div>
+                <div class="featured-task-description">Напиши минимум 3 адекватных сообщения на активном стриме.</div>
+            </div>
+        </div>
+
+        <!-- 7. Задание: Ник на Kick -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.4s;" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Kick</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 300
+                    </span>
+                </div>
+                <div class="featured-task-title">Поставить ник Vetruch</div>
+                <div class="featured-task-description">Измени свой никнейм на Kick, добавив "Vetruch", и забери бонус.</div>
+            </div>
+        </div>
+
+        <!-- 8. Задание: Пригласить друзей -->
+        <div class="task-card featured-task anim-item" style="animation-delay: 0.45s;" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
+            <div class="featured-task-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <div class="featured-task-content">
+                <div class="featured-task-top">
+                    <span class="featured-task-label">Друзья</span>
+                    <span class="featured-task-reward">
+                        <img src="coins.png" alt="" class="coin-icon"> 500
+                    </span>
+                </div>
+                <div class="featured-task-title">Пригласи 3 друзей</div>
+                <div class="featured-task-description">Пригласи 3 друзей в бота по своей персональной ссылке.</div>
+                <div class="invite-progress">
+                    <span class="invite-progress-count">0 / 3</span>
+                    <div class="invite-progress-track"><div class="invite-progress-fill"></div></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 4. МАГАЗИН (КАРТИНКА В САМЫЙ НИЗ, В СЕРОЙ ЧАСТИ ЧИСТО КНОПКА) -->
+    <main id="shop" class="page">
+        <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
+            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Магазин</h2>
+
+<!-- Плашки категорий -->
+        <div class="shop-tabs anim-item" style="animation-delay: 0.08s;">
+            <button class="shop-tab active" onclick="filterShop('Все', this)">Все</button>
+            <button class="shop-tab" onclick="filterShop('Прочее', this)">Прочее</button>
+            <button class="shop-tab" onclick="filterShop('Стрим', this)">Стрим</button>
+            <button class="shop-tab" onclick="filterShop('Телеграм', this)">Телеграм</button>
+            <button class="shop-tab" onclick="filterShop('Техника', this)">Техника</button>
+        </div>
+        
+        <div class="shop-grid">
+            <div class="shop-card" style="animation-delay: 0.1s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1068.PNG" alt="iPhone 18 PRO MAX">
+                    <div class="shop-card-title">iPhone 18 PRO MAX</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('iPhone 18 PRO MAX')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.15s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1073.PNG" alt="iPhone DUO">
+                    <div class="shop-card-title">iPhone DUO</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('iPhone DUO')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.2s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1070.PNG" alt="AirPods PRO 3">
+                    <div class="shop-card-title">AirPods PRO 3</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('AirPods PRO 3')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.25s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1074.PNG" alt="Бонуска за 10 000₽">
+                    <div class="shop-card-title">Бонуска за 10 000₽</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Бонуска за 10 000₽')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.3s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1072.PNG" alt="5000 рублей">
+                    <div class="shop-card-title">5000 рублей</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('5000 рублей')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.35s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1069.PNG" alt="2500 рублей">
+                    <div class="shop-card-title">2500 рублей</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('2500 рублей')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.4s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1071.PNG" alt="1000 рублей">
+                    <div class="shop-card-title">1000 рублей</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('1000 рублей')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.45s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1075.PNG" alt="Выбрать слот для стрима">
+                    <div class="shop-card-title">Выбрать слот для стрима</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Выбрать слот для стрима')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.5s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1076.PNG" alt="Telegram Premium на 1 год">
+                    <div class="shop-card-title">Telegram Premium на 1 год</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Telegram Premium на 1 год')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.55s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1079.PNG" alt="Telegram Premium 6 месяцев">
+                    <div class="shop-card-title">Telegram Premium 6 месяцев</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Telegram Premium 6 месяцев')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.6s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1080.PNG" alt="Telegram Premium 3 месяца">
+                    <div class="shop-card-title">Telegram Premium 3 месяца</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Telegram Premium 3 месяца')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.65s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1077.PNG" alt="VIP либо OG в чате">
+                    <div class="shop-card-title">VIP либо OG в чате</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('VIP либо OG в чате')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.7s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1078.PNG" alt="VPN 1 месяц">
+                    <div class="shop-card-title">VPN 1 месяц</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('VPN 1 месяц')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 5. ПРОФИЛЬ -->
+    <main id="profile" class="page">
+        <!-- ================= ПРИЛИПАЮЩИЙ БАЛАНС ================= -->
+        <div class="balance-pill sticky-pill anim-item" style="animation-delay: 0s;">
+            <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Профиль</h2>
+
+        <!-- 1. ГЛАВНАЯ VIP-КАРТОЧКА ПРОФИЛЯ -->
+        <div class="profile-hero-card anim-item" style="animation-delay: 0.1s;">
+            <div class="profile-hero-glow"></div>
+
+            <div class="profile-hero-top">
+                <div class="profile-vip-badge">
+                    <span class="profile-online-dot"></span>
+                    VIP · ИГРОК
+                </div>
+                <button type="button" class="profile-id-pill" onclick="copyProfileId()">
+                    <span>ID: <b id="profileUserId">00000000</b></span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="profile-Identity">
+                <div class="profile-avatar-stage">
+                    <div class="profile-avatar-ring"></div>
+                    <div class="profile-avatar-box">
+                        <img id="profileAvatarImg" src="" alt="Avatar">
+                        <div id="profileAvatarFallback" class="profile-avatar-fallback">V</div>
+                    </div>
+                    <span class="profile-lvl-chip">LVL 1</span>
+                </div>
+
+                <h3 class="profile-main-name">
+                    <span id="profileUserName">Пользователь</span>
+                    <svg class="profile-verified-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l2.4 2.1 3.1-.4 1.2 2.9 2.9 1.2-.4 3.1L23.3 13l-2.1 2.4.4 3.1-2.9 1.2-1.2 2.9-3.1-.4L12 24.3l-2.4-2.1-3.1.4-1.2-2.9-2.9-1.2.4-3.1L.7 13l2.1-2.4-.4-3.1 2.9-1.2 1.2-2.9 3.1.4L12 2zm-1.2 13.6l5.3-5.3-1.4-1.4-3.9 3.9-1.9-1.9-1.4 1.4 3.3 3.3z"></path>
+                    </svg>
+                </h3>
+                <div class="profile-handle" id="profileUserHandle">@vetruch_player</div>
+
+                <div class="profile-xp-box">
+                    <div class="profile-xp-head">
+                        <span class="profile-xp-rank">🏆 Лига: Новичок</span>
+                        <span class="profile-xp-nums">120 / 500 XP</span>
+                    </div>
+                    <div class="profile-xp-track">
+                        <div class="profile-xp-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- КНОПКА МЕЧТЫ -->
+        <div class="dream-entry-card anim-item" style="animation-delay: 0.12s;" onclick="openPage('dream-page')">
+            <div class="dream-entry-left">
+                <div class="dream-entry-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#38bdf8" d="M12 2l2.4 5.6L20 10l-4.4 4 1.4 6L12 17l-5 3 1.4-6L4 10l5.6-2.4L12 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="dream-entry-title">Время мечтать</div>
+                    <div class="dream-entry-sub">Напиши свою мечту и отправь заявку</div>
+                </div>
+            </div>
+            <div class="dream-entry-arrow">➔</div>
+        </div>
+
+        <!-- 2. BENTO-СЕТКА СТАТИСТИКИ 2x2 -->
+        <div class="profile-bento-grid anim-item" style="animation-delay: 0.15s;">
+            <div class="profile-bento-item accent-balance">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                            <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                            <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">
+                    <span class="app-balance">500</span>
+                    <img src="coins.png" alt="coins" class="coin-icon">
+                </div>
+                <div class="profile-bento-label">Текущий баланс</div>
+            </div>
+
+            <div class="profile-bento-item">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                            <path d="M6 12h4"></path>
+                            <path d="M8 10v4"></path>
+                            <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                            <line x1="18" y1="11" x2="18.01" y2="11"></line>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">
+                    0 <img src="coins.png" alt="coins" class="coin-icon">
+                </div>
+                <div class="profile-bento-label">Выиграно в играх</div>
+            </div>
+
+            <div class="profile-bento-item">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">0 / 8</div>
+                <div class="profile-bento-label">Заданий выполнено</div>
+            </div>
+
+            <div class="profile-bento-item">
+                <div class="profile-bento-top">
+                    <div class="profile-bento-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="profile-bento-val">0</div>
+                <div class="profile-bento-label">Приглашено друзей</div>
+            </div>
+        </div>
+
+        <!-- 3. РЕФЕРАЛЬНАЯ ПРОГРАММА -->
+        <div class="profile-ref-card anim-item" style="animation-delay: 0.2s;">
+            <div class="profile-ref-head">
+                <div class="profile-ref-title">🚀 Реферальная система</div>
+                <span class="profile-ref-bonus">+500 <img src="coins.png" alt="" class="coin-icon-sm"></span>
+            </div>
+            <p class="profile-ref-desc">
+                Зови друзей в Vetruch GiftBot по своей персональной ссылке и забирай награду за каждых 3 активных рефералов!
+            </p>
+            <div class="profile-ref-actions">
+                <button type="button" class="profile-ref-share-btn" onclick="shareProfileRefLink()">
+                    ПРИГЛАСИТЬ ДРУЗЕЙ
+                </button>
+                <button type="button" class="profile-ref-copy-btn" onclick="copyProfileRefLink()" aria-label="Скопировать ссылку">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. ПРИВЯЗКА АККАУНТОВ -->
+        <div class="profile-section-card anim-item" style="animation-delay: 0.25s;">
+            <div class="profile-section-head">
+                <span class="profile-section-title">🔗 Привязка аккаунтов</span>
+                <span class="profile-section-sub">1 из 3 активно</span>
+            </div>
+
+            <div class="profile-bind-list">
+                <div class="profile-bind-row">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico tg-ico">TG</div>
+                        <div>
+                            <div class="profile-bind-name">Telegram аккаунт</div>
+                            <div class="profile-bind-desc">Синхронизирован автоматически</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill connected">Активно ✓</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openPage('tasks')">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico kick-ico">K</div>
+                        <div>
+                            <div class="profile-bind-name">Kick (@vetruch)</div>
+                            <div class="profile-bind-desc">Бонус +500 монет за задания</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action">Задания ➔</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openPage('tasks')">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico upx-ico">VIP</div>
+                        <div>
+                            <div class="profile-bind-name">UP-X & JetTon</div>
+                            <div class="profile-bind-desc">Награда +2 000 монет за привязку</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action">Привязать ➔</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ИНВЕНТАРЬ / МОИ ПОКУПКИ -->
+        <div class="profile-section-card anim-item" style="animation-delay: 0.3s;">
+            <div class="profile-section-head">
+                <span class="profile-section-title">🎁 Мои покупки</span>
+                <span class="profile-section-sub">0 предметов</span>
+            </div>
+            <div class="profile-inventory-empty">
+                <div style="font-size: 28px; filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.5));">📦</div>
+                <div class="profile-inventory-empty-text">У вас пока нет купленных призов из магазина</div>
+                <button type="button" class="profile-shop-Action" onclick="openPage('shop')">
+                    Перейти в магазин ➔
+                </button>
+            </div>
+        </div>
+
+       <!-- 6. КНОПКА АДМИН-ПАНЕЛИ (ТОЛЬКО ДЛЯ 2 АДМИНОВ) -->
+        <button type="button" id="adminPanelEntryBtn" class="admin-panel-btn anim-item" style="display: none; animation-delay: 0.35s;" onclick="openAdminPage()">
+            <div class="admin-panel-left">
+                <div class="admin-panel-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="admin-panel-title">
+                        Панель администратора
+                        <span class="admin-root-tag">ROOT</span>
+                    </div>
+                    <div class="admin-panel-sub">Задания, магазин, прогнозы и накрутка</div>
+                </div>
+            </div>
+            <div class="admin-panel-arrow">➔</div>
+        </button>
+
+    </main>
+<!-- СТИЛИ ФИКСА ШАПКИ, МОДАЛКИ МАГАЗИНА И ЖИВОЙ АДМИНКИ -->
+    <style>
+        .sticky-pill {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 12px;
+            float: right;
+            z-index: 1000;
+            margin-left: 10px;
+            background: rgba(14, 20, 30, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 12px rgba(0, 136, 255, 0.25);
+        }
+
+        .page.active .sticky-pill {
+            animation: pageFadeIn 0.3s ease backwards;
+        }
+
+        .admin-top-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            min-height: 36px;
+            padding-right: 115px;
+        }
+
+        .admin-top-bar .games-heading {
+            font-size: 17px !important;
+            margin: 0 !important;
+            white-space: nowrap;
+        }
+
+        .admin-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 11px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .admin-back-btn:active {
+            transform: scale(0.95);
+            border-color: var(--blue-main);
+        }
+
+        .admin-tabs {
+            clear: both;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+            background: rgba(15, 18, 25, 0.9);
+            padding: 6px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .admin-status-toast {
+            display: none;
+            margin-top: 12px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            background: rgba(0, 230, 118, 0.14);
+            border: 1px solid rgba(0, 230, 118, 0.4);
+            color: #00e676;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .admin-balances-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .admin-bal-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .shop-modal-price-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(0, 136, 255, 0.1);
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            margin-bottom: 16px;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        .purchase-history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .cloud-status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            font-size: 11.5px;
+            font-weight: 700;
+            background: rgba(0, 136, 255, 0.08);
+            border: 1px solid rgba(0, 136, 255, 0.25);
+            color: #8ce0ff;
+        }
+
+        .invite-progress-fill {
+            transition: width 0.4s ease, background 0.3s ease;
+            background: linear-gradient(90deg, #0088ff, #00e1ff);
+        }
+
+        
+
+    </style>
 </head>
 
 <body class="is-loading">
@@ -3951,11 +6781,26 @@
             </div>
         </div>
 
-        <div class="promo-banner anim-item" style="clear: both; animation-delay: 0.1s;">
-            <video autoplay muted loop playsinline>
-                <source src="./banner3.mp4" type="video/mp4">
-            </video>
+        
+        <!-- ================= КАРУСЕЛЬ БАННЕРОВ ================= -->
+        <div class="banner-carousel-wrap anim-item" style="clear: both; animation-delay: 0.1s;">
+            <div class="banner-carousel" id="bannerCarousel">
+                <!-- Слайд 1: Kick Стримы (первый при заходе) -->
+                <div class="banner-slide" onclick="handleBannerSlideClick(0)">
+                    <img src="banner_kick.jpg" alt="Смотри стримы получай монеты">
+                </div>
+                <!-- Слайд 2: Поездка мечты (второй) -->
+                <div class="banner-slide" onclick="handleBannerSlideClick(1)">
+                    <img src="giveaway_trip.jpg" alt="Поездка мечты">
+                </div>
+            </div>
+            <!-- Индикаторы (точки) -->
+            <div class="banner-dots" id="bannerDots">
+                <span class="banner-dot active" onclick="goToBannerSlide(0)"></span>
+                <span class="banner-dot" onclick="goToBannerSlide(1)"></span>
+            </div>
         </div>
+
 
         <!-- ЖИВАЯ СТРОКА ПОКУПОК ОНЛАЙН -->
         <div class="lux-live-ticker anim-item" id="livePurchaseTicker" style="animation-delay: 0.12s; display: none;">
@@ -4010,7 +6855,7 @@
         
         <div class="games-grid" style="clear: both;">
             <!-- Новая игра: БАШНИ (Широкая кнопка) -->
-            <div class="game-card wide-card anim-item" style="animation-delay: 0.05s;" onclick="window.location.href='towers.html'">
+            <div class="game-card wide-card anim-item" style="animation-delay: 0.05s;" onpointerdown="preloadGame('towers.html')" onclick="openGame('towers.html')">
                 <span class="game-card-ribbon ribbon-fire">🔥 ХИТ</span>
                 <div class="game-icon tower-preview">
                     <div class="tower-bar"></div>
@@ -4025,7 +6870,7 @@
                 </div>
             </div>
             
-            <div class="game-card" style="animation-delay: 0.1s;" onclick="window.location.href='mines.html'">
+            <div class="game-card" style="animation-delay: 0.1s;" onpointerdown="preloadGame('mines.html')" onclick="openGame('mines.html')">
                 <span class="game-card-ribbon ribbon-jackpot">💎 ДЖЕКПОТ</span>
                 <div class="game-icon bomb-preview">
                     <span class="bomb-fuse"></span>
@@ -4038,7 +6883,7 @@
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
 
-            <div class="game-card" style="animation-delay: 0.2s;" onclick="window.location.href='cards.html'">
+            <div class="game-card" style="animation-delay: 0.2s;" onpointerdown="preloadGame('cards.html')" onclick="openGame('cards.html')">
                 <span class="game-card-ribbon ribbon-vip">👑 HIGH-ROLLER</span>
                 <div class="game-icon cards-preview">
                     <span class="mini-card card-diamond"><b>A</b><i>♦</i></span>
@@ -4052,7 +6897,7 @@
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
 
-            <div class="game-card" style="animation-delay: 0.3s;" onclick="window.location.href='balloon.html'">
+            <div class="game-card" style="animation-delay: 0.3s;" onpointerdown="preloadGame('balloon.html')" onclick="openGame('balloon.html')">
                 <span class="game-card-ribbon ribbon-hot">⚡ КРАШ x500</span>
                 <div class="game-icon balloon-preview">
                     <span class="balloon-shape"></span>
@@ -4064,7 +6909,7 @@
                 <div class="game-play-btn">ИГРАТЬ</div>
             </div>
 
-            <div class="game-card" style="animation-delay: 0.4s;" onclick="window.location.href='dice.html'">
+            <div class="game-card" style="animation-delay: 0.4s;" onpointerdown="preloadGame('dice.html')" onclick="openGame('dice.html')">
                 <span class="game-card-ribbon ribbon-rtp">🎲 98% RTP</span>
                 <div class="game-icon dice-preview">
                     <div class="preview-die" id="previewDie">
@@ -5445,6 +8290,9 @@
             <button type="button" class="admin-tab-btn" data-adm="adm-prediction" onclick="switchAdminTab('adm-prediction', this)">
                 🎯 Прогноз
             </button>
+            <button type="button" class="admin-tab-btn" data-adm="adm-economy" onclick="switchAdminTab('adm-economy', this)">
+                📊 Экономика
+            </button>
             <button type="button" class="admin-tab-btn" data-adm="adm-users" onclick="switchAdminTab('adm-users', this)">
                 💎 По ID
             </button>
@@ -5603,6 +8451,98 @@
         </div>
 
         <!-- ГРАФА 4: НАКРУТКА МОНЕТ ПО ID ЧЕЛОВЕКА -->
+        <div id="adm-economy" class="admin-section">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>📊 Модуль «Экономика» (SUBO Model)</span>
+                    <span class="admin-badge-count" style="background: rgba(0, 217, 255, 0.2); color: #00d9ff; border-color: rgba(0, 217, 255, 0.4);">LIVE</span>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(0, 136, 255, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 12px; color: var(--secondary);">Честный курс монеты:</span>
+                        <span style="font-size: 15px; font-weight: 800; color: #00e676;">1 000 <img src="coins.png" class="coin-icon-sm" alt="монет"> ≈ <span id="adminRateVal">33</span> ₽</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 12px; color: var(--secondary);">Дневной лимит игр на игрока:</span>
+                        <span style="font-size: 14px; font-weight: 800; color: #00d9ff;"><span id="adminLimitGamesVal">20</span> игр / день</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 12px; color: var(--secondary);">Сброс энергии:</span>
+                        <span style="font-size: 13px; font-weight: 700; color: #fff;">Каждые сутки в 00:00 МСК</span>
+                    </div>
+                </div>
+
+                <label class="admin-field-label">Месячный бюджет стримера на призы (₽):</label>
+                <input type="number" id="adminEconBudgetInput" class="task-input" value="50000" oninput="recalculateEconRate()" placeholder="50000">
+
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminEconBudgetInput').value='30000'; recalculateEconRate();">30 000 ₽</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconBudgetInput').value='50000'; recalculateEconRate();">50 000 ₽</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconBudgetInput').value='100000'; recalculateEconRate();">100 000 ₽</span>
+                </div>
+
+                <label class="admin-field-label">Лимит игр в день (энергия ⚡):</label>
+                <input type="number" id="adminEconGamesLimitInput" class="task-input" value="20" placeholder="20">
+
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='10'">10 игр</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='15'">15 игр</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='20'">20 игр</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminEconGamesLimitInput').value='30'">30 игр</span>
+                </div>
+
+                <button type="button" class="submit-task-btn" style="margin-top: 14px; padding: 13px; background: linear-gradient(135deg, #0070f3 0%, #00d9ff 100%);" onclick="saveAdminEconomySettings()">
+                    💾 Сохранить настройки экономики
+                </button>
+            </div>
+
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>📦 4 Контура распределения бюджета</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🛒 Магазин (60%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Физические товары и стоки</span>
+                        </div>
+                        <span id="circuitShopRub" style="font-size: 14px; font-weight: 800; color: #8acaff;">30 000 ₽</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🎁 Розыгрыши (20%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Билеты и пулы призов</span>
+                        </div>
+                        <span id="circuitGwRub" style="font-size: 14px; font-weight: 800; color: #00d9ff;">10 000 ₽</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🎲 Игры / Кейсы (10%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Вероятностные дропы</span>
+                        </div>
+                        <span id="circuitGamesRub" style="font-size: 14px; font-weight: 800; color: #ffd700;">5 000 ₽</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 13px; font-weight: 700; color: #fff;">🛡️ Резерв стрима (10%)</span>
+                            <span style="display: block; font-size: 11px; color: var(--secondary);">Ручные конкурсы на Kick</span>
+                        </div>
+                        <span id="circuitReserveRub" style="font-size: 14px; font-weight: 800; color: #ff3366;">5 000 ₽</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>⚡ Управление энергией</span>
+                </div>
+                <button type="button" class="admin-btn-approve" style="width: 100%; padding: 12px; font-size: 13px;" onclick="adminResetAllAttempts()">
+                    🔄 Сбросить энергию себе (восстановить 20/20)
+                </button>
+            </div>
+        </div>
+
         <div id="adm-users" class="admin-section">
             <div class="admin-box">
                 <div class="admin-box-title">
@@ -8287,11 +11227,953 @@ function initAdvancedSystems() {
     updateVipStatusUI();
     renderDailyBonusUI();
     checkDiamondGift();
+    if (typeof initBannerCarousel === 'function') initBannerCarousel();
+    if (typeof initArkadaImages === 'function') initArkadaImages();
+    if (typeof renderArkadaUI === 'function') renderArkadaUI();
+    if (typeof initP2Config === 'function') initP2Config();
+    if (typeof renderP2UI === 'function') renderP2UI();
+    if (typeof recalculateEconRate === 'function') recalculateEconRate();
 }
 window.addEventListener('DOMContentLoaded', initAdvancedSystems);
 window.addEventListener('pageshow', initAdvancedSystems);
 window.addEventListener('focus', initAdvancedSystems);
 setTimeout(initAdvancedSystems, 300);
+
+
+
+
+function preloadGame(url) {}
+
+// ================= ЛОГИКА РОЗЫГРЫШЕЙ =================
+        function switchGwTab(tab) {
+            const btnActive = document.getElementById('gwTabActive');
+            const btnClosed = document.getElementById('gwTabClosed');
+            const activeCont = document.getElementById('gwActiveContainer');
+            const closedCont = document.getElementById('gwClosedContainer');
+
+            if (tab === 'active') {
+                if (btnActive) btnActive.classList.add('active');
+                if (btnClosed) btnClosed.classList.remove('active');
+                if (activeCont) activeCont.style.display = 'block';
+                if (closedCont) closedCont.style.display = 'none';
+            } else {
+                if (btnActive) btnActive.classList.remove('active');
+                if (btnClosed) btnClosed.classList.add('active');
+                if (activeCont) activeCont.style.display = 'none';
+                if (closedCont) closedCont.style.display = 'block';
+            }
+        }
+
+        function openGwTripModal() {
+            const m = document.getElementById('gwTripModal');
+            if (m) m.classList.add('active');
+        }
+
+        function closeGwTripModal() {
+            const m = document.getElementById('gwTripModal');
+            if (m) m.classList.remove('active');
+        }
+
+        function openGiveawaysAll() {
+            if (window.tg && tg.showAlert) {
+                tg.showAlert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
+            } else {
+                alert('🎁 Раздел всех розыгрышей в разработке. Скоро будет доступен!');
+            }
+        }
+
+
+        // ================= КАРУСЕЛЬ БАННЕРОВ (СВАЙП НА ТЕЛЕФОНЕ И МЫШКОЙ НА ПК) =================
+        let bannerTimer = null;
+        let isMouseDown = false;
+        let hasMovedMouse = false;
+        let mouseStartX = 0;
+        let mouseScrollStart = 0;
+
+        function onBannerScroll() {
+            const carousel = document.getElementById('bannerCarousel');
+            const dots = document.querySelectorAll('.banner-dot');
+            if (!carousel || dots.length === 0) return;
+
+            const scrollLeft = carousel.scrollLeft;
+            const width = carousel.offsetWidth || 1;
+            const activeIdx = Math.round(scrollLeft / width);
+
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === activeIdx);
+            });
+        }
+
+        function goToBannerSlide(idx) {
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+            const width = carousel.offsetWidth;
+            carousel.scrollTo({
+                left: idx * width,
+                behavior: 'smooth'
+            });
+            restartBannerTimer();
+        }
+
+        function nextBannerSlide() {
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+            const width = carousel.offsetWidth;
+            const total = carousel.querySelectorAll('.banner-slide').length;
+            if (total <= 1) return;
+            let currentIdx = Math.round(carousel.scrollLeft / width);
+            let nextIdx = (currentIdx + 1) % total;
+            carousel.scrollTo({
+                left: nextIdx * width,
+                behavior: 'smooth'
+            });
+        }
+
+        function restartBannerTimer() {
+            if (bannerTimer) clearInterval(bannerTimer);
+            bannerTimer = setInterval(nextBannerSlide, 5000);
+        }
+
+        function pauseBannerTimer() {
+            if (bannerTimer) clearInterval(bannerTimer);
+        }
+
+        function handleBannerSlideClick(slideIndex) {
+            if (hasMovedMouse) return;
+            if (slideIndex === 0) {
+                openKickStreamLink();
+            } else {
+                openGwTripModal();
+            }
+        }
+
+        function openKickStreamLink() {
+            const kickUrl = 'https://kick.com/vetruch';
+            if (window.tg && tg.openLink) {
+                tg.openLink(kickUrl);
+            } else {
+                window.open(kickUrl, '_blank');
+            }
+        }
+
+        function initBannerCarousel() {
+            const carousel = document.getElementById('bannerCarousel');
+            if (!carousel) return;
+
+            carousel.addEventListener('scroll', onBannerScroll, { passive: true });
+
+            // Перетаскивание мышкой на компьютере (ПК)
+            carousel.addEventListener('mousedown', (e) => {
+                isMouseDown = true;
+                hasMovedMouse = false;
+                mouseStartX = e.pageX - carousel.offsetLeft;
+                mouseScrollStart = carousel.scrollLeft;
+                carousel.style.scrollBehavior = 'auto';
+                pauseBannerTimer();
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isMouseDown) return;
+                e.preventDefault();
+                const x = e.pageX - carousel.offsetLeft;
+                const walk = (x - mouseStartX) * 1.3;
+                if (Math.abs(walk) > 5) {
+                    hasMovedMouse = true;
+                }
+                carousel.scrollLeft = mouseScrollStart - walk;
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (!isMouseDown) return;
+                isMouseDown = false;
+                carousel.style.scrollBehavior = 'smooth';
+
+                // Доводка до ближайшего слайда
+                const width = carousel.offsetWidth || 1;
+                const targetIdx = Math.round(carousel.scrollLeft / width);
+                goToBannerSlide(targetIdx);
+                restartBannerTimer();
+            });
+
+            // На телефоне (тач)
+            carousel.addEventListener('touchstart', () => {
+                hasMovedMouse = false;
+                pauseBannerTimer();
+            }, { passive: true });
+
+            carousel.addEventListener('touchmove', () => {
+                hasMovedMouse = true;
+            }, { passive: true });
+
+            carousel.addEventListener('touchend', () => {
+                restartBannerTimer();
+            }, { passive: true });
+
+            restartBannerTimer();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initBannerCarousel);
+        } else {
+            initBannerCarousel();
+        }
+
+        // ================= МГНОВЕННОЕ ОТКРЫТИЕ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) =================
+        function openGame(url) {
+            if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+                try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch(e) {}
+            }
+            var gameKey = url.replace('.html', '').toLowerCase();
+            var modal = document.getElementById('gameModal');
+            var targetFrame = document.getElementById('frame-' + gameKey);
+
+            if (modal && targetFrame) {
+                var allFrames = modal.querySelectorAll('iframe');
+                for (var i = 0; i < allFrames.length; i++) {
+                    allFrames[i].style.display = 'none';
+                }
+
+                try {
+                    if (targetFrame.contentWindow) {
+                        var currentBal = parseInt(localStorage.getItem('vetruch_balance')) || 500;
+                        if (typeof targetFrame.contentWindow.updateBalanceUI === 'function') {
+                            targetFrame.contentWindow.balance = currentBal;
+                            targetFrame.contentWindow.updateBalanceUI();
+                        }
+                    }
+                } catch(e) {}
+
+                targetFrame.style.display = 'block';
+                modal.style.display = 'block';
+
+                if (window.Telegram && Telegram.WebApp && Telegram.WebApp.BackButton) {
+                    try {
+                        Telegram.WebApp.BackButton.show();
+                        Telegram.WebApp.BackButton.onClick(closeGameModal);
+                    } catch(e) {}
+                }
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        function closeGameModal() {
+            var modal = document.getElementById('gameModal');
+            if (modal) {
+                modal.style.display = 'none';
+                var allFrames = modal.querySelectorAll('iframe');
+                for (var i = 0; i < allFrames.length; i++) {
+                    allFrames[i].style.display = 'none';
+                }
+            }
+            if (window.Telegram && Telegram.WebApp && Telegram.WebApp.BackButton) {
+                try {
+                    Telegram.WebApp.BackButton.hide();
+                } catch(e) {}
+            }
+            if (typeof initBalance === 'function') {
+                try { initBalance(); } catch(e) {}
+            }
+        }
+        window.closeGameModal = closeGameModal;
+
+        function updateGamesEnergyUI() {
+            // Без визуальных плашек
+        }
+
+        function recalculateEconRate() {
+            const input = document.getElementById('adminEconBudgetInput');
+            const budget = input ? (parseFloat(input.value) || 50000) : 50000;
+            const rate = Math.round((budget / 1500000) * 1000 * 10) / 10;
+            const rateEl = document.getElementById('adminRateVal');
+            if (rateEl) rateEl.textContent = rate;
+
+            const shopEl = document.getElementById('circuitShopRub');
+            const gwEl = document.getElementById('circuitGwRub');
+            const gamesEl = document.getElementById('circuitGamesRub');
+            const resEl = document.getElementById('circuitReserveRub');
+
+            if (shopEl) shopEl.textContent = Math.round(budget * 0.6).toLocaleString('ru-RU') + ' ₽';
+            if (gwEl) gwEl.textContent = Math.round(budget * 0.2).toLocaleString('ru-RU') + ' ₽';
+            if (gamesEl) gamesEl.textContent = Math.round(budget * 0.1).toLocaleString('ru-RU') + ' ₽';
+            if (resEl) resEl.textContent = Math.round(budget * 0.1).toLocaleString('ru-RU') + ' ₽';
+        }
+
+        function saveAdminEconomySettings() {
+            const budgetInput = document.getElementById('adminEconBudgetInput');
+            const limitInput = document.getElementById('adminEconGamesLimitInput');
+            const budget = budgetInput ? (parseFloat(budgetInput.value) || 50000) : 50000;
+            const limit = limitInput ? (parseInt(limitInput.value) || 20) : 20;
+
+            localStorage.setItem('vetruch_econ_budget', budget);
+            localStorage.setItem('vetruch_econ_games_limit', limit);
+
+            if (window.VETRUCH_ECONOMY && VETRUCH_ECONOMY.config) {
+                VETRUCH_ECONOMY.config.attemptsPerDay = limit;
+                VETRUCH_ECONOMY.config.budgetRubMonth = budget;
+            }
+
+            try {
+                if (typeof cloudPut === 'function') {
+                    cloudPut('vetruch_app/economy_settings', {
+                        budgetRubMonth: budget,
+                        attemptsPerDay: limit,
+                        updatedAt: Date.now()
+                    });
+                }
+            } catch(e) {}
+
+            recalculateEconRate();
+            updateGamesEnergyUI();
+
+            if (window.tg && tg.showAlert) {
+                tg.showAlert('✅ Настройки экономики сохранены!');
+            } else {
+                alert('✅ Настройки экономики сохранены!');
+            }
+        }
+
+        function adminResetAllAttempts() {
+            try {
+                if (window.VETRUCH_ECONOMY && VETRUCH_ECONOMY.resetAllAttempts) {
+                    VETRUCH_ECONOMY.resetAllAttempts();
+                }
+                localStorage.removeItem('vetruch_daily_attempts_v3');
+                localStorage.removeItem('vetruch_daily_attempts');
+                localStorage.removeItem('vetruch_attempts_left');
+                updateGamesEnergyUI();
+            } catch(e) {}
+
+            if (window.tg && tg.showAlert) {
+                tg.showAlert('⚡ Энергия сброшена: доступно по 20 попыток во ВСЕ 5 игр!');
+            } else {
+                alert('⚡ Энергия сброшена: доступно по 20 попыток во ВСЕ 5 игр!');
+            }
+        }
+
+        // Авто-обновление таймера и энергии при переключении страниц
+        setInterval(updateGamesEnergyUI, 30000);
+        document.addEventListener('DOMContentLoaded', updateGamesEnergyUI);
+
+// ================= ПАРТНЁРСКАЯ СИСТЕМА ARKADA =================
+const ARKADA_URL = "https://lustrous-way.com/sexzaccif";
+// ВСТАВЬ СЮДА ПРЯМУЮ ССЫЛКУ НА КАРТИНКУ (i.ibb.co/...) ИЛИ ЛОКАЛЬНЫЙ ФАЙЛ (например: "arkada_girl.png")
+const ARKADA_IMG_URL = "arkada-girl.png";
+
+const ARKADA_DEPOSITS = [
+    { id: 'dep_100',       rub: '100 ₽',       reward: 4000,    hot: true },
+    { id: 'dep_1000',      rub: '1 000 ₽',     reward: 3000 },
+    { id: 'dep_2500',      rub: '2 500 ₽',     reward: 5000 },
+    { id: 'dep_5000',      rub: '5 000 ₽',     reward: 10000 },
+    { id: 'dep_10000',     rub: '10 000 ₽',    reward: 20000 },
+    { id: 'dep_20000',     rub: '20 000 ₽',    reward: 40000 },
+    { id: 'dep_35000',     rub: '35 000 ₽',    reward: 70000 },
+    { id: 'dep_50000',     rub: '50 000 ₽',    reward: 100000 },
+    { id: 'dep_100000',    rub: '100 000 ₽',   reward: 200000 },
+    { id: 'dep_250000',    rub: '250 000 ₽',   reward: 500000 },
+    { id: 'dep_500000',    rub: '500 000 ₽',   reward: 1000000 },
+    { id: 'dep_750000',    rub: '750 000 ₽',   reward: 1500000 },
+    { id: 'dep_1000000',   rub: '1 000 000 ₽', reward: 2000000 },
+    { id: 'dep_1500000',   rub: '1 500 000 ₽', reward: 3000000 },
+    { id: 'dep_2000000',   rub: '2 000 000 ₽', reward: 4000000 }
+];
+
+let arkadaScreenshots = {};
+
+function getArkadaProgress() {
+    try {
+        const raw = localStorage.getItem('vetruch_arkada_progress');
+        if (raw) {
+            const p = JSON.parse(raw);
+            return { bind: p.bind || null, arkadaId: p.arkadaId || '', deposits: p.deposits || {} };
+        }
+    } catch (e) {}
+    return { bind: null, arkadaId: '', deposits: {} };
+}
+
+function saveArkadaProgressLocal(prog) {
+    localStorage.setItem('vetruch_arkada_progress', JSON.stringify(prog));
+}
+
+function initArkadaImages() {
+    const img1 = document.getElementById('arkadaCardImg');
+    const img2 = document.getElementById('arkadaModalAvatar');
+    if (img1) img1.src = ARKADA_IMG_URL;
+    if (img2) img2.src = ARKADA_IMG_URL;
+}
+
+function openArkadaSite() {
+    if (window.tg && tg.openLink) tg.openLink(ARKADA_URL);
+    else window.open(ARKADA_URL, '_blank');
+}
+
+function renderArkadaUI() {
+    const prog = getArkadaProgress();
+
+    // 1. Точки на карточке (16 шагов: 1 привязка + 15 депозитов)
+    const dotsEl = document.getElementById('arkadaCardDots');
+    if (dotsEl) {
+        const states = [prog.bind, ...ARKADA_DEPOSITS.map(d => prog.deposits[d.id] || null)];
+        dotsEl.innerHTML = states.map(st => {
+            const cls = st === 'done' ? 'done' : (st === 'pending' ? 'pending' : '');
+            return `<span class="arkada-dot ${cls}"></span>`;
+        }).join('');
+    }
+
+    // 2. Шаг 1 в модалке
+    const bindCard = document.getElementById('arkadaBindCard');
+    const stepNum = document.getElementById('arkadaBindStepNum');
+    const toggleBtn = document.getElementById('arkadaToggleBindBtn');
+    const isBound = prog.bind === 'done';
+
+    if (bindCard && stepNum && toggleBtn) {
+        bindCard.classList.toggle('is-done', isBound);
+        if (isBound) {
+            stepNum.textContent = '✓';
+            stepNum.style.color = '#00e676';
+            stepNum.style.borderColor = '#00e676';
+            toggleBtn.textContent = `Привязано (ID: ${prog.arkadaId || 'OK'})`;
+            toggleBtn.style.color = '#00e676';
+        } else if (prog.bind === 'pending') {
+            stepNum.textContent = '⏳';
+            toggleBtn.textContent = 'На проверке ⏳';
+            toggleBtn.style.color = '#fbbf24';
+        } else {
+            stepNum.textContent = '1';
+            stepNum.style.color = '#00d9ff';
+            stepNum.style.borderColor = 'rgba(0, 217, 255, 0.5)';
+            toggleBtn.textContent = 'Прислать ID';
+            toggleBtn.style.color = '#ffffff';
+        }
+    }
+
+    // 3. Список 15 депозитов
+    const listEl = document.getElementById('arkadaDepositsList');
+    if (!listEl) return;
+
+    listEl.innerHTML = ARKADA_DEPOSITS.map(dep => {
+        const st = prog.deposits[dep.id] || null;
+        let statusHtml = '<span class="arkada-dep-status">После привязки ❯</span>';
+        let itemClass = 'arkada-dep-item';
+
+        if (st === 'done') {
+            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+        } else if (st === 'pending') {
+            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+        } else if (isBound) {
+            itemClass += ' unlocked';
+            statusHtml = '<span class="arkada-dep-status ready">Выполнить ❯</span>';
+        }
+
+        const canSubmit = isBound && !st;
+
+        return `
+            <div class="${itemClass}" onclick="${canSubmit ? `toggleArkadaDepForm('${dep.id}')` : (!isBound ? `alertArkadaBindFirst()` : '')}">
+                <div class="arkada-dep-row">
+                    <div class="arkada-dep-left">
+                        <span class="arkada-dep-rub">${dep.rub}</span>
+                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        <span class="arkada-dep-reward">
+                            <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
+                        </span>
+                    </div>
+                    ${statusHtml}
+                </div>
+
+                ${canSubmit ? `
+                <div class="arkada-inline-form" id="arkadaForm_${dep.id}" onclick="event.stopPropagation()">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:12px; color:#9ba8ba;">Сделай депозит ${dep.rub} на ARKADA и прикрепи скриншот:</span>
+                        <button type="button" class="arkada-link-btn" onclick="openArkadaSite()">Открыть ❯</button>
+                    </div>
+                    <input type="text" class="task-input" id="arkadaDepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
+                    <label class="file-upload-lbl" style="margin-bottom:12px;">
+                        <input type="file" accept="image/*" onchange="handleArkadaDepFile(this, '${dep.id}')">
+                        <span id="arkadaDepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                    </label>
+                    <button type="button" class="submit-task-btn" onclick="submitArkadaDeposit('${dep.id}')">Отправить на проверку</button>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function openArkadaModal() {
+    const userInp = document.getElementById('arkadaBindUserInput');
+    if (userInp && !userInp.value) userInp.value = getDefaultUsername();
+    renderArkadaUI();
+
+    const modal = document.getElementById('arkadaModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeArkadaModal() {
+    const modal = document.getElementById('arkadaModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function alertArkadaBindFirst() {
+    const msg = '⚠️ Сначала привяжите аккаунт ARKADA (Шаг 1) и дождитесь подтверждения!';
+    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+}
+
+function toggleArkadaBindForm() {
+    const prog = getArkadaProgress();
+    if (prog.bind === 'done' || prog.bind === 'pending') return;
+    const form = document.getElementById('arkadaBindForm');
+    if (form) form.classList.toggle('open');
+}
+
+function toggleArkadaDepForm(depId) {
+    document.querySelectorAll('.arkada-dep-list .arkada-inline-form').forEach(el => {
+        if (el.id !== 'arkadaForm_' + depId) el.classList.remove('open');
+    });
+    const form = document.getElementById('arkadaForm_' + depId);
+    if (form) form.classList.toggle('open');
+}
+
+function handleArkadaDepFile(input, depId) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const lbl = document.getElementById('arkadaDepFileName_' + depId);
+    if (lbl) {
+        lbl.textContent = '✅ ' + file.name;
+        lbl.style.color = '#00e676';
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, 480 / img.width);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            arkadaScreenshots[depId] = canvas.toDataURL('image/jpeg', 0.65);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+async function submitArkadaBind() {
+    const arkId = (document.getElementById('arkadaBindIdInput')?.value || '').trim();
+    let username = (document.getElementById('arkadaBindUserInput')?.value || '').trim();
+
+    if (!arkId) {
+        const msg = '⚠️ Введите ваш ID профиля на ARKADA!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username в Telegram!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `Привязка ARKADA (ID: ${arkId})`,
+        reward: 1000,
+        taskKey: 'arkada_bind',
+        arkadaId: arkId,
+        screenshot: ''
+    });
+
+    const prog = getArkadaProgress();
+    prog.bind = 'pending';
+    prog.arkadaId = arkId;
+    saveArkadaProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/arkada_progress/${myId}`, prog);
+
+    document.getElementById('arkadaBindForm')?.classList.remove('open');
+    renderArkadaUI();
+
+    const okMsg = '🚀 ID отправлен администратору на проверку!';
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+async function submitArkadaDeposit(depId) {
+    const dep = ARKADA_DEPOSITS.find(d => d.id === depId);
+    if (!dep) return;
+
+    let username = (document.getElementById('arkadaDepUser_' + depId)?.value || '').trim();
+    const shot = arkadaScreenshots[depId] || '';
+
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!shot) {
+        const msg = '⚠️ Загрузите скриншот депозита!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    const prog = getArkadaProgress();
+
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `ARKADA депозит ${dep.rub}`,
+        reward: dep.reward,
+        taskKey: 'arkada_dep_' + depId,
+        tierId: depId,
+        arkadaId: prog.arkadaId || '',
+        screenshot: shot
+    });
+
+    prog.deposits[depId] = 'pending';
+    saveArkadaProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/arkada_progress/${myId}`, prog);
+
+    delete arkadaScreenshots[depId];
+    renderArkadaUI();
+
+    const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+initArkadaImages();
+renderArkadaUI();
+
+// ================= ПАРТНЁРСКАЯ СИСТЕМА #2 =================
+const P2_NAME = "LA Casino"; // <-- ВПИШИ НАЗВАНИЕ ПРОЕКТА
+const P2_URL = "https://lunar-haze.com/?serial=61374260&creative_id=9330";
+const P2_IMG_URL = "partner2-girl.png"; // <-- ИМЯ ФАЙЛА КАРТИНКИ НА GITHUB
+
+const P2_DEPOSITS = [
+    { id: 'dep_100',     rub: '100 ₽',       reward: 4000,    hot: true },
+    { id: 'dep_1000',    rub: '1 000 ₽',     reward: 3000 },
+    { id: 'dep_2500',    rub: '2 500 ₽',     reward: 5000 },
+    { id: 'dep_5000',    rub: '5 000 ₽',     reward: 10000 },
+    { id: 'dep_10000',   rub: '10 000 ₽',    reward: 20000 },
+    { id: 'dep_20000',   rub: '20 000 ₽',    reward: 40000 },
+    { id: 'dep_35000',   rub: '35 000 ₽',    reward: 70000 },
+    { id: 'dep_50000',   rub: '50 000 ₽',    reward: 100000 },
+    { id: 'dep_100000',  rub: '100 000 ₽',   reward: 200000 },
+    { id: 'dep_250000',  rub: '250 000 ₽',   reward: 500000 },
+    { id: 'dep_500000',  rub: '500 000 ₽',   reward: 1000000 },
+    { id: 'dep_750000',  rub: '750 000 ₽',   reward: 1500000 },
+    { id: 'dep_1000000', rub: '1 000 000 ₽', reward: 2000000 },
+    { id: 'dep_1500000', rub: '1 500 000 ₽', reward: 3000000 },
+    { id: 'dep_2000000', rub: '2 000 000 ₽', reward: 4000000 }
+];
+
+let p2Screenshots = {};
+
+function getP2Progress() {
+    try {
+        const raw = localStorage.getItem('vetruch_p2_progress');
+        if (raw) {
+            const p = JSON.parse(raw);
+            return { bind: p.bind || null, partnerId: p.partnerId || '', deposits: p.deposits || {} };
+        }
+    } catch (e) {}
+    return { bind: null, partnerId: '', deposits: {} };
+}
+
+function saveP2ProgressLocal(prog) {
+    localStorage.setItem('vetruch_p2_progress', JSON.stringify(prog));
+}
+
+function initP2Config() {
+    const t1 = document.getElementById('p2CardTitle');
+    const t2 = document.getElementById('p2ModalTitle');
+    const t3 = document.getElementById('p2BindTitle');
+    const btn = document.getElementById('p2OpenSiteBtn');
+    const inp = document.getElementById('p2BindIdInput');
+    const img1 = document.getElementById('p2CardImg');
+    const img2 = document.getElementById('p2ModalAvatar');
+
+    if (t1) t1.textContent = P2_NAME;
+    if (t2) t2.textContent = P2_NAME;
+    if (t3) t3.textContent = `Привяжи аккаунт ${P2_NAME}`;
+    if (btn) btn.textContent = `Открыть ${P2_NAME} ❯`;
+    if (inp) inp.placeholder = `Ваш ID профиля на ${P2_NAME}`;
+    if (img1) img1.src = P2_IMG_URL;
+    if (img2) img2.src = P2_IMG_URL;
+}
+
+function openP2Site() {
+    if (window.tg && tg.openLink) tg.openLink(P2_URL);
+    else window.open(P2_URL, '_blank');
+}
+
+function renderP2UI() {
+    const prog = getP2Progress();
+
+    const dotsEl = document.getElementById('p2CardDots');
+    if (dotsEl) {
+        const states = [prog.bind, ...P2_DEPOSITS.map(d => prog.deposits[d.id] || null)];
+        dotsEl.innerHTML = states.map(st => {
+            const cls = st === 'done' ? 'done' : (st === 'pending' ? 'pending' : '');
+            return `<span class="p2-dot ${cls}"></span>`;
+        }).join('');
+    }
+
+    const bindCard = document.getElementById('p2BindCard');
+    const stepNum = document.getElementById('p2BindStepNum');
+    const toggleBtn = document.getElementById('p2ToggleBindBtn');
+    const isBound = prog.bind === 'done';
+
+    if (bindCard && stepNum && toggleBtn) {
+        bindCard.classList.toggle('is-done', isBound);
+        if (isBound) {
+            stepNum.textContent = '✓';
+            stepNum.style.color = '#00e676';
+            stepNum.style.borderColor = '#00e676';
+            toggleBtn.textContent = `Привязано (ID: ${prog.partnerId || 'OK'})`;
+            toggleBtn.style.color = '#00e676';
+        } else if (prog.bind === 'pending') {
+            stepNum.textContent = '⏳';
+            toggleBtn.textContent = 'На проверке ⏳';
+            toggleBtn.style.color = '#fbbf24';
+        } else {
+            stepNum.textContent = '1';
+            stepNum.style.color = '#ff66b2';
+            stepNum.style.borderColor = 'rgba(255, 46, 147, 0.55)';
+            toggleBtn.textContent = 'Прислать ID';
+            toggleBtn.style.color = '#ffffff';
+        }
+    }
+
+    const listEl = document.getElementById('p2DepositsList');
+    if (!listEl) return;
+
+    listEl.innerHTML = P2_DEPOSITS.map(dep => {
+        const st = prog.deposits[dep.id] || null;
+        let statusHtml = '<span class="arkada-dep-status">После привязки ❯</span>';
+        let itemClass = 'p2-dep-item';
+
+        if (st === 'done') {
+            statusHtml = '<span class="arkada-dep-status done">Выполнено ✓</span>';
+        } else if (st === 'pending') {
+            statusHtml = '<span class="arkada-dep-status pending">На проверке ⏳</span>';
+        } else if (isBound) {
+            itemClass += ' unlocked';
+            statusHtml = '<span class="arkada-dep-status p2-dep-status-ready">Выполнить ❯</span>';
+        }
+
+        const canSubmit = isBound && !st;
+
+        return `
+            <div class="${itemClass}" onclick="${canSubmit ? `toggleP2DepForm('${dep.id}')` : (!isBound ? `alertP2BindFirst()` : '')}">
+                <div class="arkada-dep-row">
+                    <div class="arkada-dep-left">
+                        <span class="arkada-dep-rub">${dep.rub}</span>
+                        ${dep.hot ? '<span class="arkada-hot-badge">🔥 HOT</span>' : ''}
+                        <span class="arkada-dep-reward">
+                            <img src="coins.png" alt="" class="coin-icon-sm"> ${formatCoins(dep.reward)}
+                        </span>
+                    </div>
+                    ${statusHtml}
+                </div>
+
+                ${canSubmit ? `
+                <div class="arkada-inline-form" id="p2Form_${dep.id}" style="border-top-color: rgba(255, 46, 147, 0.35);" onclick="event.stopPropagation()">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-size:12px; color:#9ba8ba;">Сделай депозит ${dep.rub} на ${P2_NAME} и прикрепи скриншот:</span>
+                        <button type="button" class="p2-link-btn" onclick="openP2Site()">Открыть ❯</button>
+                    </div>
+                    <input type="text" class="task-input" id="p2DepUser_${dep.id}" value="${getDefaultUsername()}" placeholder="Ваш @username">
+                    <label class="file-upload-lbl" style="margin-bottom:12px; color:#ff66b2;">
+                        <input type="file" accept="image/*" onchange="handleP2DepFile(this, '${dep.id}')">
+                        <span id="p2DepFileName_${dep.id}">📷 Загрузить скриншот депозита</span>
+                    </label>
+                    <button type="button" class="submit-task-btn" style="background: linear-gradient(90deg, #ff2e93, #a855f7); box-shadow: 0 0 20px rgba(255, 46, 147, 0.4);" onclick="submitP2Deposit('${dep.id}')">Отправить на проверку</button>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function openP2Modal() {
+    const userInp = document.getElementById('p2BindUserInput');
+    if (userInp && !userInp.value) userInp.value = getDefaultUsername();
+    renderP2UI();
+
+    const modal = document.getElementById('p2Modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeP2Modal() {
+    const modal = document.getElementById('p2Modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function alertP2BindFirst() {
+    const msg = `⚠️ Сначала привяжите аккаунт ${P2_NAME} (Шаг 1) и дождитесь подтверждения!`;
+    if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+}
+
+function toggleP2BindForm() {
+    const prog = getP2Progress();
+    if (prog.bind === 'done' || prog.bind === 'pending') return;
+    const form = document.getElementById('p2BindForm');
+    if (form) form.classList.toggle('open');
+}
+
+function toggleP2DepForm(depId) {
+    document.querySelectorAll('#p2DepositsList .arkada-inline-form').forEach(el => {
+        if (el.id !== 'p2Form_' + depId) el.classList.remove('open');
+    });
+    const form = document.getElementById('p2Form_' + depId);
+    if (form) form.classList.toggle('open');
+}
+
+function handleP2DepFile(input, depId) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const lbl = document.getElementById('p2DepFileName_' + depId);
+    if (lbl) {
+        lbl.textContent = '✅ ' + file.name;
+        lbl.style.color = '#00e676';
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, 480 / img.width);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            p2Screenshots[depId] = canvas.toDataURL('image/jpeg', 0.65);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+async function submitP2Bind() {
+    const partnerId = (document.getElementById('p2BindIdInput')?.value || '').trim();
+    let username = (document.getElementById('p2BindUserInput')?.value || '').trim();
+
+    if (!partnerId) {
+        const msg = `⚠️ Введите ваш ID профиля на ${P2_NAME}!`;
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username в Telegram!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `Привязка ${P2_NAME} (ID: ${partnerId})`,
+        reward: 1000,
+        p2Key: 'p2_bind',
+        partnerId: partnerId,
+        partnerName: P2_NAME,
+        screenshot: ''
+    });
+
+    const prog = getP2Progress();
+    prog.bind = 'pending';
+    prog.partnerId = partnerId;
+    saveP2ProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/partner2_progress/${myId}`, prog);
+
+    document.getElementById('p2BindForm')?.classList.remove('open');
+    renderP2UI();
+
+    const okMsg = '🚀 ID отправлен администратору на проверку!';
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+async function submitP2Deposit(depId) {
+    const dep = P2_DEPOSITS.find(d => d.id === depId);
+    if (!dep) return;
+
+    let username = (document.getElementById('p2DepUser_' + depId)?.value || '').trim();
+    const shot = p2Screenshots[depId] || '';
+
+    if (!username) {
+        const msg = '⚠️ Укажите ваш @username!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!shot) {
+        const msg = '⚠️ Загрузите скриншот депозита!';
+        if (window.tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+        return;
+    }
+    if (!username.startsWith('@')) username = '@' + username;
+
+    const myId = getCurrentTgId();
+    const prog = getP2Progress();
+
+    let tasks = (await cloudGet('vetruch_app/tasks')) || getAdminTasks();
+    if (!Array.isArray(tasks)) tasks = [];
+
+    tasks.unshift({
+        id: Date.now(),
+        user: username,
+        userId: myId,
+        title: `${P2_NAME} депозит ${dep.rub}`,
+        reward: dep.reward,
+        p2Key: 'p2_dep_' + depId,
+        tierId: depId,
+        partnerId: prog.partnerId || '',
+        partnerName: P2_NAME,
+        screenshot: shot
+    });
+
+    prog.deposits[depId] = 'pending';
+    saveP2ProgressLocal(prog);
+
+    await cloudPut('vetruch_app/tasks', tasks);
+    await cloudPut(`vetruch_app/partner2_progress/${myId}`, prog);
+
+    delete p2Screenshots[depId];
+    renderP2UI();
+
+    const okMsg = `🚀 Заявка на депозит ${dep.rub} отправлена на проверку!`;
+    if (window.tg && tg.showAlert) tg.showAlert(okMsg); else alert(okMsg);
+}
+
+initP2Config();
+renderP2UI();
 
 </script>
 
@@ -8320,6 +12202,16 @@ setTimeout(initAdvancedSystems, 300);
                 </button>
             </div>
         </div>
+    </div>
+
+
+    <!-- МГНОВЕННЫЙ КОНТЕЙНЕР ДЛЯ ИГР (ПРЕДЗАГРУЖЕННЫЕ ФРЕЙМЫ 0 МС) -->
+    <div id="gameModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: #000000; width: 100%; height: 100%; overflow: hidden; -webkit-overflow-scrolling: touch;">
+        <iframe id="frame-towers" src="towers.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-mines" src="mines.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-cards" src="cards.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-balloon" src="balloon.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-dice" src="dice.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
 
 </body>
