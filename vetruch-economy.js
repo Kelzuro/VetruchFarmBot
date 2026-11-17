@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    VETRUCH ECONOMY ENGINE v3.2
    - Лимит 20 игр в день на каждую игру (сброс в 00:00 МСК)
    - Контроль RTP 60%
@@ -82,7 +82,7 @@
       if (window.parent && window.parent !== window && typeof window.parent.cloudPut === 'function') {
         window.parent.cloudPut('vetruch_app/total_won/' + uid, next);
       } else {
-        fetch('https://vetruchbot-default-rtdb.firebaseio.com/vetruch_app/total_won/' + encodeURIComponent(uid) + '.json', {
+        fetch('https://vetruchfarmbot-default-rtdb.firebaseio.com/vetruch_app/total_won/' + encodeURIComponent(uid) + '.json', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(next)

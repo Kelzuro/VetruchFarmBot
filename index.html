@@ -11201,9 +11201,14 @@
             if (!base) return null;
             try {
                 const res = await fetch(`${base}/${path}.json`);
-                if (!res.ok) return null;
+                if (!res.ok) {
+                    window.__cloudError = res.status;
+                    return null;
+                }
+                window.__cloudError = 0;
                 return await res.json();
             } catch (e) {
+                window.__cloudError = -1;
                 return null;
             }
         }
@@ -11212,13 +11217,18 @@
             const base = getCleanDbUrl();
             if (!base) return false;
             try {
-                await fetch(`${base}/${path}.json`, {
+                const res = await fetch(`${base}/${path}.json`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
+                if (!res.ok) {
+                    window.__cloudError = res.status;
+                    return false;
+                }
                 return true;
             } catch (e) {
+                window.__cloudError = -1;
                 return false;
             }
         }
@@ -11227,7 +11237,11 @@
             const bar = document.getElementById('adminCloudStatus');
             if (!bar) return;
             const span = bar.querySelector('span');
-            if (getCleanDbUrl()) {
+            if (getCleanDbUrl() && window.__cloudError) {
+                span.textContent = `🔴 Облако недоступно (ошибка ${window.__cloudError}) — проверьте правила Firebase`;
+                bar.style.borderColor = 'rgba(255, 51, 102, 0.45)';
+                bar.style.color = '#ff5277';
+            } else if (getCleanDbUrl()) {
                 span.textContent = '🟢 Облако активно (заявки со всех устройств)';
                 bar.style.borderColor = 'rgba(0, 230, 118, 0.35)';
                 bar.style.color = '#00e676';
@@ -11515,6 +11529,39 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                 await cloudPut(`vetruch_app/total_won/${myId}`, finalTotalWon);
             }
             if (typeof updateTotalWonUI === 'function') updateTotalWonUI();
+
+            // 4. Синхронизация опыта (EXP / VIP), ежедневного бонуса и VIP-подарков между устройствами
+            if (cloudState) {
+                const cloudUser = (cloudState.users && cloudState.users[myId]) ? cloudState.users[myId] : {};
+
+                const localXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0;
+                const cloudXp = Number(cloudUser.xp || 0);
+                const finalXp = Math.max(localXp, cloudXp);
+                if (finalXp !== localXp) localStorage.setItem('vetruch_user_xp', String(finalXp));
+                if (localXp > cloudXp) await cloudPut(`vetruch_app/users/${myId}/xp`, finalXp);
+
+                const localGifts = parseInt(localStorage.getItem('vetruch_gifts_claimed') || '0', 10) || 0;
+                const cloudGifts = Number(cloudUser.gifts_claimed || 0);
+                const finalGifts = Math.max(localGifts, cloudGifts);
+                if (finalGifts !== localGifts) localStorage.setItem('vetruch_gifts_claimed', String(finalGifts));
+                if (localGifts > cloudGifts) await cloudPut(`vetruch_app/users/${myId}/gifts_claimed`, finalGifts);
+
+                const localDaily = {
+                    streak: parseInt(localStorage.getItem('vetruch_daily_streak') || '0', 10) || 0,
+                    lastDate: localStorage.getItem('vetruch_last_daily_date') || ''
+                };
+                const cloudDaily = cloudUser.daily_streak || null;
+                if (cloudDaily && cloudDaily.lastDate && cloudDaily.lastDate > localDaily.lastDate) {
+                    localStorage.setItem('vetruch_daily_streak', String(cloudDaily.streak || 0));
+                    localStorage.setItem('vetruch_last_daily_date', cloudDaily.lastDate);
+                } else if (localDaily.lastDate && (!cloudDaily || localDaily.lastDate > (cloudDaily.lastDate || ''))) {
+                    await cloudPut(`vetruch_app/users/${myId}/daily_streak`, localDaily);
+                }
+
+                if (typeof updateVipStatusUI === 'function') updateVipStatusUI();
+                if (typeof renderDailyBonusUI === 'function') renderDailyBonusUI();
+            }
+            updateCloudStatusUI();
 
             let completedList = (cloudState && cloudState.completed_tasks && Array.isArray(cloudState.completed_tasks[myId]))
                 ? cloudState.completed_tasks[myId]
@@ -14921,6 +14968,7 @@ async function confirmGiftClaim() {
     const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'guest';
     const giftsClaimed = parseInt(localStorage.getItem('vetruch_gifts_claimed') || '0', 10);
     localStorage.setItem('vetruch_gifts_claimed', giftsClaimed + 1);
+    if (typeof cloudPut === 'function') cloudPut(`vetruch_app/users/${myId}/gifts_claimed`, giftsClaimed + 1);
 
     const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     const giftOrder = {
@@ -15033,6 +15081,7 @@ async function claimDailyReward(btn) {
     let bal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
     bal += reward;
     localStorage.setItem('vetruch_balance', bal);
+    localStorage.setItem('vetruch_cloud_synced_bal', bal);
     localStorage.setItem('vetruch_last_daily_date', today);
     localStorage.setItem('vetruch_daily_streak', dayNum);
 
