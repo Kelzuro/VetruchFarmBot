@@ -794,7 +794,7 @@
     -ms-overflow-style: none;
     width: 100%;
     position: relative;
-    z-index: 9999;
+    z-index: 20;
     clear: both;
     cursor: grab;
     user-select: none;
@@ -2499,7 +2499,7 @@
             background: rgba(3, 6, 12, 0.78); 
             backdrop-filter: blur(20px) brightness(0.65); 
             -webkit-backdrop-filter: blur(20px) brightness(0.65);
-            z-index: 9999; 
+            z-index: 10000; 
             display: none; 
             align-items: center; 
             justify-content: center;
@@ -6757,6 +6757,513 @@
     font-weight: 800;
     flex-shrink: 0;
 }
+
+/* ================= ВЫПОЛНЕННЫЕ ЗАДАНИЯ ================= */
+.featured-task.is-task-completed {
+    display: none !important;
+}
+.completed-tasks-section {
+    margin-top: 26px;
+    clear: both;
+    display: none;
+}
+.completed-tasks-heading {
+    font-size: 16px;
+    font-weight: 800;
+    color: #e5e7eb;
+    margin: 0 0 12px 2px;
+    letter-spacing: 0.2px;
+}
+.completed-tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.completed-task-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 22px;
+    background: rgba(16, 19, 27, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+}
+.completed-task-check {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #74d49e 0%, #58be86 100%);
+    box-shadow: 0 0 16px rgba(102, 204, 148, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.completed-task-check svg {
+    width: 24px;
+    height: 24px;
+    stroke: #0b1912;
+    stroke-width: 2.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.completed-task-body {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+.completed-task-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 3px;
+}
+.completed-task-desc {
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.completed-task-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(62, 180, 125, 0.18);
+    color: #5ee2a0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* ================= ПРОМОКОД В ПРОФИЛЕ ================= */
+.profile-promo-card {
+    background: linear-gradient(180deg, rgba(16, 18, 26, 0.92) 0%, rgba(9, 10, 15, 0.98) 100%);
+    border: 1px solid rgba(0, 136, 255, 0.35);
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    text-align: left;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+}
+.profile-promo-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.profile-promo-title {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.profile-promo-sub {
+    font-size: 11px;
+    font-weight: 700;
+    color: #5ac8ff;
+}
+.profile-promo-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.profile-promo-input {
+    flex: 1;
+    min-width: 0;
+    background: #07080d;
+    border: 1px solid rgba(0, 136, 255, 0.28);
+    color: #ffffff;
+    padding: 12px 13px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.profile-promo-input::placeholder {
+    text-transform: none;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: #6b7280;
+}
+.profile-promo-input:focus {
+    border-color: #0088ff;
+    box-shadow: 0 0 12px rgba(0, 136, 255, 0.25);
+}
+.profile-promo-btn {
+    flex-shrink: 0;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(90deg, #0088ff 0%, #00c6ff 100%);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 136, 255, 0.35);
+    transition: transform 0.15s ease, opacity 0.2s ease;
+}
+.profile-promo-btn:active {
+    transform: scale(0.95);
+}
+.profile-promo-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.profile-promo-msg {
+    display: none;
+    margin-top: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* ================= МАГАЗИН / КЕЙСЫ И МОИ ЗАКАЗЫ ================= */
+.shop-mode-switch {
+    clear: both;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 12px;
+}
+.shop-mode-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 11px 10px;
+    background: transparent;
+    color: var(--secondary);
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+}
+.shop-mode-btn.active {
+    background: linear-gradient(135deg, #0070f3 0%, #00b4ff 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 136, 255, 0.4);
+}
+.shop-mode-btn:active {
+    transform: scale(0.97);
+}
+.my-orders-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.2s ease;
+}
+.my-orders-bar:active {
+    transform: scale(0.98);
+    border-color: rgba(0, 136, 255, 0.45);
+}
+.my-orders-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #ffffff;
+}
+.my-orders-bar-arrow {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 700;
+}
+.cases-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 6px;
+    clear: both;
+}
+.case-card {
+    background: radial-gradient(100% 90% at 50% 25%, rgba(20, 83, 45, 0.34) 0%, rgba(7, 15, 11, 0.97) 75%);
+    border: 1.5px solid #133523;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 18px rgba(16, 185, 129, 0.08);
+}
+.case-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.25;
+}
+.case-art-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border: 1px solid rgba(22, 101, 52, 0.45);
+    background: #050c08;
+}
+.case-art-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.case-top-pill {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    white-space: nowrap;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(5, 16, 10, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+}
+.case-open-btn {
+    width: 100%;
+    padding: 9px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
+    color: #8c97a7;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+.case-open-btn.has-keys {
+    border: none;
+    background: linear-gradient(90deg, #0088ff 0%, #00d9ff 100%);
+    color: #ffffff;
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(0, 170, 255, 0.4);
+}
+.case-open-btn:active {
+    transform: scale(0.96);
+}
+.case-inside-btn {
+    width: 100%;
+    padding: 9px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.2s ease;
+}
+.case-inside-btn:active {
+    transform: scale(0.96);
+    border-color: #00d9ff;
+}
+.case-drops-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.case-drop-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 16px 10px 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.case-drop-card.bg-legendary {
+    background: linear-gradient(180deg, rgba(251, 191, 36, 0.11) 0%, rgba(20, 17, 12, 0.95) 100%);
+    border-color: rgba(251, 191, 36, 0.35);
+}
+.case-drop-card.bg-epic {
+    background: linear-gradient(180deg, rgba(168, 85, 247, 0.12) 0%, rgba(18, 14, 26, 0.95) 100%);
+    border-color: rgba(168, 85, 247, 0.35);
+}
+.case-drop-card.bg-rare {
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.10) 0%, rgba(12, 17, 26, 0.95) 100%);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+.case-drop-img {
+    width: 68px;
+    height: 68px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: rgba(0, 0, 0, 0.35);
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+.case-drop-img.is-coin {
+    object-fit: contain;
+    padding: 12px;
+}
+.case-drop-info {
+    width: 100%;
+    min-width: 0;
+}
+.case-drop-name {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 4px;
+}
+.case-drop-rarity {
+    font-size: 11.5px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.rarity-common { color: #94a3b8; }
+.rarity-rare { color: #38bdf8; }
+.rarity-epic { color: #c084fc; }
+.rarity-legendary { color: #fbbf24; }
+.case-drop-chance {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+}
+.case-roulette-box {
+    display: none;
+    position: relative;
+    overflow: hidden;
+    height: 92px;
+    border-radius: 16px;
+    background: rgba(6, 10, 18, 0.95);
+    border: 1.5px solid rgba(0, 170, 255, 0.45);
+    margin-bottom: 14px;
+    box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.8);
+}
+.case-roulette-box.open {
+    display: block;
+}
+.case-roulette-pointer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: #00d9ff;
+    box-shadow: 0 0 12px #00d9ff;
+    z-index: 3;
+    transform: translateX(-50%);
+}
+.case-roulette-track {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 8px;
+    padding: 0 8px;
+    will-change: transform;
+}
+.case-roulette-item {
+    flex: 0 0 76px;
+    height: 76px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    text-align: center;
+}
+.case-roulette-item img {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 3px;
+}
+.case-roulette-item span {
+    font-size: 9px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 68px;
+}
+.case-win-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.16), rgba(0, 136, 255, 0.14));
+    border: 1.5px solid rgba(0, 230, 118, 0.5);
+    border-radius: 14px;
+    padding: 11px 14px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+.case-win-banner.open {
+    display: block;
+    animation: smoothFloatUp 0.3s ease;
+}
+
+/* ================= СТАТУСЫ ПРИВЯЗОК ================= */
+.profile-status-pill.pending {
+    background: rgba(251, 191, 36, 0.14);
+    border: 1px solid rgba(251, 191, 36, 0.38);
+    color: #fbbf24;
+}
+.profile-bind-ico.ark-ico {
+    background: rgba(0, 170, 255, 0.16);
+    color: #00d9ff;
+    border: 1px solid rgba(0, 217, 255, 0.35);
+}
+.profile-bind-ico.tp-ico {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.35);
+}
+.profile-bind-ico.upx2-ico {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(52, 211, 153, 0.35);
+}
         
 </style>
     
@@ -7633,26 +8140,34 @@
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
         </div>
 
-        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Задания</h2>
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 16px !important; display: inline-block; animation-delay: 0.05s;">Задания</h2>
 
         <!-- ПРОГРЕСС ВЫПОЛНЕНИЯ ЗАДАНИЙ -->
-        <div class="tasks-progress-wrap anim-item" style="clear: both; margin-bottom: 20px; animation-delay: 0.08s;">
+        <div class="tasks-progress-wrap anim-item" style="clear: both; margin-bottom: 14px; animation-delay: 0.06s;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-size: 13.5px; font-weight: 700; color: #94a3b8;">Выполнено заданий:</span>
-                <span id="tasksProgressText" style="font-size: 14px; font-weight: 800; color: #38bdf8;">0 из 8</span>
+                <span id="tasksProgressText" style="font-size: 14px; font-weight: 800; color: #38bdf8;">0 из 54</span>
             </div>
             <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; border: 1px solid rgba(0, 180, 255, 0.2);">
                 <div id="tasksProgressFill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0088ff 0%, #00d9ff 100%); border-radius: 999px; transition: width 0.4s ease; box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);"></div>
             </div>
         </div>
 
+        <!-- Плашки категорий заданий -->
+        <div class="shop-tabs anim-item" id="tasksFilterTabs" style="animation-delay: 0.07s; margin-bottom: 14px;">
+            <button type="button" class="shop-tab active" onclick="filterTasks('all', this)">Все</button>
+            <button type="button" class="shop-tab" onclick="filterTasks('projects', this)">Проекты</button>
+            <button type="button" class="shop-tab" onclick="filterTasks('social', this)">Соцсети</button>
+            <button type="button" class="shop-tab" onclick="filterTasks('other', this)">Другое</button>
+        </div>
+
 <!-- ПАРТНЁРСКИЙ БЛОК: ARKADA -->
-        <div class="partner-section-head anim-item" style="animation-delay: 0.07s;">
+        <div class="partner-section-head anim-item" data-task-cat="projects" style="animation-delay: 0.07s;">
             <span class="partner-section-pill">ПАРТНЁРЫ</span>
             <span class="partner-section-sub">самые крупные награды</span>
         </div>
 
-        <div class="arkada-partner-card anim-item" style="animation-delay: 0.09s;" onclick="openArkadaModal()">
+        <div class="arkada-partner-card anim-item" data-task-cat="projects" style="animation-delay: 0.09s;" onclick="openArkadaModal()">
             <div class="arkada-card-top">
                 <div>
                     <div class="arkada-card-title">ARKADA</div>
@@ -7674,7 +8189,7 @@
         </div>
 
         <!-- ПАРТНЁРСКИЙ БЛОК #2 -->
-        <div class="p2-partner-card anim-item" style="animation-delay: 0.1s;" onclick="openP2Modal()">
+        <div class="p2-partner-card anim-item" data-task-cat="projects" style="animation-delay: 0.1s;" onclick="openP2Modal()">
             <div class="arkada-card-top">
                 <div>
                     <div class="arkada-card-title" id="p2CardTitle">ПАРТНЁР</div>
@@ -7696,7 +8211,7 @@
         </div>
 
 <!-- ПАРТНЁРСКИЙ БЛОК #3 -->
-        <div class="p3-partner-card anim-item" style="animation-delay: 0.11s;" onclick="openP3Modal()">
+        <div class="p3-partner-card anim-item" data-task-cat="projects" style="animation-delay: 0.11s;" onclick="openP3Modal()">
             <div class="arkada-card-top">
                 <div>
                     <div class="arkada-card-title" id="p3CardTitle">Ton Play</div>
@@ -7718,7 +8233,7 @@
         </div>
         
         <!-- 1. Задание: Подписка ТГ -->
-        <div class="task-card featured-task anim-item" style="clear: both; animation-delay: 0.1s;" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="clear: both; animation-delay: 0.1s;" onclick="openTaskModal('Подписка на Telegram', 'https://t.me/vetruchtut', true, 'ПЕРЕЙТИ В КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 3 14.5 21l-3.8-7.7L3 9.5 21 3Z"></path>
@@ -7740,7 +8255,7 @@
         </div>
 
         <!-- 2. Задание: Подписка YT -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.15s;" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="animation-delay: 0.15s;" onclick="openTaskModal('Подписка на YouTube', 'https://www.youtube.com/@vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="3" y="6" width="18" height="13" rx="2"></rect>
@@ -7762,7 +8277,7 @@
         </div>
 
         <!-- 3. Задание: Подписка Kick -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.2s;" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <div class="task-card featured-task anim-item" data-task-cat="social" style="animation-delay: 0.2s;" onclick="openTaskModal('Подписаться на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"></path>
@@ -7781,112 +8296,8 @@
             </div>
         </div>
 
-        <!-- 4. Задание: UP-X (Привязка 5 шагов) -->
-        <div class="task-card upx-task anim-item" style="animation-delay: 0.25s;">
-            <div class="upx-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
-                    <path d="M3 8h15a2 2 0 0 1 2 2v1h-4a2 2 0 0 0 0 4h4v1"></path>
-                    <circle cx="16" cy="13" r="1"></circle>
-                </svg>
-            </div>
-            <div class="upx-content">
-                <div class="upx-top">
-                    <span class="upx-label">5 шагов</span>
-                    <button class="upx-toggle" type="button" aria-label="Свернуть" onclick="toggleUpxTask(event, this)">
-                        <span class="upx-toggle-arrow">⌃</span>
-                    </button>
-                    <div class="upx-collapsed-details">
-                        <div class="upx-collapsed-title">UP-X</div>
-                        <div class="upx-collapsed-progress">0 из 5 наград получено</div>
-                    </div>
-                </div>
-                <div class="upx-title">UP-X</div>
-                <div class="upx-progress-text">0 из 5 наград получено</div>
-                <div class="upx-link-row">
-                    <span class="upx-link-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.71 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
-                    </span>
-                    <span>Привязка <b>UP-X</b></span>
-                    <span class="upx-arrow">➔</span>
-                    <span class="upx-link-reward">
-                        <img src="coins.png" alt="" class="coin-icon"> 1000
-                    </span>
-                </div>
-                <div class="upx-progress">
-                    <div class="upx-progress-line"></div>
-                    <div class="upx-locks">
-                        <span class="upx-open-circle"></span>
-                        <span>♙</span>
-                        <span>♙</span>
-                        <span>♙</span>
-                        <span>♙</span>
-                    </div>
-                </div>
-                <button class="upx-button" onclick="event.stopPropagation(); openTaskModal('Привязка UP-X', 'https://up-click-me.top/feygr5tv', false, 'ПЕРЕЙТИ НА САЙТ')">
-                    Привязать аккаунт  + 1 000
-                </button>
-                <div class="upx-hint">Шаги можно посмотреть, но они откроются после<br>привязки.</div>
-            </div>
-        </div>
-
-        <!-- 5. Задание: JetTon (Привязка 5 шагов) -->
-        <div class="task-card upx-task anim-item" style="animation-delay: 0.3s;">
-            <div class="upx-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"></path>
-                    <path d="M3 8h15a2 2 0 0 1 2 2v1h-4a2 2 0 0 0 0 4h4v1"></path>
-                    <circle cx="16" cy="13" r="1"></circle>
-                </svg>
-            </div>
-            <div class="upx-content">
-                <div class="upx-top">
-                    <span class="upx-label">5 шагов</span>
-                    <button class="upx-toggle" type="button" aria-label="Свернуть" onclick="toggleUpxTask(event, this)">
-                        <span class="upx-toggle-arrow">⌃</span>
-                    </button>
-                    <div class="upx-collapsed-details">
-                        <div class="upx-collapsed-title">JetTon</div>
-                        <div class="upx-collapsed-progress">0 из 5 наград получено</div>
-                    </div>
-                </div>
-                <div class="upx-title">JetTon</div>
-                <div class="upx-progress-text">0 из 5 наград получено</div>
-                <div class="upx-link-row">
-                    <span class="upx-link-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.71 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
-                    </span>
-                    <span>Привязка <b>JetTon</b></span>
-                    <span class="upx-arrow">→</span>
-                    <span class="upx-link-reward">
-                        <img src="coins.png" alt="" class="coin-icon"> 1000
-                    </span>
-                </div>
-                <div class="upx-progress">
-                    <div class="upx-progress-line"></div>
-                    <div class="upx-locks">
-                        <span class="upx-open-circle"></span>
-                        <span>🔒</span>
-                        <span>🔒</span>
-                        <span>🔒</span>
-                        <span>🔒</span>
-                    </div>
-                </div>
-                <button class="upx-button" onclick="event.stopPropagation(); openTaskModal('Привязка JetTon', 'https://jetrdnurev.com/cihFhEkPODc?click_id=%7Bclick_id%7D&target_id=/&target_type=registration', false, 'ПЕРЕЙТИ НА САЙТ')">
-                    Привязать аккаунт · +1000
-                </button>
-                <div class="upx-hint">Шаги можно посмотреть, но они откроются после<br>привязки.</div>
-            </div>
-        </div>
-
-        <!-- 6. Задание: 3 сообщения на стриме -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.35s;" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <!-- 4. Задание: 3 сообщения на стриме -->
+        <div class="task-card featured-task anim-item" data-task-cat="other" style="animation-delay: 0.35s;" onclick="openTaskModal('Активность на стриме', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -7904,8 +8315,8 @@
             </div>
         </div>
 
-        <!-- 7. Задание: Ник на Kick -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.4s;" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
+        <!-- 5. Задание: Ник на Kick -->
+        <div class="task-card featured-task anim-item" data-task-cat="other" style="animation-delay: 0.4s;" onclick="openTaskModal('Никнейм на Kick', 'https://kick.com/vetruch', false, 'ПЕРЕЙТИ НА КАНАЛ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -7924,8 +8335,8 @@
             </div>
         </div>
 
-        <!-- 8. Задание: Пригласить друзей -->
-        <div class="task-card featured-task anim-item" style="animation-delay: 0.45s;" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
+        <!-- 6. Задание: Пригласить друзей -->
+        <div class="task-card featured-task anim-item" data-task-cat="other" style="animation-delay: 0.45s;" onclick="openTaskModal('Пригласить 3 друзей', 'REF', true, 'ПРИГЛАСИТЬ')">
             <div class="featured-task-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -7950,6 +8361,12 @@
             </div>
         </div>
 
+        <!-- ВЫПОЛНЕННЫЕ ЗАДАНИЯ -->
+        <div id="completedTasksSection" class="completed-tasks-section">
+            <div class="completed-tasks-heading" id="completedTasksHeading">Выполнено · 0</div>
+            <div class="completed-tasks-list" id="completedTasksList"></div>
+        </div>
+
     </main>
 
     <!-- 4. МАГАЗИН (КАРТИНКА В САМЫЙ НИЗ, В СЕРОЙ ЧАСТИ ЧИСТО КНОПКА) -->
@@ -7959,7 +8376,26 @@
             <span class="app-balance">500</span> <img src="coins.png" alt="coins" class="coin-icon">
         </div>
 
-        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 20px !important; display: inline-block; animation-delay: 0.05s;">Магазин</h2>
+        <h2 class="games-heading anim-item" style="margin-top: 5px !important; margin-bottom: 14px !important; display: inline-block; animation-delay: 0.05s;">Магазин</h2>
+
+        <!-- Переключатель Магазин / Кейсы -->
+        <div class="shop-mode-switch anim-item" style="animation-delay: 0.06s;">
+            <button type="button" class="shop-mode-btn active" id="shopModeStoreBtn" onclick="switchShopMode('store')">
+                🛒 Магазин
+            </button>
+            <button type="button" class="shop-mode-btn" id="shopModeCasesBtn" onclick="switchShopMode('cases')">
+                📦 Кейсы
+            </button>
+        </div>
+
+        <!-- Строка Мои заказы -->
+        <div class="my-orders-bar anim-item" id="shopMyOrdersBar" style="animation-delay: 0.07s;" onclick="openMyOrdersModal()">
+            <div class="my-orders-bar-left">
+                <span style="color: #fbbf24;">🛒</span>
+                <span>Мои заказы</span>
+            </div>
+            <span class="my-orders-bar-arrow">❯</span>
+        </div>
 
 <!-- Плашки категорий -->
         <div class="shop-tabs anim-item" style="animation-delay: 0.08s;">
@@ -8117,6 +8553,58 @@
                     <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> XX XXX</span>
                 </button>
             </div>
+
+            <div class="shop-card" style="animation-delay: 0.75s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1083.PNG" alt="Стример смотрит твоё видео">
+                    <div class="shop-card-title">Стример смотрит твоё видео</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Стример смотрит твоё видео')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> 8 000</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.8s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1082.PNG" alt="Привет в эфире">
+                    <div class="shop-card-title">Привет в эфире</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Привет в эфире')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> 3 500</span>
+                </button>
+            </div>
+
+            <div class="shop-card" style="animation-delay: 0.85s;">
+                <div class="shop-card-img-wrap">
+                    <img src="IMG_1081.PNG" alt="Заказать ужин до 3000 ₽">
+                    <div class="shop-card-title">Заказать ужин до 3000 ₽</div>
+                </div>
+                <button class="shop-btn" onclick="buyItem('Заказать ужин до 3000 ₽')">
+                    <span class="shop-btn-label">КУПИТЬ</span>
+                    <span class="shop-btn-price"><img src="coins.png" alt="" class="coin-icon"> 20 000</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- СЕКЦИЯ КЕЙСОВ -->
+        <div id="casesSection" style="display: none; clear: both;">
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-art-wrap">
+                        <div class="case-top-pill">ДО 2500 ₽</div>
+                        <img src="IMG_1085.PNG" alt="Реферальный кейс">
+                    </div>
+                    <div class="case-title">Реферальный кейс</div>
+                    <button type="button" class="case-open-btn" id="refCaseCardOpenBtn" onclick="onRefCaseCardAction()">
+                        Падает за друзей
+                    </button>
+                    <button type="button" class="case-inside-btn" onclick="openRefCaseModal()">
+                        Что внутри
+                    </button>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -8242,7 +8730,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="profile-bento-val">0 / 8</div>
+                <div class="profile-bento-val">0 / 54</div>
                 <div class="profile-bento-label">Заданий выполнено</div>
             </div>
 
@@ -8260,6 +8748,19 @@
                 <div class="profile-bento-val">0</div>
                 <div class="profile-bento-label">Приглашено друзей</div>
             </div>
+        </div>
+
+        <!-- ВВОД ПРОМОКОДА -->
+        <div class="profile-promo-card anim-item" style="animation-delay: 0.18s;">
+            <div class="profile-promo-head">
+                <div class="profile-promo-title">🎟️ Промокод</div>
+                <span class="profile-promo-sub">Введи код — получи монеты</span>
+            </div>
+            <div class="profile-promo-row">
+                <input type="text" id="profilePromoInput" class="profile-promo-input" placeholder="Введите промокод" maxlength="32">
+                <button type="button" id="profilePromoBtn" class="profile-promo-btn" onclick="activateUserPromoCode()">АКТИВИРОВАТЬ</button>
+            </div>
+            <div id="profilePromoMsg" class="profile-promo-msg"></div>
         </div>
 
         <!-- 3. РЕФЕРАЛЬНАЯ ПРОГРАММА -->
@@ -8288,7 +8789,7 @@
         <div class="profile-section-card anim-item" style="animation-delay: 0.25s;">
             <div class="profile-section-head">
                 <span class="profile-section-title">🔗 Привязка аккаунтов</span>
-                <span class="profile-section-sub">1 из 3 активно</span>
+                <span class="profile-section-sub" id="profileBindsCountText">1 из 5 активно</span>
             </div>
 
             <div class="profile-bind-list">
@@ -8305,24 +8806,46 @@
 
                 <div class="profile-bind-row clickable" onclick="openPage('tasks')">
                     <div class="profile-bind-left">
-                        <div class="profile-bind-ico kick-ico">K</div>
+                        <div class="profile-bind-ico kick-ico" style="overflow: hidden; flex-shrink: 0; background: #000;"><img src="kick.png" alt="Kick" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
                         <div>
                             <div class="profile-bind-name">Kick (@vetruch)</div>
-                            <div class="profile-bind-desc">Бонус +500 монет за задания</div>
+                            <div class="profile-bind-desc" id="bindKickDesc">Бонус +200 монет за подписку</div>
                         </div>
                     </div>
-                    <span class="profile-status-pill action">Задания ➔</span>
+                    <span class="profile-status-pill action" id="bindKickBadge">Задания ➔</span>
                 </div>
 
-                <div class="profile-bind-row clickable" onclick="openPage('tasks')">
+                <div class="profile-bind-row clickable" onclick="openArkadaModal()">
                     <div class="profile-bind-left">
-                        <div class="profile-bind-ico upx-ico">VIP</div>
+                        <div class="profile-bind-ico ark-ico" style="overflow: hidden; flex-shrink: 0;"><img src="arkada-girl.png" alt="ARKADA" style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;"></div>
                         <div>
-                            <div class="profile-bind-name">UP-X & JetTon</div>
-                            <div class="profile-bind-desc">Награда +2 000 монет за привязку</div>
+                            <div class="profile-bind-name">ARKADA</div>
+                            <div class="profile-bind-desc" id="bindArkadaDesc">Награда +1 000 монет за привязку</div>
                         </div>
                     </div>
-                    <span class="profile-status-pill action">Привязать ➔</span>
+                    <span class="profile-status-pill action" id="bindArkadaBadge">Привязать ➔</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openP3Modal()">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico tp-ico" style="overflow: hidden; flex-shrink: 0;"><img src="partner3-duck.png" alt="Ton Play" style="width: 100%; height: 100%; object-fit: cover; object-position: 55% 15%; display: block;"></div>
+                        <div>
+                            <div class="profile-bind-name">Ton Play</div>
+                            <div class="profile-bind-desc" id="bindTpDesc">Награда +1 000 монет за привязку</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action" id="bindTpBadge">Привязать ➔</span>
+                </div>
+
+                <div class="profile-bind-row clickable" onclick="openP2Modal()">
+                    <div class="profile-bind-left">
+                        <div class="profile-bind-ico upx2-ico" style="overflow: hidden; flex-shrink: 0;"><img src="partner2-raccoon.png" alt="UP-X" style="width: 100%; height: 100%; object-fit: cover; object-position: 72% 22%; display: block;"></div>
+                        <div>
+                            <div class="profile-bind-name">UP-X</div>
+                            <div class="profile-bind-desc" id="bindUpxDesc">Награда +1 000 монет за привязку</div>
+                        </div>
+                    </div>
+                    <span class="profile-status-pill action" id="bindUpxBadge">Привязать ➔</span>
                 </div>
             </div>
         </div>
@@ -9136,6 +9659,9 @@
             <button type="button" class="admin-tab-btn" data-adm="adm-users" onclick="switchAdminTab('adm-users', this)">
                 💎 По ID
             </button>
+            <button type="button" class="admin-tab-btn" data-adm="adm-promos" onclick="switchAdminTab('adm-promos', this); renderAdminPromosList();">
+                🎟️ Промо
+            </button>
         </div>
 
         <!-- ГРАФА 1: ЗАДАНИЯ (ПРОВЕРКА СКРИНШОТОВ) -->
@@ -9337,6 +9863,54 @@
                     <span>Текущие балансы по ID</span>
                 </div>
                 <div id="adminBalancesTable" class="admin-balances-list"></div>
+            </div>
+        </div>
+
+        <!-- ГРАФА 6: ПРОМОКОДЫ -->
+        <div id="adm-promos" class="admin-section">
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>🎟️ Создать промокод</span>
+                </div>
+
+                <label class="admin-field-label">Промокод:</label>
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <input type="text" id="adminPromoCodeInput" class="task-input" placeholder="Например: VETRUCH500" maxlength="32" style="margin-bottom: 0; flex: 1; text-transform: uppercase;">
+                    <button type="button" class="admin-chip" onclick="generateRandomPromoCode()" style="margin: 0; padding: 0 12px;">🎲 Код</button>
+                </div>
+
+                <label class="admin-field-label">Награда (монет):</label>
+                <input type="number" id="adminPromoRewardInput" class="task-input" placeholder="Например: 1000" min="1">
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='500'">500</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='1000'">1 000</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='2500'">2 500</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoRewardInput').value='5000'">5 000</span>
+                </div>
+
+                <label class="admin-field-label">Количество активаций:</label>
+                <input type="number" id="adminPromoUsesInput" class="task-input" placeholder="Например: 50" min="1">
+                <div class="admin-chips-row">
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='10'">10 акц.</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='25'">25 акц.</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='50'">50 акц.</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='100'">100 акц.</span>
+                    <span class="admin-chip" onclick="document.getElementById('adminPromoUsesInput').value='500'">500 акц.</span>
+                </div>
+
+                <button type="button" class="submit-task-btn" style="margin-top: 6px; padding: 14px;" onclick="adminCreatePromoCode()">
+                    🎟️ СОЗДАТЬ ПРОМОКОД
+                </button>
+
+                <div id="adminPromoToast" class="admin-status-toast"></div>
+            </div>
+
+            <div class="admin-box">
+                <div class="admin-box-title">
+                    <span>Активные промокоды</span>
+                    <span class="admin-badge-count" id="adminPromosCount">0</span>
+                </div>
+                <div id="adminPromosList"></div>
             </div>
         </div>
             <!-- ГРАФА 5: ЭКОНОМИКА (МОДЕЛЬ SUBO) -->
@@ -10567,7 +11141,10 @@
             'Telegram Premium 6 месяцев': 20000,
             'Telegram Premium 3 месяца': 12000,
             'VIP либо OG в чате': 5000,
-            'VPN 1 месяц': 3500
+            'VPN 1 месяц': 3500,
+            'Стример смотрит твоё видео': 8000,
+            'Привет в эфире': 3500,
+            'Заказать ужин до 3000 ₽': 20000
         };
 
         const TASK_REWARDS = {
@@ -10737,18 +11314,26 @@
                     val.textContent = refCount;
                 }
                 if (lbl.textContent.includes('Заданий выполнено')) {
-                    val.textContent = `${tasksDoneCount} / 8`;
+                    if (typeof updateAccurateTasksCountUI === 'function') {
+                        updateAccurateTasksCountUI();
+                    } else {
+                        val.textContent = `${tasksDoneCount} / 54`;
+                    }
                 }
             });
 
-            const tasksProgText = document.getElementById('tasksProgressText');
-            const tasksProgFill = document.getElementById('tasksProgressFill');
-            if (tasksProgText) {
-                tasksProgText.textContent = `${tasksDoneCount} из 8`;
-            }
-            if (tasksProgFill) {
-                const pct = Math.min(100, Math.round((tasksDoneCount / 8) * 100));
-                tasksProgFill.style.width = pct + '%';
+            if (typeof updateAccurateTasksCountUI === 'function') {
+                updateAccurateTasksCountUI();
+            } else {
+                const tasksProgText = document.getElementById('tasksProgressText');
+                const tasksProgFill = document.getElementById('tasksProgressFill');
+                if (tasksProgText) {
+                    tasksProgText.textContent = `${tasksDoneCount} из 54`;
+                }
+                if (tasksProgFill) {
+                    const pct = Math.min(100, Math.round((tasksDoneCount / 54) * 100));
+                    tasksProgFill.style.width = pct + '%';
+                }
             }
         }
 
@@ -10920,6 +11505,27 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                     renderXmasTreeV2UI();
                 }
             }
+
+            // 3. Синхронизация выигрышей в играх (total_won) и выполненных заданий (completed_tasks)
+            const localTotalWon = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
+            const cloudTotalWon = Number((cloudState && cloudState.total_won && cloudState.total_won[myId]) || 0);
+            const finalTotalWon = Math.max(localTotalWon, cloudTotalWon);
+            localStorage.setItem('vetruch_total_won', String(finalTotalWon));
+            if (localTotalWon > cloudTotalWon) {
+                await cloudPut(`vetruch_app/total_won/${myId}`, finalTotalWon);
+            }
+            if (typeof updateTotalWonUI === 'function') updateTotalWonUI();
+
+            let completedList = (cloudState && cloudState.completed_tasks && Array.isArray(cloudState.completed_tasks[myId]))
+                ? cloudState.completed_tasks[myId]
+                : [];
+            if ((myRefCount >= 3 || refRewardDoneMap[myId]) && !completedList.includes('Пригласить 3 друзей')) {
+                completedList = [...completedList, 'Пригласить 3 друзей'];
+                await cloudPut(`vetruch_app/completed_tasks/${myId}`, completedList);
+            }
+            localStorage.setItem('vetruch_completed_tasks', JSON.stringify(completedList));
+            if (typeof renderCompletedTasksUI === 'function') renderCompletedTasksUI();
+            if (typeof updateAccurateTasksCountUI === 'function') updateAccurateTasksCountUI();
             
             if (refreshAdmin) {
                 renderAdminLists();
@@ -11283,6 +11889,28 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                     localStorage.setItem('vetruch_cloud_synced_bal', userBal);
                     initBalance();
                 }
+
+                if (!target.taskKey && !target.p2Key && !target.p3Key && target.title) {
+                    let doneList = (await cloudGet(`vetruch_app/completed_tasks/${target.userId}`)) || [];
+                    if (!Array.isArray(doneList)) doneList = [];
+                    if (!doneList.includes(target.title)) {
+                        doneList.push(target.title);
+                        await cloudPut(`vetruch_app/completed_tasks/${target.userId}`, doneList);
+                    }
+                    if (String(target.userId) === getCurrentTgId()) {
+                        localStorage.setItem('vetruch_completed_tasks', JSON.stringify(doneList));
+                        if (typeof renderCompletedTasksUI === 'function') renderCompletedTasksUI();
+                    }
+                }
+            }
+            if (target && target.title === 'Подписаться на Kick') {
+                const kickData = isApproved ? { nick: target.user, status: 'done' } : null;
+                await cloudPut(`vetruch_app/kick_accounts/${target.userId}`, kickData);
+                if (String(target.userId) === getCurrentTgId()) {
+                    if (kickData) localStorage.setItem('vetruch_kick_bind', JSON.stringify(kickData));
+                    else localStorage.removeItem('vetruch_kick_bind');
+                    if (typeof renderProfileBindsUI === 'function') renderProfileBindsUI();
+                }
             }
             if (target && target.taskKey) {
                 let arkProg = (await cloudGet(`vetruch_app/arkada_progress/${target.userId}`)) || { bind: null, arkadaId: '', deposits: {} };
@@ -11497,6 +12125,12 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                     });
                 }
             }
+
+            if (pageId === 'tasks') {
+                document.querySelectorAll('#tasks [data-task-cat]').forEach(el => {
+                    el.style.animation = '';
+                });
+            }
             
             if (pageId !== 'admin') {
                 sessionStorage.setItem('vetruch_active_tab', pageId);
@@ -11652,6 +12286,14 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
             localStorage.setItem('vetruch_admin_tasks', JSON.stringify(tasks));
             await cloudPut('vetruch_app/tasks', tasks);
 
+            if (currentTaskTitle === 'Подписаться на Kick') {
+                const rawKickNick = document.getElementById('modalUsername').value.trim();
+                const kickObj = { nick: rawKickNick, status: 'pending' };
+                localStorage.setItem('vetruch_kick_bind', JSON.stringify(kickObj));
+                await cloudPut(`vetruch_app/kick_accounts/${getCurrentTgId()}`, kickObj);
+                if (typeof renderProfileBindsUI === 'function') renderProfileBindsUI();
+            }
+
             textEl.textContent = "🚀 Отправлено на проверку всем админам!";
             textEl.style.color = "#00e676";
 
@@ -11766,15 +12408,118 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
 
 // ================= ФИЛЬТР МАГАЗИНА =================
 const shopCategories = {
-    'Прочее': ['VPN 1 месяц', 'Бонуска за 10 000₽', '5000 рублей', '2500 рублей', '1000 рублей', 'Выбрать слот для стрима'],
-    'Стрим': ['VIP либо OG в чате'],
+    'Прочее': ['VPN 1 месяц', 'Бонуска за 10 000₽', '5000 рублей', '2500 рублей', '1000 рублей', 'Выбрать слот для стрима', 'Заказать ужин до 3000 ₽'],
+    'Стрим': ['VIP либо OG в чате', 'Стример смотрит твоё видео', 'Привет в эфире'],
     'Телеграм': ['Telegram Premium 3 месяца', 'Telegram Premium 6 месяцев', 'Telegram Premium на 1 год'],
     'Техника': ['iPhone 18 PRO MAX', 'iPhone DUO', 'AirPods PRO 3']
 };
 
+function getCompletedTasksList() {
+    try {
+        const raw = localStorage.getItem('vetruch_completed_tasks');
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function renderCompletedTasksUI() {
+    const completed = getCompletedTasksList();
+    const tasksPage = document.getElementById('tasks');
+    const section = document.getElementById('completedTasksSection');
+    const heading = document.getElementById('completedTasksHeading');
+    const listEl = document.getElementById('completedTasksList');
+    if (!tasksPage || !section || !heading || !listEl) return;
+
+    const cards = tasksPage.querySelectorAll('.featured-task');
+    const htmlItems = [];
+    let count = 0;
+
+    cards.forEach(card => {
+        const onclickAttr = card.getAttribute('onclick') || '';
+        const match = onclickAttr.match(/openTaskModal\('([^']+)'/);
+        const modalKey = match ? match[1] : '';
+        const title = (card.querySelector('.featured-task-title')?.textContent || '').trim();
+        const desc = (card.querySelector('.featured-task-description')?.textContent || '').trim();
+
+        const isDone = (modalKey && completed.includes(modalKey)) || (title && completed.includes(title));
+        card.classList.toggle('is-task-completed', Boolean(isDone));
+
+        if (isDone) {
+            count++;
+            htmlItems.push(`
+                <div class="completed-task-card">
+                    <div class="completed-task-check">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="completed-task-body">
+                        <div class="completed-task-title">${title || modalKey}</div>
+                        ${desc ? `<div class="completed-task-desc">${desc}</div>` : ''}
+                        <span class="completed-task-pill">Получено</span>
+                    </div>
+                </div>
+            `);
+        }
+    });
+
+    const activeTab = document.querySelector('#tasksFilterTabs .shop-tab.active');
+    const isAllTab = !activeTab || (activeTab.getAttribute('onclick') || '').includes("'all'");
+
+    if (count > 0 && isAllTab) {
+        section.style.display = 'block';
+        heading.textContent = `Выполнено · ${count}`;
+        listEl.innerHTML = htmlItems.join('');
+    } else {
+        section.style.display = 'none';
+        if (count === 0) listEl.innerHTML = '';
+    }
+}
+renderCompletedTasksUI();
+
+// ================= ФИЛЬТР ЗАДАНИЙ =================
+function filterTasks(category, btnElement) {
+    const tabsContainer = document.getElementById('tasksFilterTabs');
+    if (tabsContainer) {
+        tabsContainer.querySelectorAll('.shop-tab').forEach(tab => tab.classList.remove('active'));
+    }
+    if (btnElement) btnElement.classList.add('active');
+
+    const tasksPage = document.getElementById('tasks');
+    if (!tasksPage) return;
+
+    const items = Array.from(tasksPage.querySelectorAll('[data-task-cat]'));
+
+    items.forEach(item => {
+        item.style.animation = 'none';
+    });
+    void tasksPage.offsetWidth;
+
+    let visibleIndex = 0;
+    items.forEach(item => {
+        const itemCat = item.getAttribute('data-task-cat');
+        const shouldShow = (category === 'all') || (itemCat === category);
+
+        if (shouldShow) {
+            item.style.display = '';
+            const delay = (visibleIndex * 0.04).toFixed(2);
+            item.style.animation = `cardFilterIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s backwards`;
+            visibleIndex++;
+        } else {
+            item.style.display = 'none';
+        }
+    });
+
+    if (typeof renderCompletedTasksUI === 'function') {
+        renderCompletedTasksUI();
+    }
+}
+
 function filterShop(category, btnElement) {
     // 1. Переключаем активную кнопку
-    const tabs = document.querySelectorAll('.shop-tab');
+    const tabs = document.querySelectorAll('#shop .shop-tab');
     tabs.forEach(tab => tab.classList.remove('active'));
     btnElement.classList.add('active');
 
@@ -11817,61 +12562,60 @@ function filterShop(category, btnElement) {
 
 // ================= ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ ВКЛАДОК НА ПК =================
 function initShopTabsScroll() {
-    const shopTabs = document.querySelector('.shop-tabs');
-    if (!shopTabs) return;
+    document.querySelectorAll('.shop-tabs').forEach(shopTabs => {
+        // 1. Прокрутка колесиком мыши (вертикальное колесо -> горизонтальный скролл)
+        shopTabs.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                shopTabs.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
 
-    // 1. Прокрутка колесиком мыши (вертикальное колесо -> горизонтальный скролл)
-    shopTabs.addEventListener('wheel', (e) => {
-        if (e.deltaY !== 0) {
-            e.preventDefault();
-            shopTabs.scrollLeft += e.deltaY;
-        }
-    }, { passive: false });
+        // 2. Перетаскивание мышкой (Drag-to-scroll) как на телефоне
+        let isDown = false;
+        let startX = 0;
+        let scrollLeft = 0;
+        let isDragging = false;
 
-    // 2. Перетаскивание мышкой (Drag-to-scroll) как на телефоне
-    let isDown = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    let isDragging = false;
-
-    shopTabs.addEventListener('mousedown', (e) => {
-        if (e.button !== 0) return; // Только левая кнопка мыши
-        isDown = true;
-        isDragging = false;
-        startX = e.pageX - shopTabs.offsetLeft;
-        scrollLeft = shopTabs.scrollLeft;
-        shopTabs.classList.add('is-dragging');
-    });
-
-    window.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        const x = e.pageX - shopTabs.offsetLeft;
-        const walk = x - startX;
-        if (Math.abs(walk) > 4) {
-            isDragging = true;
-        }
-        if (isDragging) {
-            e.preventDefault();
-            shopTabs.scrollLeft = scrollLeft - walk;
-        }
-    });
-
-    window.addEventListener('mouseup', () => {
-        if (!isDown) return;
-        isDown = false;
-        shopTabs.classList.remove('is-dragging');
-        setTimeout(() => {
+        shopTabs.addEventListener('mousedown', (e) => {
+            if (e.button !== 0) return; // Только левая кнопка мыши
+            isDown = true;
             isDragging = false;
-        }, 50);
-    });
+            startX = e.pageX - shopTabs.offsetLeft;
+            scrollLeft = shopTabs.scrollLeft;
+            shopTabs.classList.add('is-dragging');
+        });
 
-    // Блокируем клик по вкладке, если пользователь перетаскивал список
-    shopTabs.addEventListener('click', (e) => {
-        if (isDragging) {
-            e.stopImmediatePropagation();
-            e.preventDefault();
-        }
-    }, true);
+        window.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            const x = e.pageX - shopTabs.offsetLeft;
+            const walk = x - startX;
+            if (Math.abs(walk) > 4) {
+                isDragging = true;
+            }
+            if (isDragging) {
+                e.preventDefault();
+                shopTabs.scrollLeft = scrollLeft - walk;
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (!isDown) return;
+            isDown = false;
+            shopTabs.classList.remove('is-dragging');
+            setTimeout(() => {
+                isDragging = false;
+            }, 50);
+        });
+
+        // Блокируем клик по вкладке, если пользователь перетаскивал список
+        shopTabs.addEventListener('click', (e) => {
+            if (isDragging) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+            }
+        }, true);
+    });
 }
 
 if (document.readyState === 'loading') {
@@ -12349,6 +13093,9 @@ async function renderLeaderboardPage() {
                         if (typeof targetFrame.contentWindow.updateBalanceUI === 'function') {
                             targetFrame.contentWindow.balance = currentBal;
                             targetFrame.contentWindow.updateBalanceUI();
+                            if (targetFrame.contentWindow.VETRUCH_ECONOMY && typeof targetFrame.contentWindow.VETRUCH_ECONOMY.cancelRound === 'function') {
+                                targetFrame.contentWindow.VETRUCH_ECONOMY.cancelRound();
+                            }
                         }
                     }
                 } catch(e) {}
@@ -12386,6 +13133,9 @@ async function renderLeaderboardPage() {
             }
             if (typeof updateVipStatusUI === 'function') {
                 try { updateVipStatusUI(); } catch(e) {}
+            }
+            if (typeof updateTotalWonUI === 'function') {
+                try { updateTotalWonUI(); } catch(e) {}
             }
         }
         window.closeGameModal = closeGameModal;
@@ -14401,5 +15151,757 @@ setTimeout(initAdvancedSystems, 300);
         <iframe id="frame-balloon" src="balloon.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-dice" src="dice.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
+
+    <!-- МОДАЛКА МОИ ЗАКАЗЫ -->
+    <div id="myOrdersModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeMyOrdersModal()">
+        <div class="avatar-modal-sheet">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title">Мои заказы</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeMyOrdersModal()">✕</button>
+            </div>
+            <div class="arkada-modal-body" id="myOrdersModalBody"></div>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА РЕФЕРАЛЬНОГО КЕЙСА -->
+    <div id="refCaseModal" class="arkada-modal-overlay" onclick="if(event.target === this) closeRefCaseModal()">
+        <div class="avatar-modal-sheet" style="max-height: 90vh;">
+            <div class="arkada-modal-header">
+                <h3 class="arkada-modal-title">Реферальный кейс</h3>
+                <button type="button" class="arkada-modal-close" onclick="closeRefCaseModal()">✕</button>
+            </div>
+            <div class="arkada-modal-body">
+                <div style="text-align: center; margin-bottom: 12px;">
+                    <img src="IMG_1085.PNG" alt="Реферальный кейс" style="width: 118px; height: 118px; border-radius: 18px; object-fit: cover; margin: 0 auto 8px auto; display: block; border: 1.5px solid #163d28; box-shadow: 0 0 22px rgba(34, 197, 94, 0.28);">
+                    <div style="font-size: 12.5px; color: #94a3b8;">
+                        Не продаётся. Падает за приглашённых друзей (1 друг = 1 ключ).
+                    </div>
+                </div>
+
+                <!-- Рулетка -->
+                <div class="case-roulette-box" id="refCaseRouletteBox">
+                    <div class="case-roulette-pointer"></div>
+                    <div class="case-roulette-track" id="refCaseRouletteTrack"></div>
+                </div>
+
+                <!-- Результат выигрыша -->
+                <div class="case-win-banner" id="refCaseWinBanner"></div>
+
+                <!-- Кнопка открытия -->
+                <button type="button" class="submit-task-btn" id="refCaseModalOpenBtn" style="margin-bottom: 10px;" onclick="spinRefCase(false)">
+                    Падает за активность
+                </button>
+                <button type="button" class="admin-chip" id="refCaseAdminTestBtn" style="display: none; width: 100%; text-align: center; margin-bottom: 14px; padding: 8px;" onclick="spinRefCase(true)">
+                    ⚡ Тест-открытие (только для админа)
+                </button>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 14px; font-weight: 800; color: #fff;">Что внутри</span>
+                    <span style="font-size: 11.5px; font-weight: 600; color: #8c97a7;">✓ шансы настоящие</span>
+                </div>
+
+                <div class="case-drops-grid" id="refCaseDropsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ================= СИСТЕМА ПРОМОКОДОВ =================
+function showProfilePromoMsg(text, isError) {
+    const el = document.getElementById('profilePromoMsg');
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.background = isError ? 'rgba(255, 51, 102, 0.14)' : 'rgba(0, 230, 118, 0.14)';
+    el.style.border = isError ? '1px solid rgba(255, 51, 102, 0.4)' : '1px solid rgba(0, 230, 118, 0.4)';
+    el.style.color = isError ? '#ff5277' : '#00e676';
+    el.textContent = text;
+}
+
+async function activateUserPromoCode() {
+    const input = document.getElementById('profilePromoInput');
+    const btn = document.getElementById('profilePromoBtn');
+    if (!input || !btn) return;
+
+    const rawCode = input.value.trim().toUpperCase().replace(/[.#$\[\]\/\s]+/g, '');
+    if (!rawCode) {
+        showProfilePromoMsg('⚠️ Введите промокод!', true);
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+        const promo = await cloudGet(`vetruch_app/promocodes/${encodeURIComponent(rawCode)}`);
+        if (!promo || !promo.code) {
+            showProfilePromoMsg('❌ Промокод не найден или удалён', true);
+            return;
+        }
+
+        const myId = getCurrentTgId();
+        const usedBy = (promo.usedBy && typeof promo.usedBy === 'object') ? promo.usedBy : {};
+
+        if (usedBy[myId]) {
+            showProfilePromoMsg('⚠️ Вы уже активировали этот промокод!', true);
+            return;
+        }
+
+        const usedCount = Object.keys(usedBy).length;
+        const maxUses = Number(promo.maxUses) || 0;
+        if (usedCount >= maxUses) {
+            showProfilePromoMsg('😔 Лимит активаций этого промокода исчерпан!', true);
+            return;
+        }
+
+        await cloudPut(`vetruch_app/promocodes/${encodeURIComponent(rawCode)}/usedBy/${myId}`, true);
+
+        const reward = Number(promo.reward) || 0;
+        let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+        curBal += reward;
+        localStorage.setItem('vetruch_balance', curBal);
+        localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+
+        let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+        balancesMap[myId] = curBal;
+        localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+
+        await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+        initBalance();
+
+        input.value = '';
+        showProfilePromoMsg(`🎉 Промокод активирован! +${formatCoins(reward)} монет`, false);
+
+        if (window.tg && tg.HapticFeedback) {
+            try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+        }
+    } catch (e) {
+        showProfilePromoMsg('❌ Ошибка сети, попробуйте снова', true);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'АКТИВИРОВАТЬ';
+    }
+}
+
+function generateRandomPromoCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = 'VET-';
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const inp = document.getElementById('adminPromoCodeInput');
+    if (inp) inp.value = code;
+}
+
+function showAdminPromoToast(msg, isError) {
+    const t = document.getElementById('adminPromoToast');
+    if (!t) return;
+    t.style.display = 'block';
+    t.style.background = isError ? 'rgba(255, 51, 102, 0.15)' : 'rgba(0, 230, 118, 0.15)';
+    t.style.borderColor = isError ? 'rgba(255, 51, 102, 0.45)' : 'rgba(0, 230, 118, 0.45)';
+    t.style.color = isError ? '#ff3366' : '#00e676';
+    t.textContent = msg;
+    setTimeout(() => { t.style.display = 'none'; }, 3500);
+}
+
+async function adminCreatePromoCode() {
+    const codeInp = document.getElementById('adminPromoCodeInput');
+    const rewInp = document.getElementById('adminPromoRewardInput');
+    const usesInp = document.getElementById('adminPromoUsesInput');
+
+    const code = (codeInp?.value || '').trim().toUpperCase().replace(/[.#$\[\]\/\s]+/g, '');
+    const reward = parseInt(rewInp?.value || '0', 10);
+    const maxUses = parseInt(usesInp?.value || '0', 10);
+
+    if (!code) {
+        showAdminPromoToast('⚠️ Введите название промокода!', true);
+        return;
+    }
+    if (isNaN(reward) || reward <= 0) {
+        showAdminPromoToast('⚠️ Укажите награду больше 0!', true);
+        return;
+    }
+    if (isNaN(maxUses) || maxUses <= 0) {
+        showAdminPromoToast('⚠️ Укажите количество активаций (минимум 1)!', true);
+        return;
+    }
+
+    const existing = await cloudGet(`vetruch_app/promocodes/${encodeURIComponent(code)}`);
+    if (existing && existing.code) {
+        showAdminPromoToast('⚠️ Такой промокод уже есть! Удалите старый или введите другой.', true);
+        return;
+    }
+
+    await cloudPut(`vetruch_app/promocodes/${encodeURIComponent(code)}`, {
+        code: code,
+        reward: reward,
+        maxUses: maxUses,
+        createdAt: Date.now()
+    });
+
+    if (codeInp) codeInp.value = '';
+    if (rewInp) rewInp.value = '';
+    if (usesInp) usesInp.value = '';
+
+    showAdminPromoToast(`✅ Промокод ${code} создан (+${formatCoins(reward)} монет, ${maxUses} акц.)`, false);
+    renderAdminPromosList();
+}
+
+async function renderAdminPromosList() {
+    const listEl = document.getElementById('adminPromosList');
+    const countEl = document.getElementById('adminPromosCount');
+    if (!listEl) return;
+
+    listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center; padding: 12px 0;">Загрузка...</div>';
+
+    const promosObj = (await cloudGet('vetruch_app/promocodes')) || {};
+    const promos = Object.values(promosObj)
+        .filter(p => p && p.code)
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    if (countEl) countEl.textContent = promos.length;
+
+    if (promos.length === 0) {
+        listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center; padding: 14px 0;">Промокодов пока нет 🎟️</div>';
+        return;
+    }
+
+    listEl.innerHTML = promos.map(p => {
+        const usedCount = p.usedBy ? Object.keys(p.usedBy).length : 0;
+        const maxUses = Number(p.maxUses) || 0;
+        const isExhausted = usedCount >= maxUses;
+
+        return `
+            <div class="admin-req-item">
+                <div class="admin-req-head">
+                    <span class="admin-req-user" style="font-size: 15px; letter-spacing: 0.5px; color: #00d9ff; cursor: pointer;" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${p.code}');} showAdminPromoToast('📋 Код ${p.code} скопирован', false);">
+                        🎟️ ${p.code}
+                    </span>
+                    <span class="admin-badge-count" style="background: ${isExhausted ? 'rgba(255,51,102,0.18)' : 'rgba(0,230,118,0.18)'}; color: ${isExhausted ? '#ff5277' : '#00e676'}; border-color: ${isExhausted ? 'rgba(255,51,102,0.4)' : 'rgba(0,230,118,0.4)'};">
+                        ${isExhausted ? 'Закончился' : 'Активен'}
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12.5px; color: #cbd5e1; margin-bottom: 10px;">
+                    <span>Награда: <b style="color: #ffd700;">+${formatCoins(p.reward)} <img src="coins.png" alt="coins" class="coin-icon-sm"></b></span>
+                    <span>Активаций: <b>${usedCount} / ${maxUses}</b></span>
+                </div>
+                <button type="button" class="admin-btn-reject" style="width: 100%;" onclick="adminDeletePromoCode('${p.code}')">
+                    🗑 Удалить промокод
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+async function adminDeletePromoCode(code) {
+    await cloudPut(`vetruch_app/promocodes/${encodeURIComponent(code)}`, null);
+    showAdminPromoToast(`🗑 Промокод ${code} удалён`, false);
+    renderAdminPromosList();
+}
+</script>
+
+<script>
+// ================= РЕФЕРАЛЬНЫЙ КЕЙС И МОИ ЗАКАЗЫ =================
+const REF_CASE_ITEMS = [
+    { id: 'c100',   title: '100 Монет',                short: '100',         img: 'coins.png',    chance: 50, rarity: 'Обычный',     rCls: 'rarity-common',    type: 'coins', amount: 100 },
+    { id: 'c250',   title: '250 Монет',                short: '250',         img: 'coins.png',    chance: 35, rarity: 'Обычный',     rCls: 'rarity-common',    type: 'coins', amount: 250 },
+    { id: 'c500',   title: '500 Монет',                short: '500',         img: 'coins.png',    chance: 12, rarity: 'Редкий',      rCls: 'rarity-rare',      type: 'coins', amount: 500 },
+    { id: 'vpn',    title: 'VPN 1 месяц',              short: 'VPN 1 мес',   img: 'IMG_1078.PNG', chance: 8,  rarity: 'Редкий',      rCls: 'rarity-rare',      type: 'item' },
+    { id: 'gift',   title: 'Подарок в ТГ от стримера', short: 'Подарок ТГ',  img: 'IMG_1084.PNG', chance: 6,  rarity: 'Эпический',   rCls: 'rarity-epic',      type: 'item' },
+    { id: 'tgprem', title: 'Telegram Premium 3 мес.',  short: 'TG Prem 3м',  img: 'IMG_1080.PNG', chance: 5,  rarity: 'Эпический',   rCls: 'rarity-epic',      type: 'item' },
+    { id: 'r1000',  title: '1 000 рублей',             short: '1 000 ₽',     img: 'IMG_1071.PNG', chance: 2,  rarity: 'Легендарный', rCls: 'rarity-legendary', type: 'item' },
+    { id: 'r2500',  title: '2 500 рублей',             short: '2 500 ₽',     img: 'IMG_1069.PNG', chance: 1,  rarity: 'Легендарный', rCls: 'rarity-legendary', type: 'item' }
+];
+
+let isRefCaseSpinning = false;
+let refCaseOpenedCountCache = parseInt(localStorage.getItem('vetruch_ref_cases_opened') || '0', 10);
+
+function getRefCaseKeysCount() {
+    const refs = parseInt(localStorage.getItem('vetruch_my_ref_count') || '0', 10);
+    return Math.max(0, refs - refCaseOpenedCountCache);
+}
+
+async function refreshRefCaseKeysUI() {
+    const myId = getCurrentTgId();
+    try {
+        const opened = await cloudGet(`vetruch_app/ref_cases_opened/${myId}`);
+        if (opened !== null && opened !== undefined) {
+            refCaseOpenedCountCache = Number(opened) || 0;
+            localStorage.setItem('vetruch_ref_cases_opened', refCaseOpenedCountCache);
+        }
+    } catch (e) {}
+
+    const keys = getRefCaseKeysCount();
+    const cardBtn = document.getElementById('refCaseCardOpenBtn');
+    const modalBtn = document.getElementById('refCaseModalOpenBtn');
+
+    if (cardBtn) {
+        if (keys > 0) {
+            cardBtn.classList.add('has-keys');
+            cardBtn.textContent = `🔑 Открыть (${keys})`;
+        } else {
+            cardBtn.classList.remove('has-keys');
+            cardBtn.textContent = 'Падает за друзей';
+        }
+    }
+    if (modalBtn && !isRefCaseSpinning) {
+        if (keys > 0) {
+            modalBtn.disabled = false;
+            modalBtn.style.opacity = '1';
+            modalBtn.textContent = `🎁 ОТКРЫТЬ КЕЙС (Ключей: ${keys})`;
+        } else {
+            modalBtn.disabled = true;
+            modalBtn.style.opacity = '0.55';
+            modalBtn.textContent = '🔑 Нет ключей (пригласи друга)';
+        }
+    }
+}
+
+function switchShopMode(mode) {
+    const storeBtn = document.getElementById('shopModeStoreBtn');
+    const casesBtn = document.getElementById('shopModeCasesBtn');
+    const ordersBar = document.getElementById('shopMyOrdersBar');
+    const shopTabs = document.querySelector('#shop .shop-tabs');
+    const shopGrid = document.querySelector('#shop .shop-grid');
+    const casesSec = document.getElementById('casesSection');
+    const heading = document.querySelector('#shop h2.games-heading');
+
+    if (mode === 'cases') {
+        if (storeBtn) storeBtn.classList.remove('active');
+        if (casesBtn) casesBtn.classList.add('active');
+        if (ordersBar) ordersBar.style.display = 'none';
+        if (shopTabs) shopTabs.style.display = 'none';
+        if (shopGrid) shopGrid.style.display = 'none';
+        if (casesSec) casesSec.style.display = 'block';
+        if (heading) heading.textContent = 'Кейсы';
+        refreshRefCaseKeysUI();
+    } else {
+        if (storeBtn) storeBtn.classList.add('active');
+        if (casesBtn) casesBtn.classList.remove('active');
+        if (ordersBar) ordersBar.style.display = 'flex';
+        if (shopTabs) shopTabs.style.display = 'flex';
+        if (shopGrid) shopGrid.style.display = 'grid';
+        if (casesSec) casesSec.style.display = 'none';
+        if (heading) heading.textContent = 'Магазин';
+    }
+}
+
+function openMyOrdersModal() {
+    const body = document.getElementById('myOrdersModalBody');
+    const modal = document.getElementById('myOrdersModal');
+    if (!body || !modal) return;
+
+    const myPurchases = JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+    if (myPurchases.length === 0) {
+        body.innerHTML = `
+            <div style="text-align: center; padding: 36px 16px;">
+                <div style="width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.06); display: grid; place-items: center; margin: 0 auto 14px auto; font-size: 24px;">🏪</div>
+                <div style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px;">Заказов пока нет</div>
+                <div style="font-size: 13px; color: var(--secondary);">Купи что-нибудь в магазине — всё появится здесь.</div>
+            </div>
+        `;
+    } else {
+        body.innerHTML = myPurchases.map(p => `
+            <div class="purchase-history-item">
+                <div>
+                    <div style="font-size: 13.5px; font-weight: 700; color: #ffffff;">🎁 ${p.item}</div>
+                    <div style="font-size: 11px; color: var(--secondary); margin-top: 2px;">
+                        ${p.price > 0 ? `Списано: ${formatCoins(p.price)} монет` : 'Выпало из кейса'}
+                    </div>
+                </div>
+                <span class="profile-status-pill ${p.status.includes('Выдано') ? 'connected' : 'action'}">${p.status}</span>
+            </div>
+        `).join('');
+    }
+
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeMyOrdersModal() {
+    const modal = document.getElementById('myOrdersModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function renderRefCaseDrops() {
+    const grid = document.getElementById('refCaseDropsGrid');
+    if (!grid) return;
+    const sorted = [...REF_CASE_ITEMS].reverse();
+    grid.innerHTML = sorted.map(it => {
+        const bgCls = it.rCls.replace('rarity-', 'bg-');
+        const imgCls = it.img === 'coins.png' ? 'case-drop-img is-coin' : 'case-drop-img';
+        return `
+            <div class="case-drop-card ${bgCls}">
+                <img src="${it.img}" alt="${it.title}" class="${imgCls}">
+                <div class="case-drop-info">
+                    <div class="case-drop-name">${it.title}</div>
+                    <div class="case-drop-rarity ${it.rCls}">${it.rarity}</div>
+                    <div class="case-drop-chance">${it.chance}%</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function onRefCaseCardAction() {
+    openRefCaseModal();
+    if (getRefCaseKeysCount() > 0) {
+        setTimeout(() => spinRefCase(false), 250);
+    }
+}
+
+function openRefCaseModal() {
+    renderRefCaseDrops();
+    refreshRefCaseKeysUI();
+
+    const rBox = document.getElementById('refCaseRouletteBox');
+    const winBan = document.getElementById('refCaseWinBanner');
+    if (rBox) rBox.classList.remove('open');
+    if (winBan) winBan.classList.remove('open');
+
+    const testBtn = document.getElementById('refCaseAdminTestBtn');
+    if (testBtn && typeof ALLOWED_ADMIN_IDS !== 'undefined') {
+        testBtn.style.display = ALLOWED_ADMIN_IDS.includes(Number(getCurrentTgId())) ? 'block' : 'none';
+    }
+
+    const modal = document.getElementById('refCaseModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeRefCaseModal() {
+    if (isRefCaseSpinning) return;
+    const modal = document.getElementById('refCaseModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => { modal.style.display = 'none'; }, 250);
+}
+
+function rollRefCaseWinner() {
+    const total = REF_CASE_ITEMS.reduce((s, it) => s + it.chance, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < REF_CASE_ITEMS.length; i++) {
+        r -= REF_CASE_ITEMS[i].chance;
+        if (r <= 0) return REF_CASE_ITEMS[i];
+    }
+    return REF_CASE_ITEMS[0];
+}
+
+async function spinRefCase(isAdminTest) {
+    if (isRefCaseSpinning) return;
+    if (!isAdminTest && getRefCaseKeysCount() <= 0) return;
+
+    isRefCaseSpinning = true;
+    const modalBtn = document.getElementById('refCaseModalOpenBtn');
+    const rBox = document.getElementById('refCaseRouletteBox');
+    const track = document.getElementById('refCaseRouletteTrack');
+    const winBan = document.getElementById('refCaseWinBanner');
+
+    if (winBan) winBan.classList.remove('open');
+    if (modalBtn) {
+        modalBtn.disabled = true;
+        modalBtn.textContent = '🎲 КРУТИМ КЕЙС...';
+    }
+
+    const winner = rollRefCaseWinner();
+    const totalSlots = 40;
+    const winIdx = 32;
+    const slots = [];
+    for (let i = 0; i < totalSlots; i++) {
+        slots.push(i === winIdx ? winner : rollRefCaseWinner());
+    }
+
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0px)';
+    track.innerHTML = slots.map(it => `
+        <div class="case-roulette-item">
+            <img src="${it.img}" alt="">
+            <span>${it.short}</span>
+        </div>
+    `).join('');
+
+    rBox.classList.add('open');
+    void track.offsetWidth;
+
+    const itemWidth = 84; // 76px + 8px gap
+    const centerOffset = (rBox.clientWidth / 2) - 38;
+    const jitter = Math.floor((Math.random() - 0.5) * 34);
+    const targetX = -(winIdx * itemWidth - centerOffset + jitter + 8);
+
+    track.style.transition = 'transform 3.6s cubic-bezier(0.12, 0.85, 0.2, 1)';
+    track.style.transform = `translateX(${targetX}px)`;
+
+    setTimeout(async () => {
+        if (!isAdminTest) {
+            const myId = getCurrentTgId();
+            refCaseOpenedCountCache += 1;
+            localStorage.setItem('vetruch_ref_cases_opened', refCaseOpenedCountCache);
+            await cloudPut(`vetruch_app/ref_cases_opened/${myId}`, refCaseOpenedCountCache);
+
+            if (winner.type === 'coins') {
+                let curBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) + winner.amount;
+                localStorage.setItem('vetruch_balance', curBal);
+                localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+                let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+                balancesMap[myId] = curBal;
+                localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+                await cloudPut(`vetruch_app/balances/${myId}`, curBal);
+                initBalance();
+            } else {
+                const username = getDefaultUsername() || `ID:${myId}`;
+                const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                const orderId = Date.now();
+
+                let orders = (await cloudGet('vetruch_app/shop')) || getAdminShopOrders();
+                if (!Array.isArray(orders)) orders = [];
+                orders.unshift({
+                    id: orderId,
+                    user: username,
+                    userId: myId,
+                    item: `[Кейс] ${winner.title}`,
+                    price: 0,
+                    date: `Сегодня, ${nowStr}`
+                });
+                localStorage.setItem('vetruch_admin_shop', JSON.stringify(orders));
+                await cloudPut('vetruch_app/shop', orders);
+
+                let myPurchases = (await cloudGet(`vetruch_app/purchases/${myId}`)) || JSON.parse(localStorage.getItem('vetruch_my_purchases') || '[]');
+                if (!Array.isArray(myPurchases)) myPurchases = [];
+                myPurchases.unshift({
+                    id: orderId,
+                    item: `[Кейс] ${winner.title}`,
+                    price: 0,
+                    status: 'Ожидает выдачи ⏳'
+                });
+                localStorage.setItem('vetruch_my_purchases', JSON.stringify(myPurchases));
+                await cloudPut(`vetruch_app/purchases/${myId}`, myPurchases);
+                renderProfilePurchases();
+            }
+        }
+
+        if (winBan) {
+            winBan.innerHTML = `
+                <div style="font-size: 11px; color: #8c97a7; font-weight: 700;">${isAdminTest ? 'ТЕСТ-ВЫПАДЕНИЕ:' : 'ВЫ ВЫИГРАЛИ:'}</div>
+                <div style="font-size: 17px; font-weight: 900; color: #00e676; margin-top: 3px;">🎉 ${winner.title}</div>
+                ${!isAdminTest && winner.type === 'item' ? '<div style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">Приз добавлен в «Мои заказы» и отправлен админу</div>' : ''}
+            `;
+            winBan.classList.add('open');
+        }
+
+        isRefCaseSpinning = false;
+        refreshRefCaseKeysUI();
+    }, 3750);
+}
+</script>
+
+<script>
+// ================= ВЫИГРАНО В ИГРАХ (BENTO UI) =================
+function updateTotalWonUI() {
+    const totalWon = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
+    document.querySelectorAll('#profile .profile-bento-item').forEach(item => {
+        const lbl = item.querySelector('.profile-bento-label');
+        const val = item.querySelector('.profile-bento-val');
+        if (lbl && val && lbl.textContent.includes('Выиграно в играх')) {
+            val.innerHTML = `${formatCoins(totalWon)} <img src="coins.png" alt="coins" class="coin-icon">`;
+        }
+    });
+}
+updateTotalWonUI();
+</script>
+
+<script>
+// ================= ТОЧНЫЙ ПОДСЧЁТ ЗАДАНИЙ В ПРОФИЛЕ И ЗАДАНИЯХ =================
+function getAccurateTasksProgress() {
+    let done = 0;
+    let total = 0;
+
+    // 1. Обычные задания (6 шт.)
+    const tasksPage = document.getElementById('tasks');
+    if (tasksPage) {
+        const completed = (typeof getCompletedTasksList === 'function') ? getCompletedTasksList() : [];
+        const featuredCards = tasksPage.querySelectorAll('.featured-task');
+        total += featuredCards.length;
+        featuredCards.forEach(card => {
+            const onclickAttr = card.getAttribute('onclick') || '';
+            const match = onclickAttr.match(/openTaskModal\('([^']+)'/);
+            const modalKey = match ? match[1] : '';
+            const title = (card.querySelector('.featured-task-title')?.textContent || '').trim();
+            if ((modalKey && completed.includes(modalKey)) || (title && completed.includes(title))) {
+                done++;
+            }
+        });
+    } else {
+        total += 6;
+    }
+
+    // 2. ARKADA (привязка + 15 депозитов = 16 шт.)
+    if (typeof getArkadaProgress === 'function' && typeof ARKADA_DEPOSITS !== 'undefined') {
+        const ark = getArkadaProgress();
+        total += 1 + ARKADA_DEPOSITS.length;
+        if (ark.bind === 'done') done++;
+        ARKADA_DEPOSITS.forEach(d => {
+            if (ark.deposits && ark.deposits[d.id] === 'done') done++;
+        });
+    }
+
+    // 3. UP-X (привязка + 15 депозитов = 16 шт.)
+    if (typeof getP2Progress === 'function' && typeof P2_DEPOSITS !== 'undefined') {
+        const p2 = getP2Progress();
+        total += 1 + P2_DEPOSITS.length;
+        if (p2.bind === 'done') done++;
+        P2_DEPOSITS.forEach(d => {
+            if (p2.deposits && p2.deposits[d.id] === 'done') done++;
+        });
+    }
+
+    // 4. Ton Play (привязка + 15 депозитов = 16 шт.)
+    if (typeof getP3Progress === 'function' && typeof P3_DEPOSITS !== 'undefined') {
+        const p3 = getP3Progress();
+        total += 1 + P3_DEPOSITS.length;
+        if (p3.bind === 'done') done++;
+        P3_DEPOSITS.forEach(d => {
+            if (p3.deposits && p3.deposits[d.id] === 'done') done++;
+        });
+    }
+
+    return { done, total: total || 54 };
+}
+
+function updateAccurateTasksCountUI() {
+    const stats = getAccurateTasksProgress();
+    document.querySelectorAll('#profile .profile-bento-item').forEach(item => {
+        const lbl = item.querySelector('.profile-bento-label');
+        const val = item.querySelector('.profile-bento-val');
+        if (lbl && val && lbl.textContent.includes('Заданий выполнено')) {
+            val.textContent = `${stats.done} / ${stats.total}`;
+        }
+    });
+
+    const tasksProgText = document.getElementById('tasksProgressText');
+    const tasksProgFill = document.getElementById('tasksProgressFill');
+    if (tasksProgText) {
+        tasksProgText.textContent = `${stats.done} из ${stats.total}`;
+    }
+    if (tasksProgFill) {
+        const pct = Math.min(100, Math.round((stats.done / stats.total) * 100));
+        tasksProgFill.style.width = pct + '%';
+    }
+}
+
+updateAccurateTasksCountUI();
+document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('click', updateAccurateTasksCountUI);
+document.querySelector('.nav-button[data-page="tasks"]')?.addEventListener('click', updateAccurateTasksCountUI);
+</script>
+
+<script>
+// ================= СТАТУСЫ ПРИВЯЗОК В ПРОФИЛЕ (TELEGRAM / KICK / ARKADA / TON PLAY / UP-X) =================
+function applyBindRowUI(descId, badgeId, status, valueText, defaultDesc, defaultBtnText) {
+    const descEl = document.getElementById(descId);
+    const badgeEl = document.getElementById(badgeId);
+    if (!descEl || !badgeEl) return;
+
+    if (status === 'done') {
+        descEl.textContent = valueText || 'Аккаунт привязан';
+        descEl.style.color = '#00e676';
+        badgeEl.className = 'profile-status-pill connected';
+        badgeEl.textContent = 'Привязано ✓';
+    } else if (status === 'pending') {
+        descEl.textContent = valueText ? `${valueText} · ожидает проверки` : 'Ожидает проверки';
+        descEl.style.color = '#fbbf24';
+        badgeEl.className = 'profile-status-pill pending';
+        badgeEl.textContent = 'На проверке ⏳';
+    } else {
+        descEl.textContent = defaultDesc;
+        descEl.style.color = '';
+        badgeEl.className = 'profile-status-pill action';
+        badgeEl.textContent = defaultBtnText;
+    }
+}
+
+function renderProfileBindsUI() {
+    let activeCount = 1; // Telegram активен всегда
+
+    // 1. Kick
+    let kickObj = null;
+    try {
+        kickObj = JSON.parse(localStorage.getItem('vetruch_kick_bind') || 'null');
+    } catch (e) {}
+
+    if (!kickObj) {
+        const comp = (typeof getCompletedTasksList === 'function') ? getCompletedTasksList() : [];
+        if (comp.includes('Подписаться на Kick')) {
+            kickObj = { nick: (typeof getDefaultUsername === 'function' ? getDefaultUsername() : '') || 'Подтверждено', status: 'done' };
+        }
+    }
+    if (kickObj && kickObj.status === 'done') activeCount++;
+    applyBindRowUI(
+        'bindKickDesc',
+        'bindKickBadge',
+        kickObj ? kickObj.status : null,
+        kickObj && kickObj.nick ? `Ник: ${kickObj.nick}` : '',
+        'Бонус +200 монет за подписку',
+        'Задания ➔'
+    );
+
+    // 2. ARKADA
+    const ark = (typeof getArkadaProgress === 'function') ? getArkadaProgress() : { bind: null, arkadaId: '' };
+    if (ark.bind === 'done') activeCount++;
+    applyBindRowUI(
+        'bindArkadaDesc',
+        'bindArkadaBadge',
+        ark.bind,
+        ark.arkadaId ? `ID: ${ark.arkadaId}` : '',
+        'Награда +1 000 монет за привязку',
+        'Привязать ➔'
+    );
+
+    // 3. Ton Play (Партнёр #3)
+    const p3 = (typeof getP3Progress === 'function') ? getP3Progress() : { bind: null, partnerId: '' };
+    if (p3.bind === 'done') activeCount++;
+    applyBindRowUI(
+        'bindTpDesc',
+        'bindTpBadge',
+        p3.bind,
+        p3.partnerId ? `ID: ${p3.partnerId}` : '',
+        'Награда +1 000 монет за привязку',
+        'Привязать ➔'
+    );
+
+    // 4. UP-X (Партнёр #2)
+    const p2 = (typeof getP2Progress === 'function') ? getP2Progress() : { bind: null, partnerId: '' };
+    if (p2.bind === 'done') activeCount++;
+    applyBindRowUI(
+        'bindUpxDesc',
+        'bindUpxBadge',
+        p2.bind,
+        p2.partnerId ? `ID: ${p2.partnerId}` : '',
+        'Награда +1 000 монет за привязку',
+        'Привязать ➔'
+    );
+
+    const cntEl = document.getElementById('profileBindsCountText');
+    if (cntEl) cntEl.textContent = `${activeCount} из 5 активно`;
+}
+
+async function syncKickBindFromCloud() {
+    try {
+        if (typeof cloudGet === 'function' && typeof getCurrentTgId === 'function') {
+            const kData = await cloudGet(`vetruch_app/kick_accounts/${getCurrentTgId()}`);
+            if (kData && kData.status) {
+                localStorage.setItem('vetruch_kick_bind', JSON.stringify(kData));
+            } else if (kData === null) {
+                localStorage.removeItem('vetruch_kick_bind');
+            }
+        }
+    } catch (e) {}
+    renderProfileBindsUI();
+}
+
+syncKickBindFromCloud();
+setInterval(renderProfileBindsUI, 3000);
+document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('click', syncKickBindFromCloud);
+</script>
 </body>
 </html>
