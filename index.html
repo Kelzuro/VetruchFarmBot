@@ -2714,25 +2714,28 @@
         .profile-vip-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             padding: 4px 10px;
             border-radius: 20px;
-            background: rgba(0, 136, 255, 0.14);
-            border: 1px solid rgba(0, 170, 255, 0.35);
-            color: #7cd4ff;
-            font-size: 10px;
+            background: rgba(148, 163, 184, 0.14);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            color: #cbd5e1;
+            font-size: 9.5px;
             font-weight: 800;
-            letter-spacing: 0.7px;
+            letter-spacing: 0.45px;
             text-transform: uppercase;
-            box-shadow: 0 0 12px rgba(0, 136, 255, 0.2);
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
         }
 
         .profile-online-dot {
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background: #00ff88;
-            box-shadow: 0 0 8px #00ff88;
+            background: #94a3b8;
+            box-shadow: 0 0 6px currentColor;
+            flex-shrink: 0;
         }
 
         .profile-id-pill {
@@ -3732,28 +3735,113 @@
 .user-tier-badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.18) 0%, rgba(245, 158, 11, 0.08) 100%);
-    border: 1px solid rgba(255, 215, 0, 0.45);
+    gap: 5px;
+    background: linear-gradient(135deg, rgba(148, 163, 184, 0.14) 0%, rgba(51, 65, 85, 0.1) 100%);
+    border: 1px solid rgba(148, 163, 184, 0.35);
     border-radius: 20px;
-    padding: 2px 7px;
-    font-size: 9.5px;
+    padding: 3px 8px;
+    font-size: 9px;
     font-weight: 800;
-    letter-spacing: 0.5px;
-    color: #ffd700;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.22);
+    letter-spacing: 0.35px;
+    color: #cbd5e1;
     margin-top: 3px;
     width: fit-content;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
+    transition: all 0.25s ease;
 }
 
 .user-tier-badge .tier-boost {
-    background: #ffd700;
-    color: #0b0c10;
+    background: rgba(148, 163, 184, 0.28);
+    color: #f1f5f9;
     border-radius: 6px;
-    padding: 0 4px;
+    padding: 1px 5px;
     font-size: 8.5px;
     font-weight: 900;
     margin-left: 2px;
+    line-height: 1.15;
+}
+
+/* Динамические стили плашек под уровень VIP */
+.user-tier-badge.tier-basic,
+.profile-vip-badge.tier-basic {
+    background: linear-gradient(135deg, rgba(148, 163, 184, 0.14) 0%, rgba(51, 65, 85, 0.1) 100%);
+    border-color: rgba(148, 163, 184, 0.35);
+    color: #cbd5e1;
+    box-shadow: none;
+}
+.user-tier-badge.tier-basic .tier-boost {
+    background: rgba(148, 163, 184, 0.28);
+    color: #f1f5f9;
+}
+.profile-vip-badge.tier-basic .profile-online-dot {
+    background: #94a3b8;
+    box-shadow: 0 0 6px rgba(148, 163, 184, 0.6);
+}
+
+.user-tier-badge.tier-bronze,
+.profile-vip-badge.tier-bronze {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.22) 0%, rgba(120, 66, 18, 0.12) 100%);
+    border-color: rgba(217, 138, 67, 0.55);
+    color: #f3a661;
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.22);
+}
+.user-tier-badge.tier-bronze .tier-boost {
+    background: linear-gradient(135deg, #e08e45, #b45309);
+    color: #ffffff;
+}
+.profile-vip-badge.tier-bronze .profile-online-dot {
+    background: #f3a661;
+    box-shadow: 0 0 8px rgba(243, 166, 97, 0.8);
+}
+
+.user-tier-badge.tier-silver,
+.profile-vip-badge.tier-silver {
+    background: linear-gradient(135deg, rgba(226, 232, 240, 0.22) 0%, rgba(100, 116, 139, 0.14) 100%);
+    border-color: rgba(203, 213, 225, 0.6);
+    color: #f1f5f9;
+    box-shadow: 0 0 14px rgba(226, 232, 240, 0.24);
+}
+.user-tier-badge.tier-silver .tier-boost {
+    background: linear-gradient(135deg, #f1f5f9, #94a3b8);
+    color: #0f172a;
+}
+.profile-vip-badge.tier-silver .profile-online-dot {
+    background: #e2e8f0;
+    box-shadow: 0 0 8px rgba(226, 232, 240, 0.85);
+}
+
+.user-tier-badge.tier-gold,
+.profile-vip-badge.tier-gold {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(217, 119, 6, 0.12) 100%);
+    border-color: rgba(255, 215, 0, 0.58);
+    color: #ffd700;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.28);
+}
+.user-tier-badge.tier-gold .tier-boost {
+    background: linear-gradient(135deg, #ffd700, #f59e0b);
+    color: #0b0c10;
+}
+.profile-vip-badge.tier-gold .profile-online-dot {
+    background: #ffd700;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.9);
+}
+
+.user-tier-badge.tier-diamond,
+.profile-vip-badge.tier-diamond {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.22) 0%, rgba(168, 85, 247, 0.16) 100%);
+    border-color: rgba(56, 189, 248, 0.65);
+    color: #7dd3fc;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+}
+.user-tier-badge.tier-diamond .tier-boost {
+    background: linear-gradient(135deg, #38bdf8, #818cf8);
+    color: #060913;
+}
+.profile-vip-badge.tier-diamond .profile-online-dot {
+    background: #38bdf8;
+    box-shadow: 0 0 9px rgba(56, 189, 248, 0.95);
 }
 
 /* Бегущая строка живых побед */
@@ -7780,7 +7868,7 @@
                 <div class="user-info">
                     <span class="greeting-text">Добро пожаловать,</span>
                     <span class="user-name" id="homeUserName">Пользователь</span>
-                    <div class="user-tier-badge" id="homeUserTierBadge">👤 ОБЫЧНЫЙ АККАУНТ <span class="tier-boost">1.0x</span></div>
+                    <div class="user-tier-badge tier-basic" id="homeUserTierBadge">👤 ОБЫЧНЫЙ АККАУНТ <span class="tier-boost">1.0x</span></div>
                 </div>
             </div>
         </div>
@@ -8630,7 +8718,7 @@
 
             <div class="profile-hero-top">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="profile-vip-badge" id="profileVipBadge"><span class="profile-online-dot"></span> 👤 ОБЫЧНЫЙ АККАУНТ</div>
+                    <div class="profile-vip-badge tier-basic" id="profileVipBadge"><span class="profile-online-dot"></span> 👤 ОБЫЧНЫЙ АККАУНТ</div>
                     
                 </div>
                 <button type="button" class="profile-id-pill" onclick="copyProfileId()">
@@ -14873,11 +14961,11 @@ function openSupportChat() {
 
 // ================= СИСТЕМА VIP СТАТУСОВ И ПОДАРКОВ =================
 const VIP_TIERS = [
-    { name: 'Обычный аккаунт', minExp: 0, maxExp: 500, icon: '👤', boost: '1.0x' },
-    { name: 'VIP Бронзовый', minExp: 500, maxExp: 5000, icon: '🥉', boost: '1.1x' },
-    { name: 'VIP Серебряный', minExp: 5000, maxExp: 25000, icon: '🥈', boost: '1.25x' },
-    { name: 'VIP Золотой', minExp: 25000, maxExp: 100000, icon: '🥇', boost: '1.5x' },
-    { name: 'VIP Алмазный', minExp: 100000, maxExp: Infinity, icon: '💎', boost: '2.0x' }
+    { key: 'tier-basic',   name: 'Обычный аккаунт', minExp: 0,      maxExp: 500,      icon: '👤', boost: '1.0x' },
+    { key: 'tier-bronze',  name: 'VIP Бронзовый',   minExp: 500,    maxExp: 5000,     icon: '🥉', boost: '1.1x' },
+    { key: 'tier-silver',  name: 'VIP Серебряный',  minExp: 5000,   maxExp: 25000,    icon: '🥈', boost: '1.25x' },
+    { key: 'tier-gold',    name: 'VIP Золотой',     minExp: 25000,  maxExp: 100000,   icon: '🥇', boost: '1.5x' },
+    { key: 'tier-diamond', name: 'VIP Алмазный',    minExp: 100000, maxExp: Infinity, icon: '💎', boost: '2.0x' }
 ];
 
 function getUserExp() {
@@ -14906,16 +14994,21 @@ function getVipTier(exp) {
 function updateVipStatusUI() {
     const exp = getUserExp();
     const tier = getVipTier(exp);
+    const tierClasses = VIP_TIERS.map(t => t.key);
 
     // 1. Home header badge
     const homeBadge = document.getElementById('homeUserTierBadge');
     if (homeBadge) {
+        homeBadge.classList.remove(...tierClasses);
+        homeBadge.classList.add(tier.key);
         homeBadge.innerHTML = `${tier.icon} ${tier.name.toUpperCase()} <span class="tier-boost">${tier.boost}</span>`;
     }
 
     // 2. Profile top badge
     const profBadge = document.getElementById('profileVipBadge');
     if (profBadge) {
+        profBadge.classList.remove(...tierClasses);
+        profBadge.classList.add(tier.key);
         profBadge.innerHTML = `<span class="profile-online-dot"></span> ${tier.icon} ${tier.name.toUpperCase()}`;
     }
 
