@@ -7361,6 +7361,87 @@
 }
         
 </style>
+
+<style>
+.recent-win-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 14px;
+    margin-bottom: 8px;
+    border-radius: 15px;
+    background: linear-gradient(180deg, rgba(20, 24, 34, 0.88) 0%, rgba(11, 14, 20, 0.96) 100%);
+    border: 1px solid rgba(0, 136, 255, 0.22);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    text-align: left;
+}
+.recent-win-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+}
+.recent-win-ico {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(0, 136, 255, 0.14);
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.recent-win-info {
+    min-width: 0;
+    flex: 1;
+}
+.recent-win-name {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #ffffff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.recent-win-game {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #8c97a7;
+    margin-top: 2px;
+}
+.recent-win-amount {
+    font-size: 14px;
+    font-weight: 800;
+    color: #00e676;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+</style>
+
+<style>
+html, body, body *:not(input):not(textarea) {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+}
+input, textarea {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+    -webkit-touch-callout: default !important;
+}
+img {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+}
+</style>
     
 </head>
 
@@ -9919,7 +10000,7 @@
                 </div>
 
                 <label class="admin-field-label">Telegram ID игрока:</label>
-                <input type="number" id="adminTargetIdInput" class="task-input" placeholder="Например: 1067693099">
+                <input type="text" inputmode="numeric" id="adminTargetIdInput" class="task-input" placeholder="Например: 1067693099">
 
                 <div class="admin-chips-row">
                     <span class="admin-chip" onclick="document.getElementById('adminTargetIdInput').value='1067693099'">ID: 1067693099</span>
@@ -11365,9 +11446,18 @@
             const inviterId = getStartParamReferrer();
             if (!inviterId || inviterId === myId || inviterId === '0') return;
 
-            const alreadyReferred = await cloudGet(`vetruch_app/referred_by/${myId}`);
-            if (alreadyReferred) return;
+            const [alreadyReferred, existingUser, existingBal, knownUser] = await Promise.all([
+                cloudGet(`vetruch_app/referred_by/${myId}`),
+                cloudGet(`vetruch_app/users/${myId}`),
+                cloudGet(`vetruch_app/balances/${myId}`),
+                cloudGet(`vetruch_app/known_users/${myId}`)
+            ]);
+            if (alreadyReferred || existingUser || (existingBal !== null && existingBal !== undefined) || knownUser) {
+                if (!knownUser) cloudPut(`vetruch_app/known_users/${myId}`, true);
+                return;
+            }
 
+            await cloudPut(`vetruch_app/known_users/${myId}`, true);
             await cloudPut(`vetruch_app/referred_by/${myId}`, inviterId);
 
             let inviterRefs = (await cloudGet(`vetruch_app/referrals/${inviterId}`)) || [];
@@ -11538,7 +11628,8 @@
             localStorage.setItem('vetruch_stream_live', isStreamLive ? 'true' : 'false');
             updateKickStreamUI(isStreamLive);
 
-            const myRefs = Array.isArray(allReferrals[myId]) ? allReferrals[myId] : [];
+            const rawRefs = allReferrals ? allReferrals[myId] : null;
+            const myRefs = Array.isArray(rawRefs) ? rawRefs : (rawRefs && typeof rawRefs === 'object' ? Object.values(rawRefs) : []);
             const myRefCount = myRefs.length;
             let myTasksDone = Number(tasksDoneMap[myId] || 0);
 
@@ -11574,6 +11665,8 @@
             document.querySelectorAll('.app-balance').forEach(el => el.textContent = finalMyBal);
             renderProfilePurchases();
             updateReferralsAndTasksUI(myRefCount, myTasksDone);
+
+            if (typeof refreshRefCaseKeysUI === 'function') refreshRefCaseKeysUI();
 
             if (cloudState && typeof saveArkadaProgressLocal === 'function') {
                 const cloudArk = (cloudState.arkada_progress && cloudState.arkada_progress[myId])
@@ -13214,7 +13307,7 @@ async function renderLeaderboardPage() {
             if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
                 try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch(e) {}
             }
-            var gameKey = url.replace('.html', '').toLowerCase();
+            var gameKey = String(url || '').split('?')[0].replace('.html', '').toLowerCase();
             var modal = document.getElementById('gameModal');
             var targetFrame = document.getElementById('frame-' + gameKey);
 
@@ -15295,7 +15388,7 @@ setTimeout(initAdvancedSystems, 300);
         <iframe id="frame-towers" src="towers.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-mines" src="mines.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-cards" src="cards.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
-        <iframe id="frame-balloon" src="balloon.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
+        <iframe id="frame-balloon" src="balloon.html?v=2" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
         <iframe id="frame-dice" src="dice.html" style="width: 100%; height: 100%; border: none; display: none;" allow="autoplay"></iframe>
     </div>
 
@@ -15600,6 +15693,10 @@ async function refreshRefCaseKeysUI() {
             modalBtn.style.opacity = '0.55';
             modalBtn.textContent = '🔑 Нет ключей (пригласи друга)';
         }
+    }
+    const tabCasesBtn = document.getElementById('shopModeCasesBtn');
+    if (tabCasesBtn) {
+        tabCasesBtn.textContent = keys > 0 ? `📦 Кейсы (${keys} 🔑)` : '📦 Кейсы';
     }
 }
 
@@ -16049,6 +16146,353 @@ async function syncKickBindFromCloud() {
 syncKickBindFromCloud();
 setInterval(renderProfileBindsUI, 3000);
 document.querySelector('.nav-button[data-page="profile"]')?.addEventListener('click', syncKickBindFromCloud);
+</script>
+
+<script>
+window.__hasParentWinTracker = true;
+
+function getPlayerWinName() {
+    try {
+        const u = window.tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+        if (u) {
+            if (u.username) return '@' + u.username;
+            if (u.first_name) return u.first_name;
+        }
+    } catch (e) {}
+    const h = document.getElementById('profileUserHandle')?.textContent?.trim();
+    if (h && h !== '@vetruch_player') return h;
+    const n = document.getElementById('profileUserName')?.textContent?.trim();
+    if (n && n !== 'Пользователь') return n;
+    return 'Игрок';
+}
+
+async function onChildGameWin(gameKey, winAmount) {
+    if (!winAmount || winAmount <= 0) return;
+
+    const myId = (typeof getCurrentTgId === 'function') ? getCurrentTgId() : 'user';
+    const prevWon = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
+    const nextWon = prevWon + winAmount;
+    localStorage.setItem('vetruch_total_won', String(nextWon));
+
+    if (typeof updateTotalWonUI === 'function') updateTotalWonUI();
+    if (typeof cloudPut === 'function') {
+        cloudPut(`vetruch_app/total_won/${myId}`, nextWon);
+    }
+
+    const gameNames = {
+        towers: 'Башни',
+        mines: 'Мины',
+        cards: 'Карты',
+        balloon: 'Шарик',
+        dice: 'Кости'
+    };
+
+    const base = (typeof getCleanDbUrl === 'function') ? getCleanDbUrl() : '';
+    if (base) {
+        try {
+            await fetch(`${base}/vetruch_app/recent_wins.json`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: myId,
+                    name: getPlayerWinName(),
+                    game: gameNames[gameKey] || 'Игра',
+                    gameKey: gameKey,
+                    amount: winAmount,
+                    ts: Date.now()
+                })
+            });
+            renderRecentWins();
+        } catch (e) {}
+    }
+}
+
+function installGameWinHook(frame, gameKey) {
+    try {
+        const fw = frame && frame.contentWindow;
+        if (!fw || typeof fw.updateBalanceUI !== 'function' || fw.__winHookInstalled) return;
+        fw.__winHookInstalled = true;
+
+        const origUpdate = fw.updateBalanceUI;
+        let prevBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+        let betTaken = false;
+
+        fw.__resetPrevBal = function () {
+            prevBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10) || 0;
+            betTaken = false;
+        };
+
+        fw.updateBalanceUI = function () {
+            const res = origUpdate.apply(this, arguments);
+            const curBal = parseInt(localStorage.getItem('vetruch_balance') || '0', 10);
+            if (fw.__vetruchParentSyncing) {
+                if (!isNaN(curBal)) prevBal = curBal;
+                betTaken = false;
+                return res;
+            }
+            if (!isNaN(curBal)) {
+                if (curBal < prevBal) {
+                    betTaken = true;
+                    prevBal = curBal;
+                } else if (betTaken && curBal > prevBal) {
+                    const winAmt = curBal - prevBal;
+                    betTaken = false;
+                    prevBal = curBal;
+                    onChildGameWin(gameKey, winAmt);
+                } else {
+                    prevBal = curBal;
+                }
+            }
+            return res;
+        };
+    } catch (e) {}
+}
+
+['towers', 'mines', 'cards', 'balloon', 'dice'].forEach(k => {
+    const f = document.getElementById('frame-' + k);
+    if (f) {
+        f.addEventListener('load', () => installGameWinHook(f, k));
+        installGameWinHook(f, k);
+    }
+});
+
+if (typeof window.openGame === 'function') {
+    const _origOpenGame = window.openGame;
+    window.openGame = function (url) {
+        const gameKey = String(url || '').split('?')[0].replace('.html', '').toLowerCase();
+        const f = document.getElementById('frame-' + gameKey);
+        if (f && f.contentWindow) {
+            installGameWinHook(f, gameKey);
+            f.contentWindow.__vetruchParentSyncing = true;
+        }
+        const res = _origOpenGame.apply(this, arguments);
+        if (f && f.contentWindow) {
+            f.contentWindow.__vetruchParentSyncing = false;
+            if (typeof f.contentWindow.__resetPrevBal === 'function') {
+                f.contentWindow.__resetPrevBal();
+            }
+        }
+        return res;
+    };
+}
+
+async function renderRecentWins() {
+    const listEl = document.getElementById('gamesHistoryList');
+    if (!listEl) return;
+
+    const base = (typeof getCleanDbUrl === 'function') ? getCleanDbUrl() : '';
+    let winsObj = null;
+
+    if (base) {
+        try {
+            const res = await fetch(`${base}/vetruch_app/recent_wins.json?orderBy=%22$key%22&limitToLast=20`);
+            if (res.ok) winsObj = await res.json();
+        } catch (e) {}
+        if (!winsObj && typeof cloudGet === 'function') {
+            winsObj = await cloudGet('vetruch_app/recent_wins');
+        }
+    }
+
+    const wins = (winsObj && typeof winsObj === 'object')
+        ? Object.values(winsObj)
+            .filter(w => w && Number(w.amount) > 0)
+            .sort((a, b) => (b.ts || 0) - (a.ts || 0))
+            .slice(0, 20)
+        : [];
+
+    if (wins.length === 0) {
+        listEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; padding: 14px 0;">Пока никто не выигрывал — стань первым! 🎯</div>';
+        return;
+    }
+
+    const icons = {
+        towers: '🗼',
+        mines: '💣',
+        cards: '🃏',
+        balloon: '🎈',
+        dice: '🎲'
+    };
+
+    const esc = (s) => String(s || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+
+    listEl.innerHTML = wins.map(w => `
+        <div class="recent-win-row">
+            <div class="recent-win-left">
+                <div class="recent-win-ico">${icons[w.gameKey] || '🏆'}</div>
+                <div class="recent-win-info">
+                    <div class="recent-win-name">${esc(w.name || 'Игрок')}</div>
+                    <div class="recent-win-game">Победа · ${esc(w.game || 'Игра')}</div>
+                </div>
+            </div>
+            <div class="recent-win-amount">
+                +${formatCoins(w.amount)} <img src="coins.png" alt="" class="coin-icon-sm">
+            </div>
+        </div>
+    `).join('');
+}
+
+renderRecentWins();
+document.querySelector('.nav-button[data-page="games"]')?.addEventListener('click', renderRecentWins);
+setInterval(() => {
+    if (document.getElementById('games')?.classList.contains('active')) {
+        renderRecentWins();
+    }
+}, 8000);
+</script>
+
+<script>
+(function () {
+    const isInput = (el) => el && el.closest && el.closest('input, textarea');
+
+    document.addEventListener('contextmenu', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('selectstart', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('copy', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('cut', (e) => {
+        if (!isInput(e.target)) e.preventDefault();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && ['c', 'a', 'x', 'u', 's'].includes((e.key || '').toLowerCase())) {
+            if (!isInput(e.target)) e.preventDefault();
+        }
+    });
+
+    // Запрет копирования и внутри всех 5 игр
+    ['towers', 'mines', 'cards', 'balloon', 'dice'].forEach((k) => {
+        const frame = document.getElementById('frame-' + k);
+        const applyNoCopy = () => {
+            try {
+                const doc = frame && frame.contentDocument;
+                if (!doc || doc.getElementById('vetruchNoCopyStyle')) return;
+                const st = doc.createElement('style');
+                st.id = 'vetruchNoCopyStyle';
+                st.textContent = 'html, body, * { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }';
+                (doc.head || doc.documentElement).appendChild(st);
+                doc.addEventListener('contextmenu', (e) => e.preventDefault());
+                doc.addEventListener('copy', (e) => e.preventDefault());
+            } catch (err) {}
+        };
+        if (frame) {
+            frame.addEventListener('load', applyNoCopy);
+            applyNoCopy();
+        }
+    });
+})();
+</script>
+
+<script>
+window.renderAdminBalancesTable = async function () {
+    const tableEl = document.getElementById('adminBalancesTable');
+    if (!tableEl) return;
+
+    const myId = getCurrentTgId();
+    const [cloudBalances, cloudUsers] = await Promise.all([
+        cloudGet('vetruch_app/balances'),
+        cloudGet('vetruch_app/users')
+    ]);
+
+    const balancesMap = cloudBalances || JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    const usersMap = cloudUsers || {};
+
+    const ids = Object.keys(balancesMap).sort((a, b) => (Number(balancesMap[b]) || 0) - (Number(balancesMap[a]) || 0));
+
+    if (ids.length === 0) {
+        tableEl.innerHTML = '<div style="color: var(--secondary); font-size: 13px; text-align: center;">Список пуст</div>';
+        return;
+    }
+
+    tableEl.innerHTML = ids.map(id => {
+        const u = usersMap[id];
+        const isUnknown = !u || !u.name;
+        const displayName = !isUnknown ? u.name : '⚠️ Не заходил в бота';
+        return `
+            <div class="admin-bal-row" style="gap: 8px;">
+                <div onclick="document.getElementById('adminTargetIdInput').value='${id}'" style="cursor: pointer; flex: 1; min-width: 0;">
+                    <div style="color: ${id === myId ? '#00d9ff' : (isUnknown ? '#fbbf24' : '#ffffff')}; font-size: 13px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        ${displayName} ${id === myId ? '(Вы)' : ''}
+                    </div>
+                    <div style="font-size: 11px; color: var(--secondary);">ID: ${id}</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; color: #00e676; font-weight: 800;">
+                        ${formatCoins(balancesMap[id])} <img src="coins.png" alt="" class="coin-icon-sm">
+                    </span>
+                    ${isUnknown && id !== myId ? `<button type="button" onclick="adminDeleteBalanceEntry('${id}')" style="background: rgba(255,51,102,0.18); border: 1px solid rgba(255,51,102,0.45); color: #ff5277; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 800; cursor: pointer;">🗑</button>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+};
+
+window.adminDeleteBalanceEntry = async function (targetId) {
+    await cloudPut(`vetruch_app/balances/${targetId}`, null);
+    let balancesMap = JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    delete balancesMap[targetId];
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+    showAdminToast(`🗑 Левый ID ${targetId} удалён из базы и топа!`, false);
+    renderAdminBalancesTable();
+    if (typeof renderHomePodium === 'function') renderHomePodium();
+};
+
+window.adminModifyUserBalance = async function (mode) {
+    const targetId = document.getElementById('adminTargetIdInput').value.trim().replace(/\s+/g, '');
+    const amount = parseInt(document.getElementById('adminCoinsAmountInput').value.trim(), 10);
+
+    if (!targetId || !/^\d+$/.test(targetId)) {
+        showAdminToast('⚠️ Введите корректный числовой Telegram ID!', true);
+        return;
+    }
+    if (isNaN(amount) || amount < 0) {
+        showAdminToast('⚠️ Введите сумму монет!', true);
+        return;
+    }
+
+    const [balancesRes, usersRes] = await Promise.all([
+        cloudGet('vetruch_app/balances'),
+        cloudGet('vetruch_app/users')
+    ]);
+    let balancesMap = balancesRes || JSON.parse(localStorage.getItem('vetruch_id_balances') || '{}');
+    let usersMap = usersRes || {};
+
+    if (!usersMap[targetId] && balancesMap[targetId] === undefined) {
+        showAdminToast(`❌ Игрок с ID ${targetId} ни разу не заходил в бота! Выберите ник из списка ниже.`, true);
+        return;
+    }
+
+    const currentMyId = getCurrentTgId();
+    let curBal = (targetId === currentMyId)
+        ? parseInt(localStorage.getItem('vetruch_balance') || '500', 10)
+        : (balancesMap[targetId] !== undefined ? Number(balancesMap[targetId]) : 500);
+
+    if (mode === 'add') curBal += amount;
+    if (mode === 'sub') curBal = Math.max(0, curBal - amount);
+    if (mode === 'set') curBal = amount;
+
+    balancesMap[targetId] = curBal;
+    localStorage.setItem('vetruch_id_balances', JSON.stringify(balancesMap));
+    await cloudPut(`vetruch_app/balances/${targetId}`, curBal);
+
+    if (targetId === currentMyId) {
+        localStorage.setItem('vetruch_balance', curBal);
+        localStorage.setItem('vetruch_cloud_synced_bal', curBal);
+        initBalance();
+    }
+
+    const userName = usersMap[targetId]?.name || `ID ${targetId}`;
+    renderAdminBalancesTable();
+    showAdminToast(`✅ ${userName}: баланс обновлён до ${formatCoins(curBal)} монет!`, false);
+};
 </script>
 </body>
 </html>

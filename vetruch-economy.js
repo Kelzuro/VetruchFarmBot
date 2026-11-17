@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    VETRUCH ECONOMY ENGINE v3.2
    - Лимит 20 игр в день на каждую игру (сброс в 00:00 МСК)
    - Контроль RTP 60%
@@ -65,7 +65,44 @@
     return '1067693099';
   }
 
+ function getUserDisplayNameSafe() {
+    try {
+      var tgApp = (window.parent && window.parent.Telegram && window.parent.Telegram.WebApp) || (window.Telegram && window.Telegram.WebApp);
+      var u = tgApp && tgApp.initDataUnsafe && tgApp.initDataUnsafe.user;
+      if (u) {
+        if (u.username) return '@' + u.username;
+        if (u.first_name) return u.first_name;
+      }
+      if (window.parent && window.parent !== window) {
+        var handleEl = window.parent.document.getElementById('profileUserHandle');
+        var nameEl = window.parent.document.getElementById('profileUserName');
+        if (handleEl && handleEl.textContent && handleEl.textContent.trim() !== '@vetruch_player') {
+          return handleEl.textContent.trim();
+        }
+        if (nameEl && nameEl.textContent && nameEl.textContent.trim() !== 'Пользователь') {
+          return nameEl.textContent.trim();
+        }
+      }
+    } catch (e) {}
+    return 'Игрок';
+  }
+
+  function getDbBaseUrl() {
+    try {
+      if (window.parent && window.parent !== window && typeof window.parent.getCleanDbUrl === 'function') {
+        var u = window.parent.getCleanDbUrl();
+        if (u) return u;
+      }
+      if (typeof window.getCleanDbUrl === 'function') {
+        var u2 = window.getCleanDbUrl();
+        if (u2) return u2;
+      }
+    } catch (e) {}
+    return 'https://vetruchbot-default-rtdb.firebaseio.com';
+  }
+
   function recordGameWin(winAmount) {
+     if (window.parent && window.parent !== window && window.parent.__hasParentWinTracker) return;
     if (!winAmount || winAmount <= 0) return;
     var prev = parseInt(localStorage.getItem('vetruch_total_won') || '0', 10) || 0;
     var next = prev + winAmount;
@@ -77,17 +114,39 @@
       }
     } catch (e) {}
 
+    var uid = getUserIdSafe();
+    var dbBase = getDbBaseUrl();
     try {
-      var uid = getUserIdSafe();
       if (window.parent && window.parent !== window && typeof window.parent.cloudPut === 'function') {
         window.parent.cloudPut('vetruch_app/total_won/' + uid, next);
       } else {
-        fetch('https://vetruchfarmbot-default-rtdb.firebaseio.com/vetruch_app/total_won/' + encodeURIComponent(uid) + '.json', {
+        fetch(dbBase + '/vetruch_app/total_won/' + encodeURIComponent(uid) + '.json', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(next)
         }).catch(function () {});
       }
+    } catch (e) {}
+
+    // Отправка победы в общую ленту «Недавние выигрыши»
+    try {
+      var winEntry = {
+        userId: uid,
+        name: getUserDisplayNameSafe(),
+        game: GAME_NAMES[currentGameKey] || 'Игра',
+        gameKey: currentGameKey || 'game',
+        amount: winAmount,
+        ts: Date.now()
+      };
+      fetch(dbBase + '/vetruch_app/recent_wins.json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(winEntry)
+      }).then(function () {
+        if (window.parent && window.parent !== window && typeof window.parent.renderRecentWins === 'function') {
+          window.parent.renderRecentWins();
+        }
+      }).catch(function () {});
     } catch (e) {}
   }
 
