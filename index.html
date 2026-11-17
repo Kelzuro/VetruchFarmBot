@@ -2896,6 +2896,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 10px;
             margin-bottom: 7px;
             font-size: 12px;
             font-weight: 700;
@@ -2906,12 +2907,18 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            font-size: 11.5px;
+            min-width: 0;
+            flex: 1;
+            line-height: 1.25;
         }
 
         .profile-xp-nums {
             color: #5ac8ff;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 800;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .profile-xp-track {
@@ -8655,7 +8662,7 @@
 
                 <div class="profile-xp-box">
                     <div class="profile-xp-head">
-                        <span class="profile-xp-rank" id="profileXpRank">👤 VIP Статус: Обычный аккаунт</span>
+                        <span class="profile-xp-rank" id="profileXpRank">👤 Обычный аккаунт</span>
                         <span class="profile-xp-nums" id="profileXpNums">0 / 500 EXP</span>
                     </div>
                     <div class="profile-xp-track">
@@ -11472,7 +11479,7 @@
                 localStorage.setItem('vetruch_my_purchases', JSON.stringify(allPurchases[myId]));
             }
 
-            if (gameDelta !== 0 || !cloudState || !cloudState.balances || cloudState.balances[myId] === undefined) {
+            if (!window.__cloudError && (gameDelta !== 0 || !cloudState || !cloudState.balances || cloudState.balances[myId] === undefined)) {
                 await cloudPut(`vetruch_app/balances/${myId}`, finalMyBal);
             }
 
@@ -11551,10 +11558,19 @@ if (cloudState && cloudState.tree_v2 && cloudState.tree_v2[myId] && typeof saveX
                     lastDate: localStorage.getItem('vetruch_last_daily_date') || ''
                 };
                 const cloudDaily = cloudUser.daily_streak || null;
-                if (cloudDaily && cloudDaily.lastDate && cloudDaily.lastDate > localDaily.lastDate) {
+                const cloudIsNewerDaily = cloudDaily && cloudDaily.lastDate && (
+                    cloudDaily.lastDate > localDaily.lastDate ||
+                    (cloudDaily.lastDate === localDaily.lastDate && Number(cloudDaily.streak || 0) > localDaily.streak)
+                );
+                const localIsNewerDaily = localDaily.lastDate && (
+                    !cloudDaily ||
+                    localDaily.lastDate > (cloudDaily.lastDate || '') ||
+                    (localDaily.lastDate === cloudDaily.lastDate && localDaily.streak > Number(cloudDaily.streak || 0))
+                );
+                if (cloudIsNewerDaily) {
                     localStorage.setItem('vetruch_daily_streak', String(cloudDaily.streak || 0));
                     localStorage.setItem('vetruch_last_daily_date', cloudDaily.lastDate);
-                } else if (localDaily.lastDate && (!cloudDaily || localDaily.lastDate > (cloudDaily.lastDate || ''))) {
+                } else if (localIsNewerDaily) {
                     await cloudPut(`vetruch_app/users/${myId}/daily_streak`, localDaily);
                 }
 
@@ -12677,27 +12693,26 @@ if (document.readyState === 'loading') {
 
 // ================= СИСТЕМА ПРОФИЛЕЙ И ЛИДЕРБОРД =================
 
-// При входе сохраняем профиль юзера в облако
+// При входе сохраняем профиль юзера в облако (не затирая опыт, серию бонусов и подарки)
 async function syncUserProfile() {
     const user = tg.initDataUnsafe?.user;
     if (!user) return;
     
     const myId = String(user.id);
-    const users = (await cloudGet('vetruch_app/users')) || {};
+    const existing = (await cloudGet(`vetruch_app/users/${myId}`)) || {};
     
-    users[myId] = {
+    await cloudPut(`vetruch_app/users/${myId}`, {
+        ...existing,
         name: user.username ? '@' + user.username : (user.first_name || 'Аноним'),
         avatar: (typeof getEffectiveAvatarUrl === 'function') ? getEffectiveAvatarUrl() : (user.photo_url || null),
         updated: Date.now()
-    };
+    });
     
-    await cloudPut('vetruch_app/users', users);
-    
-    // Если баланса ещё нет в облаке — создаём с 500
-    const balances = (await cloudGet('vetruch_app/balances')) || {};
-    if (balances[myId] === undefined) {
-        balances[myId] = 500;
-        await cloudPut('vetruch_app/balances', balances);
+    // Если баланса ещё нет в облаке — сохраняем локальный (или 500 по умолчанию)
+    const existingBal = await cloudGet(`vetruch_app/balances/${myId}`);
+    if ((existingBal === null || existingBal === undefined) && !window.__cloudError) {
+        const localBal = parseInt(localStorage.getItem('vetruch_balance') || '500', 10);
+        await cloudPut(`vetruch_app/balances/${myId}`, isNaN(localBal) ? 500 : localBal);
     }
 }
 
@@ -12724,38 +12739,14 @@ async function getLeaderboard() {
         .slice(0, 10);
 }
 
-// Рендерим страницу лидерборда
-async function renderLeaderboardPage() {
-    const listEl = document.getElementById('leaderboardList');
-    if (!listEl) return;
-    
-    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--secondary);">Загрузка…</div>';
-    
-    const data = await getLeaderboard();
-    
-    if (!data.length) {
-        listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--secondary);">Пока никого нет</div>';
-        return;
-    }
-    
-    listEl.innerHTML = data.map((u, i) => `
-        <div class="lb-row ${i < 3 ? 'top' + (i+1) : ''}">
-            <div class="lb-rank">${i + 1}</div>
-            <div class="lb-avatar">${u.avatar ? `<img src="${u.avatar}" onerror="this.remove()">` : u.name[0].toUpperCase()}</div>
-            <div class="lb-name">${u.name}${u.isMe ? ' (Вы)' : ''}</div>
-            <div class="lb-bal">${formatCoins(u.balance)} <img src="coins.png" class="coin-icon-sm"></div>
-        </div>
-    `).join('');
-}
-
-// Обновляем подиум на главной (топ-3)
+// Обновляем подиум на главной (топ-3: 2-й слева, 1-й в центре, 3-й справа)
 async function renderHomePodium() {
     const data = await getLeaderboard();
     const podium = document.querySelector('.podium');
-    if (!podium || !data.length) return;
+    if (!podium) return;
     
     // Считаем реальных людей и монеты из облака
-    const allBalances = await cloudGet('vetruch_app/balances') || {};
+    const allBalances = (await cloudGet('vetruch_app/balances')) || {};
     const totalUsers = Object.keys(allBalances).length;
     const totalCoins = Object.values(allBalances).reduce((acc, val) => acc + (Number(val) || 0), 0);
 
@@ -12763,27 +12754,37 @@ async function renderHomePodium() {
     const cEl = document.querySelector('.global-stats .stat-item:nth-child(2) .stat-val');
     if (uEl) uEl.textContent = `👥 ${totalUsers}`;
     if (cEl) cEl.innerHTML = `${formatCoins(totalCoins)} <img src="coins.png" alt="coins" class="coin-icon">`;
-    // Твоя текущая разметка podium: first, second, third
-    const places = ['second', 'first', 'third']; // 2-й слева, 1-й центр, 3-й справа
-    const top3 = [data[1], data[0], data[2]].filter(Boolean);
+
+    const slots = [
+        { cls: 'second', user: data[1] || null, placeholder: '#2' },
+        { cls: 'first',  user: data[0] || null, placeholder: '#1' },
+        { cls: 'third',  user: data[2] || null, placeholder: '#3' }
+    ];
     
-    places.forEach((cls, i) => {
+    slots.forEach(({ cls, user, placeholder }) => {
         const el = podium.querySelector(`.podium-item.${cls}`);
-        if (!el || !top3[i]) return;
+        if (!el) return;
         
         const avatarEl = el.querySelector('.podium-avatar');
         const nameEl = el.querySelector('.podium-name') || el.querySelector('div:nth-child(2)');
-        const balEl = el.querySelector('.podium-balance') || el.querySelector('div:nth-child(3)');
+        const balEl = el.querySelector('.podium-score') || el.querySelector('.podium-balance') || el.querySelector('div:nth-child(3)');
+        
+        if (!user) {
+            if (avatarEl) avatarEl.textContent = '?';
+            if (nameEl) nameEl.textContent = placeholder;
+            if (balEl) balEl.innerHTML = `0 <img src="coins.png" class="coin-icon-sm">`;
+            return;
+        }
         
         if (avatarEl) {
-            if (top3[i].avatar) {
-                avatarEl.innerHTML = `<img src="${top3[i].avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.parentElement.textContent='${top3[i].name[0]}'">`;
+            if (user.avatar) {
+                avatarEl.innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.parentElement.textContent='${user.name[0].toUpperCase()}'">`;
             } else {
-                avatarEl.textContent = top3[i].name[0].toUpperCase();
+                avatarEl.textContent = user.name[0].toUpperCase();
             }
         }
-        if (nameEl) nameEl.textContent = top3[i].name;
-        if (balEl) balEl.innerHTML = `${formatCoins(top3[i].balance)} <img src="coins.png" class="coin-icon-sm">`;
+        if (nameEl) nameEl.textContent = user.name;
+        if (balEl) balEl.innerHTML = `${formatCoins(user.balance)} <img src="coins.png" class="coin-icon-sm">`;
     });
 }
 
@@ -12814,10 +12815,11 @@ async function renderLeaderboardPage() {
     listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--secondary);">Загрузка топа…</div>';
     podiumEl.innerHTML = '';
 
-    const [data, balances] = await Promise.all([
+    const [data, rawBalances] = await Promise.all([
         getLeaderboard(),
-        cloudGet('vetruch_app/balances') || {}
+        cloudGet('vetruch_app/balances')
     ]);
+    const balances = rawBalances || {};
 
     // Обновляем плашку со статистикой
     const totalUsers = Object.keys(balances).length;
@@ -13183,6 +13185,9 @@ async function renderLeaderboardPage() {
             }
             if (typeof updateTotalWonUI === 'function') {
                 try { updateTotalWonUI(); } catch(e) {}
+            }
+            if (typeof syncFromCloud === 'function') {
+                try { syncFromCloud(false); } catch(e) {}
             }
         }
         window.closeGameModal = closeGameModal;
@@ -14923,15 +14928,15 @@ function updateVipStatusUI() {
         const extra = exp - 100000;
         const progressIn10k = extra % 10000;
         const pct = Math.min(100, Math.round((progressIn10k / 10000) * 100));
-        if (rankEl) rankEl.innerHTML = `💎 VIP Алмазный · До подарка «Колл бонуски»`;
-        if (numsEl) numsEl.textContent = `${progressIn10k} / 10 000 EXP`;
+        if (rankEl) rankEl.innerHTML = `💎 VIP Алмазный · До подарка`;
+        if (numsEl) numsEl.textContent = `${formatCoins(progressIn10k)} / 10 000 EXP`;
         if (fillEl) fillEl.style.width = `${pct}%`;
     } else {
         const range = tier.maxExp - tier.minExp;
         const progress = exp - tier.minExp;
         const pct = Math.min(100, Math.max(0, Math.round((progress / range) * 100)));
-        if (rankEl) rankEl.innerHTML = `${tier.icon} VIP Статус: ${tier.name}`;
-        if (numsEl) numsEl.textContent = `${exp} / ${tier.maxExp} EXP`;
+        if (rankEl) rankEl.innerHTML = `${tier.icon} ${tier.name}`;
+        if (numsEl) numsEl.textContent = `${formatCoins(exp)} / ${formatCoins(tier.maxExp)} EXP`;
         if (fillEl) fillEl.style.width = `${pct}%`;
     }
 }
