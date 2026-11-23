@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script src="vetruch-economy.js?v=6"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Флаппи Утка - Vetruch</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        :root {
+            --bg: #02050b;
+            --text: #ffffff;
+            --gold: #00d9ff;
+            --amber: #0088ff;
+            --sky: #38bdf8;
+            --green: #00e676;
+            --red: #ff3366;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .game-shell {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(0, 170, 255, 0.2) 0%, transparent 48%),
+                linear-gradient(180deg, #0b1930 0%, #050d1a 60%, #02050b 100%);
+        }
+
+        /* Верхняя панель навигации и баланса */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px 8px 12px;
+            z-index: 20;
+            flex-shrink: 0;
+        }
+        .back-btn {
+            background: rgba(10, 24, 46, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.32);
+            color: #fff;
+            height: 36px;
+            padding: 0 13px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        .back-btn:active { transform: scale(0.95); }
+
+        .balance-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.22), rgba(0, 217, 255, 0.1));
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-weight: 900;
+            font-size: 14.5px;
+            color: #e0f7ff;
+            border: 1px solid rgba(0, 217, 255, 0.45);
+            box-shadow: 0 0 16px rgba(0, 136, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        .coin-icon { width: 17px; height: 17px; flex-shrink: 0; vertical-align: middle; }
+
+        /* Сцена полёта */
+        .stage-wrap {
+            position: relative;
+            flex: 1 1 auto;
+            min-height: 260px;
+            margin: 0 10px;
+            border-radius: 22px;
+            overflow: hidden;
+            border: 1.5px solid rgba(0, 217, 255, 0.42);
+            box-shadow:
+                inset 0 0 30px rgba(0, 0, 0, 0.35),
+                0 10px 30px rgba(0, 0, 0, 0.8),
+                0 0 22px rgba(0, 136, 255, 0.16);
+            touch-action: manipulation;
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Верхний HUD: минималистичный визуальный трек и счёт */
+        .hud-overlay {
+            position: absolute;
+            top: 10px;
+            left: 14px;
+            right: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            z-index: 10;
+            gap: 8px;
+        }
+
+        .flight-progress-track {
+            position: relative;
+            width: 100%;
+            max-width: 260px;
+            height: 6px;
+            background: rgba(6, 14, 28, 0.52);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 999px;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            overflow: visible;
+        }
+
+        .flight-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #0088ff 0%, #00d9ff 72%, #22e3d0 100%);
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.78);
+            transition: width 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .milestone-dot {
+            position: absolute;
+            top: 50%;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 217, 255, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        .milestone-dot.reached {
+            background: #00d9ff;
+            box-shadow: 0 0 8px #00d9ff;
+        }
+        .milestone-dot.final {
+            width: 9px;
+            height: 9px;
+            background: rgba(0, 230, 118, 0.5);
+        }
+        .milestone-dot.final.reached {
+            background: #00e676;
+            box-shadow: 0 0 10px #00e676;
+        }
+
+        .hud-score {
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 1;
+            color: #ffffff;
+            -webkit-text-stroke: 2.5px rgba(8, 22, 42, 0.62);
+            paint-order: stroke fill;
+            text-shadow:
+                0 3px 0 rgba(8, 22, 42, 0.6),
+                0 6px 16px rgba(0, 0, 0, 0.38);
+            letter-spacing: -1px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Кнопка "Тапни, чтобы лететь" в idle состоянии */
+        .tap-prompt-wrap {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 20%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 12;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .tap-prompt-wrap.hidden {
+            opacity: 0;
+            transform: scale(0.92);
+        }
+        .tap-prompt-pill {
+            pointer-events: auto;
+            background: linear-gradient(135deg, #22e3d0 0%, #0088ff 100%);
+            color: #031524;
+            font-size: 14.5px;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            padding: 11px 24px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow:
+                0 8px 24px rgba(0, 170, 255, 0.48),
+                0 2px 8px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.65);
+            cursor: pointer;
+            animation: tapPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes tapPulse {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.03); }
+        }
+
+        /* Результат раунда поверх сцены */
+        .result-overlay {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(4, 10, 22, 0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 15;
+            padding: 18px;
+            text-align: center;
+        }
+        .result-overlay.show {
+            display: flex;
+            animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .result-card {
+            width: 100%;
+            max-width: 295px;
+            background: linear-gradient(180deg, rgba(12, 24, 46, 0.96) 0%, rgba(6, 12, 24, 0.98) 100%);
+            border: 1.5px solid rgba(0, 217, 255, 0.5);
+            border-radius: 22px;
+            padding: 18px 16px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(120, 215, 255, 0.16);
+        }
+        .result-card.win {
+            border-color: rgba(0, 230, 118, 0.7);
+            box-shadow: 0 0 30px rgba(0, 230, 118, 0.28), 0 14px 36px rgba(0, 0, 0, 0.85);
+        }
+        .result-card.lose {
+            border-color: rgba(255, 51, 102, 0.65);
+            box-shadow: 0 0 28px rgba(255, 51, 102, 0.22), 0 14px 36px rgba(0, 0, 0, 0.85);
+        }
+        .result-title {
+            font-size: 16.5px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+        .result-sub {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .result-best {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #7dd3fc;
+            background: rgba(0, 170, 255, 0.14);
+            border: 1px solid rgba(0, 217, 255, 0.36);
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+        .result-btn {
+            width: 100%;
+            border: none;
+            border-radius: 13px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0095ff 0%, #005fd2 100%);
+            box-shadow: 0 4px 18px rgba(0, 136, 255, 0.45);
+        }
+        .result-btn:active { transform: scale(0.96); }
+        .result-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Нижняя синяя панель ставок */
+        .controls {
+            flex-shrink: 0;
+            margin: 10px 10px 12px 10px;
+            background: linear-gradient(180deg, rgba(12, 22, 42, 0.94) 0%, rgba(6, 12, 24, 0.98) 100%);
+            border: 1px solid rgba(0, 195, 255, 0.28);
+            border-radius: 18px;
+            padding: 10px 12px;
+            z-index: 20;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(120, 215, 255, 0.12);
+        }
+
+        .bet-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .bet-header-row b { color: #38bdf8; }
+        .bet-header-row span.gold { color: #00d9ff; font-weight: 800; }
+
+        .bet-options {
+            display: flex;
+            gap: 7px;
+        }
+        .bet-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(0, 170, 255, 0.2);
+            color: #ffffff;
+            padding: 10px 6px;
+            border-radius: 11px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.18s;
+        }
+        .bet-btn.active {
+            background: rgba(0, 170, 255, 0.22);
+            border-color: #00d9ff;
+            color: #7dd3fc;
+            box-shadow: 0 0 14px rgba(0, 170, 255, 0.28);
+        }
+        .bet-btn:disabled {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-shell">
+    <div class="header">
+        <button type="button" class="back-btn" onclick="goBack()">❮ Назад</button>
+        <div class="balance-pill">
+            <span id="balanceDisplay">500</span> <img src="coins.png" alt="coins" class="coin-icon">
+        </div>
+    </div>
+
+    <div class="stage-wrap" id="stageWrap">
+        <canvas id="gameCanvas"></canvas>
+
+        <div class="hud-overlay">
+            <div class="flight-progress-track" aria-hidden="true">
+                <div class="flight-progress-fill" id="flightProgressFill"></div>
+                <span class="milestone-dot" data-pipe="10" style="left: 20%;"></span>
+                <span class="milestone-dot" data-pipe="20" style="left: 40%;"></span>
+                <span class="milestone-dot" data-pipe="30" style="left: 60%;"></span>
+                <span class="milestone-dot" data-pipe="40" style="left: 80%;"></span>
+                <span class="milestone-dot final" data-pipe="50" style="left: 100%;"></span>
+            </div>
+            <div class="hud-score" id="scoreDisplay">0</div>
+        </div>
+
+        <div class="tap-prompt-wrap" id="tapPromptWrap">
+            <button type="button" class="tap-prompt-pill" id="tapPromptBtn">Тапни, чтобы лететь</button>
+        </div>
+
+        <div class="result-overlay" id="resultOverlay">
+            <div class="result-card" id="resultCard">
+                <div class="result-title" id="resultTitle">Попытка завершена</div>
+                <div class="result-sub" id="resultSub">Счёт: 0</div>
+                <div class="result-best" id="resultBest">🏆 Рекорд: 0</div>
+                <button type="button" class="result-btn" id="resultBtn" onclick="prepareNextFlight()">Тапни, чтобы лететь</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="bet-header-row">
+            <span>Ставка: <b id="infoBet">20</b> <img src="coins.png" class="coin-icon" style="width:13px;height:13px;"></span>
+            <span class="gold">Макс. приз (x10): <span id="maxPrizeDisplay">200</span> <img src="coins.png" class="coin-icon" style="width:13px;height:13px;"></span>
+        </div>
+        <div class="bet-options">
+            <button type="button" class="bet-btn active" onclick="setBet(20, this)">20</button>
+            <button type="button" class="bet-btn" onclick="setBet(50, this)">50</button>
+            <button type="button" class="bet-btn" onclick="setBet(100, this)">100</button>
+            <button type="button" class="bet-btn" onclick="setBet(200, this)">200</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { ready:()=>{}, expand:()=>{}, setHeaderColor:()=>{}, setBackgroundColor:()=>{} };
+    tg.ready(); tg.expand();
+    try { tg.setHeaderColor('#050d1a'); tg.setBackgroundColor('#02050b'); } catch (e) {}
+
+    let rawBal = localStorage.getItem('vetruch_balance');
+    let balance = rawBal !== null ? parseInt(rawBal, 10) : 500;
+    if (isNaN(balance)) balance = 500;
+
+    let bet = 20;
+    let bestScore = parseInt(localStorage.getItem('vetruch_flappy_best') || '0', 10) || 0;
+    let state = 'idle'; // 'idle' | 'flying' | 'finished'
+    let score = 0;
+    let restartUnlockAt = 0;
+
+    const MAX_PIPES = 50;
+
+    function getMultiplierForScore(s) {
+        if (s >= MAX_PIPES) return 10;
+        if (s < 10) return 0;
+        return Math.round((1 + Math.floor(s / 10) * 0.2) * 10) / 10;
+    }
+
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const infoBet = document.getElementById('infoBet');
+    const maxPrizeDisplay = document.getElementById('maxPrizeDisplay');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const flightProgressFill = document.getElementById('flightProgressFill');
+    const milestoneDots = document.querySelectorAll('.milestone-dot');
+    const tapPromptWrap = document.getElementById('tapPromptWrap');
+    const resultOverlay = document.getElementById('resultOverlay');
+    const resultCard = document.getElementById('resultCard');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultSub = document.getElementById('resultSub');
+    const resultBest = document.getElementById('resultBest');
+    const resultBtn = document.getElementById('resultBtn');
+    const betBtns = document.querySelectorAll('.bet-btn');
+    const stageWrap = document.getElementById('stageWrap');
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function updateProgressHUD(currentScore) {
+        const pct = Math.max(0, Math.min(100, (currentScore / MAX_PIPES) * 100));
+        if (flightProgressFill) flightProgressFill.style.width = pct + '%';
+        milestoneDots.forEach(dot => {
+            const p = parseInt(dot.getAttribute('data-pipe') || '0', 10);
+            dot.classList.toggle('reached', currentScore >= p);
+        });
+    }
+
+    function goBack() {
+        if (window.parent && window.parent !== window && typeof window.parent.closeGameModal === 'function') {
+            window.parent.closeGameModal();
+        } else if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
+
+    function updateBalanceUI() {
+        if (isNaN(balance)) balance = 0;
+        balanceDisplay.textContent = balance;
+        localStorage.setItem('vetruch_balance', balance);
+    }
+
+    function setBet(amount, btn) {
+        if (state === 'flying') return;
+        bet = amount;
+        infoBet.textContent = bet;
+        maxPrizeDisplay.textContent = Math.floor(bet * 10);
+        betBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    updateBalanceUI();
+    updateProgressHUD(0);
+
+    // ================= ЗАГРУЗКА СПРАЙТА И ПАНОРАМНОГО ФОНА =================
+    const duckImg = new Image();
+    let duckImgLoaded = false;
+    duckImg.onload = () => { duckImgLoaded = true; };
+    duckImg.src = 'flappy-duck.png';
+
+    const bgImg = new Image();
+    let bgImgLoaded = false;
+    bgImg.onload = () => { bgImgLoaded = true; };
+    bgImg.src = 'flappy-bg.jpg';
+
+    // ================= РАЗМЕРЫ СЦЕНЫ И СПАВН =================
+    let W = 360;
+    let H = 480;
+    let dpr = 1;
+    let floorHeight = 60;
+
+    const duck = {
+        x: 92,
+        y: 220,
+        vy: 0,
+        w: 56,
+        h: 68,
+        angle: 0
+    };
+
+    let pipes = [];
+    let particles = [];
+    let floatingPopups = [];
+    let bgClouds = [];
+    let bgBirds = [];
+    let bgStars = [];
+    let windStreaks = [];
+    let scrollX = 0;
+    let lastTime = performance.now();
+    let ambientPhase = 0; // Плавный переход день -> закат -> сумерки
+    let shakeTimer = 0;
+
+    function initAmbient() {
+        bgClouds = [];
+        for (let i = 0; i < 4; i++) {
+            bgClouds.push({
+                x: (i * 115 + Math.random() * 40) % (W + 120) - 40,
+                y: 44 + Math.random() * Math.max(70, (H - floorHeight) * 0.28),
+                scale: 0.72 + Math.random() * 0.45,
+                speed: 0.16 + Math.random() * 0.18,
+                alpha: 0.24 + Math.random() * 0.18
+            });
+        }
+        bgBirds = [];
+        for (let i = 0; i < 4; i++) {
+            bgBirds.push({
+                x: Math.random() * W,
+                y: 62 + Math.random() * Math.max(90, (H - floorHeight) * 0.34),
+                speed: 0.45 + Math.random() * 0.35,
+                size: 4 + Math.random() * 3,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+        bgStars = [];
+        for (let i = 0; i < 36; i++) {
+            bgStars.push({
+                x: Math.random() * W,
+                y: 12 + Math.random() * Math.max(120, (H - floorHeight) * 0.56),
+                r: Math.random() * 1.4 + 0.6,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+        windStreaks = [];
+        for (let i = 0; i < 8; i++) {
+            windStreaks.push({
+                x: Math.random() * W,
+                y: 40 + Math.random() * Math.max(150, H - floorHeight - 70),
+                len: 28 + Math.random() * 44,
+                speed: 6 + Math.random() * 4
+            });
+        }
+    }
+
+    function resizeCanvas() {
+        const rect = stageWrap.getBoundingClientRect();
+        if (rect.width < 10 || rect.height < 10) return;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = rect.width;
+        H = rect.height;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        duck.x = Math.round(Math.min(115, W * 0.27));
+        if (state === 'idle') {
+            duck.y = Math.round((H - floorHeight) * 0.46);
+        }
+        initAmbient();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 30);
+
+    function spawnPipe(offsetX, indexNum) {
+        const usableH = H - floorHeight;
+        const gap = Math.max(150, Math.min(168, usableH * 0.31));
+        const marginTop = 86;
+        const marginBottom = 56;
+        const maxTop = Math.max(marginTop + 20, usableH - gap - marginBottom);
+        const gapTop = marginTop + Math.random() * (maxTop - marginTop);
+        const isGolden = (indexNum % 10 === 0);
+
+        pipes.push({
+            x: offsetX,
+            w: 58,
+            gapTop,
+            gapBottom: gapTop + gap,
+            passed: false,
+            num: indexNum,
+            isGolden
+        });
+    }
+
+    let nextPipeNum = 1;
+    const BASE_PIPE_SPEED = 2.65;
+    const SPEED_PER_PIPE = 0.024;
+    const MAX_PIPE_SPEED = 3.85;
+    let currentPipeSpeed = BASE_PIPE_SPEED;
+
+    function getTargetPipeSpeed(s) {
+        return Math.min(MAX_PIPE_SPEED, BASE_PIPE_SPEED + s * SPEED_PER_PIPE);
+    }
+
+    function resetFlightState() {
+        pipes = [];
+        particles = [];
+        floatingPopups = [];
+        score = 0;
+        nextPipeNum = 1;
+        currentPipeSpeed = BASE_PIPE_SPEED;
+        ambientPhase = 0;
+        shakeTimer = 0;
+        scoreDisplay.textContent = '0';
+        updateProgressHUD(0);
+        duck.y = Math.round((H - floorHeight) * 0.46);
+        duck.vy = 0;
+        duck.angle = 0;
+        resultOverlay.classList.remove('show');
+        tapPromptWrap.classList.remove('hidden');
+        betBtns.forEach(b => b.disabled = false);
+        state = 'idle';
+    }
+
+    function prepareNextFlight() {
+        if (Date.now() < restartUnlockAt) return;
+        resetFlightState();
+    }
+
+    function spawnFlapParticles(burstCount) {
+        for (let i = 0; i < burstCount; i++) {
+            const palette = ['#ffffff', '#ffd700', '#ffeaa7', '#bae6fd'];
+            particles.push({
+                x: duck.x - 14 + (Math.random() - 0.5) * 10,
+                y: duck.y + 8 + (Math.random() - 0.5) * 12,
+                vx: -2.0 - Math.random() * 2.2,
+                vy: 0.7 + (Math.random() - 0.5) * 2.2,
+                r: Math.random() * 3.4 + 1.6,
+                life: 1.0,
+                decay: 0.045 + Math.random() * 0.03,
+                color: palette[i % palette.length]
+            });
+        }
+    }
+
+    function spawnMilestoneBurst(cx, cy, isFinalWin) {
+        const colors = isFinalWin
+            ? ['#00e676', '#ffd700', '#ffffff', '#38bdf8']
+            : ['#ffd700', '#ffe066', '#ffffff', '#f59e0b'];
+        for (let i = 0; i < 24; i++) {
+            const a = (Math.PI * 2 * i) / 24 + Math.random() * 0.2;
+            const spd = 2.0 + Math.random() * 3.8;
+            particles.push({
+                x: cx,
+                y: cy,
+                vx: Math.cos(a) * spd,
+                vy: Math.sin(a) * spd - 0.8,
+                r: Math.random() * 3.8 + 2.2,
+                life: 1.0,
+                decay: 0.025 + Math.random() * 0.02,
+                color: colors[i % colors.length]
+            });
+        }
+    }
+
+    function startRoundAndFlap() {
+        if (state !== 'idle') return;
+
+        // Защита доступа: требуется регистрация по реферальной ссылке (привязка партнёра)
+        if (!(window.VETRUCH_ECONOMY && VETRUCH_ECONOMY.hasPartnerRefAccess())) {
+            showAppAlert('🔗 Игра «Флаппи Утка» доступна после регистрации по реферальной ссылке в разделе «Задания»!', { title: 'Доступ по рефке' });
+            return;
+        }
+        const curUserXp = parseInt(localStorage.getItem('vetruch_user_xp') || '0', 10) || 0;
+
+        let storedBal = parseInt(localStorage.getItem('vetruch_balance') || String(balance), 10);
+        if (!isNaN(storedBal)) balance = storedBal;
+
+        if (balance < bet) {
+            showAppAlert('Недостаточно монет!');
+            return;
+        }
+
+        if (window.VETRUCH_ECONOMY) {
+            var check = VETRUCH_ECONOMY.checkAndUseAttempt('flappy');
+            if (!check.ok) {
+                VETRUCH_ECONOMY.showNoAttemptsOverlay('flappy');
+                return;
+            }
+            VETRUCH_ECONOMY.updateBadgeUI('flappy');
+        }
+
+        balance -= bet;
+        const expEarned = Math.floor(bet / 50);
+        if (expEarned > 0) {
+            localStorage.setItem('vetruch_user_xp', curUserXp + expEarned);
+        }
+        updateBalanceUI();
+
+        state = 'flying';
+        score = 0;
+        nextPipeNum = 1;
+        currentPipeSpeed = BASE_PIPE_SPEED;
+        ambientPhase = 0;
+        shakeTimer = 0;
+        pipes = [];
+        floatingPopups = [];
+        scoreDisplay.textContent = '0';
+        updateProgressHUD(0);
+
+        tapPromptWrap.classList.add('hidden');
+        resultOverlay.classList.remove('show');
+        betBtns.forEach(b => b.disabled = true);
+
+        const firstX = Math.max(W + 60, duck.x + 270);
+        const spacing = 225;
+        for (let i = 0; i < 4; i++) {
+            spawnPipe(firstX + i * spacing, nextPipeNum++);
+        }
+
+        performFlap();
+    }
+
+    function performFlap() {
+        duck.vy = -6.2;
+        spawnFlapParticles(9);
+        if (tg.HapticFeedback) {
+            try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
+        }
+    }
+
+    function handleFlyInput(e) {
+        if (e && e.target && e.target.closest('.controls, .header')) return;
+        if (e) e.preventDefault();
+
+        if (state === 'idle') {
+            startRoundAndFlap();
+        } else if (state === 'flying') {
+            performFlap();
+        }
+    }
+
+    stageWrap.addEventListener('pointerdown', handleFlyInput);
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'ArrowUp') {
+            e.preventDefault();
+            if (state === 'finished' && Date.now() >= restartUnlockAt) {
+                prepareNextFlight();
+            } else {
+                handleFlyInput();
+            }
+        }
+    });
+
+    function finishFlight(completedAll) {
+        if (state === 'finished') return;
+        state = 'finished';
+        restartUnlockAt = Date.now() + 450;
+
+        if (score > bestScore) {
+            bestScore = score;
+            localStorage.setItem('vetruch_flappy_best', bestScore);
+        }
+
+        const mult = getMultiplierForScore(score);
+        const winAmount = mult > 0 ? Math.floor(bet * mult) : 0;
+
+        if (winAmount === 0) {
+            shakeTimer = 14;
+        }
+
+        if (winAmount > 0) {
+            balance += winAmount;
+            updateBalanceUI();
+            if (tg.HapticFeedback) {
+                try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+            }
+        } else {
+            if (tg.HapticFeedback) {
+                try { tg.HapticFeedback.notificationOccurred('error'); } catch (e) {}
+            }
+        }
+
+        resultCard.className = 'result-card ' + (winAmount > 0 ? 'win' : 'lose');
+        if (score >= MAX_PIPES || completedAll) {
+            resultTitle.textContent = '🏆 50 ТРУБ ПРОЙДЕНО!';
+            resultTitle.style.color = '#00e676';
+            resultSub.innerHTML = `Выигрыш: <b>+${winAmount}</b> <img src="coins.png" class="coin-icon"> (x10)`;
+            resultBtn.textContent = 'ЛЕТЕТЬ ЕЩЁ';
+        } else if (winAmount > 0) {
+            resultTitle.textContent = `✨ ОТЛИЧНЫЙ ПОЛЁТ (${score})`;
+            resultTitle.style.color = '#38bdf8';
+            resultSub.innerHTML = `Выигрыш: <b>+${winAmount}</b> <img src="coins.png" class="coin-icon"> (x${mult})`;
+            resultBtn.textContent = 'ЛЕТЕТЬ ЕЩЁ';
+        } else {
+            resultTitle.textContent = '💥 СТОЛКНОВЕНИЕ';
+            resultTitle.style.color = '#ff5277';
+            resultSub.textContent = `Пройдено труб: ${score}`;
+            resultBtn.textContent = 'ПОПРОБОВАТЬ СНОВА';
+        }
+        resultBest.textContent = `🏆 Рекорд: ${bestScore}`;
+
+        resultBtn.disabled = true;
+        setTimeout(() => { resultBtn.disabled = false; }, 450);
+        resultOverlay.classList.add('show');
+        betBtns.forEach(b => b.disabled = false);
+    }
+
+    // ================= ОТРИСОВКА ЖИВОПИСНОГО МНОГОСЛОЙНОГО ФОНА =================
+    function drawCloud(cx, cy, scale, alpha) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.scale(scale, scale);
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(0, 0, 18, 0, Math.PI * 2);
+        ctx.arc(16, -6, 22, 0, Math.PI * 2);
+        ctx.arc(36, -2, 17, 0, Math.PI * 2);
+        ctx.arc(50, 4, 13, 0, Math.PI * 2);
+        ctx.arc(-15, 5, 13, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function drawBackground(now) {
+        const usableH = H - floorHeight;
+
+        // 1. Базовый градиент неба (виден мгновенно до загрузки картинки)
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, usableH);
+        skyGrad.addColorStop(0, '#1e90e8');
+        skyGrad.addColorStop(0.55, '#6ecbf5');
+        skyGrad.addColorStop(1, '#bcebff');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, W, usableH);
+
+        // 2. Живописный бесшовный параллакс-задник (зеркальное тайлирование)
+        if (bgImgLoaded && bgImg.naturalHeight > 0) {
+            const tileH = usableH + 8;
+            const tileW = Math.max(tileH, Math.round(tileH * (bgImg.naturalWidth / bgImg.naturalHeight)));
+            const parallaxX = scrollX * 0.18;
+            const firstTile = Math.floor(parallaxX / tileW);
+            const lastTile = Math.ceil((parallaxX + W) / tileW);
+
+            for (let t = firstTile; t <= lastTile; t++) {
+                const drawX = t * tileW - parallaxX;
+                ctx.save();
+                if (((t % 2) + 2) % 2 === 1) {
+                    ctx.translate(drawX + tileW, 0);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(bgImg, 0, 0, tileW + 1.5, tileH);
+                } else {
+                    ctx.drawImage(bgImg, drawX, 0, tileW + 1.5, tileH);
+                }
+                ctx.restore();
+            }
+        }
+
+        // 3. Динамическая эволюция освещения: день (0..19) -> золотой закат (20..39) -> сумерки со звёздами (40..50)
+        const sunsetAlpha = Math.max(0, Math.min(1, (ambientPhase - 0.36) / 0.28)) * (1 - Math.max(0, Math.min(1, (ambientPhase - 0.78) / 0.2)));
+        const twilightAlpha = Math.max(0, Math.min(1, (ambientPhase - 0.72) / 0.25));
+
+        if (sunsetAlpha > 0.01) {
+            const sunTint = ctx.createLinearGradient(0, 0, 0, usableH);
+            sunTint.addColorStop(0, `rgba(255, 118, 64, ${0.28 * sunsetAlpha})`);
+            sunTint.addColorStop(0.55, `rgba(255, 168, 76, ${0.32 * sunsetAlpha})`);
+            sunTint.addColorStop(1, `rgba(190, 80, 120, ${0.22 * sunsetAlpha})`);
+            ctx.fillStyle = sunTint;
+            ctx.fillRect(0, 0, W, usableH);
+        }
+
+        if (twilightAlpha > 0.01) {
+            const duskTint = ctx.createLinearGradient(0, 0, 0, usableH);
+            duskTint.addColorStop(0, `rgba(14, 16, 54, ${0.68 * twilightAlpha})`);
+            duskTint.addColorStop(0.6, `rgba(42, 20, 74, ${0.56 * twilightAlpha})`);
+            duskTint.addColorStop(1, `rgba(245, 158, 11, ${0.22 * twilightAlpha})`);
+            ctx.fillStyle = duskTint;
+            ctx.fillRect(0, 0, W, usableH);
+
+            // Мягкие золотые звёздочки в сумерках финала
+            for (const st of bgStars) {
+                const tw = 0.45 + 0.55 * Math.sin(now * 0.005 + st.phase);
+                ctx.fillStyle = `rgba(255, 240, 180, ${tw * twilightAlpha * 0.85})`;
+                ctx.beginPath();
+                ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Тёплые солнечные лучи в дневную и закатную фазы
+        const sunBeamAlpha = Math.max(0, 1 - twilightAlpha * 0.9);
+        if (sunBeamAlpha > 0.05) {
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            const beamGrad = ctx.createLinearGradient(W * 0.95, 0, W * 0.3, usableH * 0.72);
+            beamGrad.addColorStop(0, `rgba(255, 244, 185, ${0.28 * sunBeamAlpha})`);
+            beamGrad.addColorStop(1, 'rgba(255, 244, 185, 0)');
+            ctx.fillStyle = beamGrad;
+            ctx.beginPath();
+            ctx.moveTo(W * 0.65, 0);
+            ctx.lineTo(W, 0);
+            ctx.lineTo(W * 0.45, usableH * 0.85);
+            ctx.lineTo(W * 0.15, usableH * 0.75);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // 4. Лёгкие плывущие облака поверх неба
+        for (const c of bgClouds) {
+            drawCloud(c.x, c.y, c.scale, c.alpha * (1 - twilightAlpha * 0.5));
+        }
+
+        // 5. Далёкие летящие силуэты птиц
+        ctx.save();
+        ctx.strokeStyle = twilightAlpha > 0.5 ? 'rgba(255, 224, 150, 0.55)' : 'rgba(18, 42, 68, 0.48)';
+        ctx.lineWidth = 1.6;
+        ctx.lineCap = 'round';
+        for (const b of bgBirds) {
+            const wingY = Math.sin(now * 0.008 + b.phase) * b.size * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(b.x - b.size, b.y + wingY);
+            ctx.quadraticCurveTo(b.x - b.size * 0.4, b.y - b.size * 0.35, b.x, b.y);
+            ctx.quadraticCurveTo(b.x + b.size * 0.4, b.y - b.size * 0.35, b.x + b.size, b.y + wingY);
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        // 6. Силуэт прибрежного леса у самого горизонта перед травой (связывает фон и землю)
+        const ridgeStep = 56;
+        const ridgeOffset = ((scrollX * 0.52) % ridgeStep + ridgeStep) % ridgeStep;
+        ctx.fillStyle = twilightAlpha > 0.5 ? '#153b2c' : '#1f6f3b';
+        ctx.beginPath();
+        ctx.moveTo(-ridgeStep, usableH);
+        for (let x = -ridgeStep - ridgeOffset; x <= W + ridgeStep * 2; x += ridgeStep) {
+            ctx.arc(x + 14, usableH + 2, 18, Math.PI, 0);
+            ctx.arc(x + 36, usableH, 22, Math.PI, 0);
+        }
+        ctx.lineTo(W + ridgeStep, usableH);
+        ctx.closePath();
+        ctx.fill();
+
+        // Полосы ветра на высоких скоростях
+        if (state === 'flying' && currentPipeSpeed > 3.1) {
+            const windAlpha = Math.min(0.32, (currentPipeSpeed - 3.1) * 0.38);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${windAlpha})`;
+            ctx.lineWidth = 1.5;
+            for (const ws of windStreaks) {
+                ctx.beginPath();
+                ctx.moveTo(ws.x, ws.y);
+                ctx.lineTo(ws.x + ws.len, ws.y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    function drawGround() {
+        const y = H - floorHeight;
+
+        // Тёплая фактурная каменная/земляная основа
+        const earthGrad = ctx.createLinearGradient(0, y + 17, 0, H);
+        earthGrad.addColorStop(0, '#c89b54');
+        earthGrad.addColorStop(0.35, '#9d6c35');
+        earthGrad.addColorStop(1, '#68411b');
+        ctx.fillStyle = earthGrad;
+        ctx.fillRect(0, y + 17, W, floorHeight - 17);
+
+        // Декоративные скроллящиеся камни в грунте
+        const stoneStep = 44;
+        const stoneOff = ((scrollX % stoneStep) + stoneStep) % stoneStep;
+        ctx.fillStyle = 'rgba(62, 34, 12, 0.25)';
+        for (let x = -stoneStep - stoneOff; x < W + stoneStep; x += stoneStep) {
+            ctx.beginPath();
+            ctx.roundRect ? ctx.roundRect(x + 4, y + 25, 22, 10, 4) : ctx.fillRect(x + 4, y + 25, 22, 10);
+            ctx.fill();
+            ctx.fillRect(x + 28, y + 40, 18, 8);
+        }
+
+        // Сочный верхний газон
+        const grassGrad = ctx.createLinearGradient(0, y, 0, y + 17);
+        grassGrad.addColorStop(0, '#6bf04f');
+        grassGrad.addColorStop(1, '#32a824');
+        ctx.fillStyle = grassGrad;
+        ctx.fillRect(0, y, W, 17);
+
+        // Бегущие диагональные шевроны травы
+        const step = 28;
+        const offset = ((scrollX % step) + step) % step;
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, y, W, 17);
+        ctx.clip();
+        ctx.fillStyle = 'rgba(182, 255, 140, 0.42)';
+        for (let x = -step - offset; x < W + step; x += step) {
+            ctx.beginPath();
+            ctx.moveTo(x, y + 17);
+            ctx.lineTo(x + 10, y);
+            ctx.lineTo(x + 20, y);
+            ctx.lineTo(x + 10, y + 17);
+            ctx.closePath();
+            ctx.fill();
+        }
+        ctx.restore();
+
+        // Верхний глянцевый блик и тень под газоном
+        ctx.fillStyle = '#b4ff99';
+        ctx.fillRect(0, y, W, 2.5);
+        ctx.fillStyle = '#1d6616';
+        ctx.fillRect(0, y + 16, W, 3);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+        ctx.fillRect(0, y + 19, W, 4);
+    }
+
+    function drawPipes(now) {
+        const usableH = H - floorHeight;
+
+        const getPipePalette = (num) => {
+            if (num === MAX_PIPES) {
+                // 50-я финальная труба — классическая зелёная
+                return {
+                    outline: '#144d1e',
+                    stops: ['#43b530', '#73e048', '#b7f78b', '#55c938', '#2f9621', '#207316']
+                };
+            }
+            if (num % 10 === 0) {
+                // Каждая 10-я труба (10, 20, 30, 40) — золотисто-жёлтая
+                return {
+                    outline: '#5c3b00',
+                    stops: ['#dfa300', '#ffd838', '#fff4a8', '#f5b800', '#c78500', '#9a6300']
+                };
+            }
+            // Обычные трубы — классические синие
+            return {
+                outline: '#123458',
+                stops: ['#2c8ae6', '#6dc3ff', '#b2e2ff', '#3ea0ff', '#1e6ec4', '#145096']
+            };
+        };
+
+        const fillPipeGradient = (gx, gw, stops) => {
+            const grad = ctx.createLinearGradient(gx, 0, gx + gw, 0);
+            const positions = [0.0, 0.16, 0.28, 0.46, 0.84, 1.0];
+            positions.forEach((pos, idx) => grad.addColorStop(pos, stops[idx]));
+            return grad;
+        };
+
+        for (const p of pipes) {
+            const palette = getPipePalette(p.num);
+            const isGold = p.num % 10 === 0 && p.num < MAX_PIPES;
+            const isFinal = p.num === MAX_PIPES;
+
+            const drawSegment = (x, y, w, h, capAtBottom) => {
+                if (h <= 0) return;
+                const capH = Math.min(22, h);
+                const capX = x - 4;
+                const capW = w + 8;
+                const capY = capAtBottom ? (y + h - capH) : y;
+
+                // Основной ствол трубы
+                ctx.fillStyle = fillPipeGradient(x, w, palette.stops);
+                ctx.fillRect(x, y, w, h);
+
+                // Глянцевые блики и глубина объёма
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.36)';
+                ctx.fillRect(x + 9, y, 5, h);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fillRect(x + 17, y, 2, h);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.16)';
+                ctx.fillRect(x + w - 9, y, 7, h);
+
+                // Металлический живой блик на золотых 10-х трубах
+                if (isGold) {
+                    const sheen = ((now * 0.06) % (w + 40)) - 20;
+                    const gradSheen = ctx.createLinearGradient(x + sheen - 10, 0, x + sheen + 10, 0);
+                    gradSheen.addColorStop(0, 'rgba(255,255,255,0)');
+                    gradSheen.addColorStop(0.5, 'rgba(255,255,255,0.28)');
+                    gradSheen.addColorStop(1, 'rgba(255,255,255,0)');
+                    ctx.fillStyle = gradSheen;
+                    ctx.fillRect(x, y, w, h);
+                }
+
+                // Контур ствола
+                ctx.strokeStyle = palette.outline;
+                ctx.lineWidth = 2.5;
+                ctx.strokeRect(x, y, w, h);
+
+                // Тень под/над ободком
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.24)';
+                if (capAtBottom && h > capH + 4) {
+                    ctx.fillRect(x + 1, capY - 5, w - 2, 5);
+                } else if (!capAtBottom && h > capH + 4) {
+                    ctx.fillRect(x + 1, capY + capH, w - 2, 5);
+                }
+
+                // Классический выступающий оголовок
+                ctx.fillStyle = fillPipeGradient(capX, capW, palette.stops);
+                ctx.fillRect(capX, capY, capW, capH);
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
+                ctx.fillRect(capX + 10, capY + 1, 6, capH - 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fillRect(capX + 19, capY + 1, 2, capH - 2);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.16)';
+                ctx.fillRect(capX + capW - 9, capY + 1, 7, capH - 2);
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.34)';
+                ctx.fillRect(capX + 2, capY + 2, capW - 4, 2);
+
+                ctx.strokeStyle = palette.outline;
+                ctx.lineWidth = 2.5;
+                ctx.strokeRect(capX, capY, capW, capH);
+            };
+
+            drawSegment(p.x, 0, p.w, p.gapTop, true);
+            drawSegment(p.x, p.gapBottom, p.w, usableH - p.gapBottom, false);
+
+            // Праздничное мерцание в проёме 50-й финальной трубы
+            if (isFinal) {
+                for (let k = 0; k < 4; k++) {
+                    const spY = p.gapTop + 20 + ((p.gapBottom - p.gapTop - 40) * ((Math.sin(now * 0.004 + k * 1.7) + 1) / 2));
+                    const spX = p.x + p.w * 0.5 + Math.cos(now * 0.005 + k * 2.1) * 16;
+                    ctx.fillStyle = k % 2 === 0 ? 'rgba(0, 255, 136, 0.85)' : 'rgba(255, 215, 0, 0.9)';
+                    ctx.beginPath();
+                    ctx.arc(spX, spY, 2.4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+    }
+
+    function drawDuck() {
+        ctx.save();
+        ctx.translate(duck.x, duck.y);
+        ctx.rotate(duck.angle);
+
+        if (duckImgLoaded) {
+            const aspect = duckImg.naturalWidth / (duckImg.naturalHeight || 1);
+            duck.h = 66;
+            duck.w = Math.round(duck.h * aspect);
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.32)';
+            ctx.shadowBlur = 10;
+            ctx.drawImage(duckImg, -duck.w / 2, -duck.h / 2, duck.w, duck.h);
+        } else {
+            ctx.fillStyle = '#ffd700';
+            ctx.beginPath();
+            ctx.arc(0, 0, 22, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+
+    function drawParticlesAndPopups(dt) {
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const pt = particles[i];
+            pt.x += pt.vx * dt;
+            pt.y += pt.vy * dt;
+            pt.life -= pt.decay * dt;
+            if (pt.life <= 0) {
+                particles.splice(i, 1);
+                continue;
+            }
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, pt.life);
+            ctx.fillStyle = pt.color;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        for (let i = floatingPopups.length - 1; i >= 0; i--) {
+            const fp = floatingPopups[i];
+            fp.y -= 0.95 * dt;
+            fp.life -= 0.02 * dt;
+            if (fp.life <= 0) {
+                floatingPopups.splice(i, 1);
+                continue;
+            }
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, fp.life);
+            ctx.font = '900 17px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = fp.color;
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.72)';
+            ctx.lineWidth = 3.5;
+            ctx.strokeText(fp.text, fp.x, fp.y);
+            ctx.fillText(fp.text, fp.x, fp.y);
+            ctx.restore();
+        }
+    }
+
+    // ================= ГЛАВНЫЙ ЦИКЛ (60 FPS NORMALIZED) =================
+    function gameLoop(now) {
+        const rawDt = now - lastTime;
+        lastTime = now;
+        const dt = Math.min(32, Math.max(1, rawDt)) / 16.667;
+
+        const usableH = H - floorHeight;
+
+        const targetPhase = Math.min(1, score / MAX_PIPES);
+        ambientPhase += (targetPhase - ambientPhase) * Math.min(1, 0.05 * dt);
+
+        if (state === 'idle') {
+            scrollX += 1.4 * dt;
+            duck.y = Math.round(usableH * 0.46 + Math.sin(now * 0.004) * 7);
+            duck.angle = Math.sin(now * 0.004) * 0.05;
+        } else if (state === 'flying') {
+            const targetSpeed = getTargetPipeSpeed(score);
+            currentPipeSpeed += (targetSpeed - currentPipeSpeed) * Math.min(1, 0.08 * dt);
+            const pipeSpeed = currentPipeSpeed;
+            scrollX += pipeSpeed * dt;
+
+            // Физика падения
+            duck.vy += 0.34 * dt;
+            if (duck.vy > 8.5) duck.vy = 8.5;
+            duck.y += duck.vy * dt;
+
+            // Плавный наклон утки
+            const targetAngle = Math.max(-0.35, Math.min(0.66, duck.vy * 0.075));
+            duck.angle += (targetAngle - duck.angle) * Math.min(1, 0.22 * dt);
+
+            // Мягкий хитбокс (62% от спрайта)
+            const hitHalfW = duck.w * 0.31;
+            const hitHalfH = duck.h * 0.31;
+
+            // Верх/низ
+            if (duck.y - hitHalfH < 0) {
+                duck.y = hitHalfH;
+                duck.vy = 0;
+            }
+            if (duck.y + hitHalfH >= usableH) {
+                duck.y = usableH - hitHalfH;
+                finishFlight(false);
+            }
+
+            // Движение и коллизия труб
+            for (const p of pipes) {
+                p.x -= pipeSpeed * dt;
+
+                if (!p.passed && (p.x + p.w / 2) < duck.x) {
+                    p.passed = true;
+                    score++;
+                    scoreDisplay.textContent = score;
+                    updateProgressHUD(score);
+                    if (score > bestScore) {
+                        bestScore = score;
+                        localStorage.setItem('vetruch_flappy_best', bestScore);
+                    }
+                    if (score >= MAX_PIPES) {
+                        spawnMilestoneBurst(duck.x, duck.y - 20, true);
+                        floatingPopups.push({ x: duck.x, y: duck.y - 40, text: '🏆 x10!', color: '#00e676', life: 1.0 });
+                        finishFlight(true);
+                        break;
+                    }
+                    if (score % 10 === 0) {
+                        spawnMilestoneBurst(duck.x, duck.y - 20, false);
+                        floatingPopups.push({ x: duck.x, y: duck.y - 40, text: `✨ x${getMultiplierForScore(score)}!`, color: '#ffd700', life: 1.0 });
+                    }
+                }
+
+                // Проверка столкновения
+                const overlapX = (duck.x + hitHalfW > p.x) && (duck.x - hitHalfW < p.x + p.w);
+                if (overlapX) {
+                    if ((duck.y - hitHalfH < p.gapTop) || (duck.y + hitHalfH > p.gapBottom)) {
+                        finishFlight(false);
+                        break;
+                    }
+                }
+            }
+
+            // Убираем ушедшие и доспавниваем новые до 50 труб
+            if (pipes.length > 0 && pipes[0].x + pipes[0].w < -20) {
+                pipes.shift();
+            }
+            if (pipes.length > 0 && nextPipeNum <= MAX_PIPES) {
+                const lastPipe = pipes[pipes.length - 1];
+                if (lastPipe.x < W + 60) {
+                    const pipeSpacing = Math.round(225 + (currentPipeSpeed - BASE_PIPE_SPEED) * 18);
+                    spawnPipe(lastPipe.x + pipeSpacing, nextPipeNum++);
+                }
+            }
+        }
+
+        for (const c of bgClouds) {
+            c.x -= c.speed * dt;
+            if (c.x < -110) c.x = W + 70;
+        }
+        for (const b of bgBirds) {
+            b.x -= b.speed * dt;
+            if (b.x < -30) {
+                b.x = W + 30;
+                b.y = 50 + Math.random() * Math.max(90, usableH * 0.35);
+            }
+        }
+        for (const ws of windStreaks) {
+            ws.x -= ws.speed * dt;
+            if (ws.x + ws.len < 0) {
+                ws.x = W + 20;
+                ws.y = 40 + Math.random() * Math.max(120, usableH - 70);
+            }
+        }
+
+        ctx.save();
+        if (shakeTimer > 0) {
+            const mag = shakeTimer * 0.45;
+            ctx.translate((Math.random() - 0.5) * mag, (Math.random() - 0.5) * mag);
+            shakeTimer = Math.max(0, shakeTimer - dt);
+        }
+
+        drawBackground(now);
+        drawPipes(now);
+        drawGround();
+        drawParticlesAndPopups(dt);
+        drawDuck();
+        ctx.restore();
+
+        requestAnimationFrame(gameLoop);
+    }
+
+    requestAnimationFrame(gameLoop);
+</script>
+</body>
+</html>

@@ -2,175 +2,567 @@
 <html lang="ru">
 <head>
 
-<script src="vetruch-economy.js"></script>
-    
+<script src="vetruch-economy.js?v=7"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Башни - Vetruch</title>
-    
+    <title>Шахта - Vetruch</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         :root {
-            --bg: #000000; --text: #ffffff;
-            --blue-main: #00d9ff; --blue-glow: rgba(0, 217, 255, 0.5);
-            --cell-bg: #1a1d24; --cell-safe: rgba(0, 217, 255, 0.15); --cell-mine: rgba(255, 51, 102, 0.2);
+            --bg: #02060e;
+            --text: #ffffff;
+            --blue-main: #00d9ff;
+            --blue-glow: rgba(0, 136, 255, 0.55);
         }
-        
-        body { 
-            margin: 0; background: var(--bg); color: var(--text); 
-            min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
+
+        body {
+            margin: 0;
+            /* Простой многослойный фон подземных пород в синих тонах */
+            background:
+                radial-gradient(circle at 50% 10%, rgba(18, 62, 118, 0.55) 0%, transparent 48%),
+                repeating-linear-gradient(180deg, #061224 0px, #061224 54px, #040d1b 54px, #040d1b 62px),
+                linear-gradient(180deg, #07172e 0%, #030914 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         #stars { position: fixed; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-        .dark-overlay { position: fixed; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%); pointer-events: none; }
+        .dark-overlay {
+            position: fixed;
+            z-index: 1;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(4, 12, 26, 0.16) 0%, rgba(2, 5, 11, 0.72) 100%);
+            pointer-events: none;
+        }
 
-        .game-container { 
-            position: relative; z-index: 2; display: flex; flex-direction: column; 
-            min-height: 100vh; padding: 15px 16px 40px 16px; 
+        .game-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 12px 12px 24px 12px;
         }
 
         /* Верхняя панель */
-        .top-section { display: flex; flex-direction: column; gap: 10px; width: 100%; z-index: 10; margin-bottom: 20px; }
+        .top-section { display: flex; flex-direction: column; gap: 8px; width: 100%; z-index: 10; margin-bottom: 10px; }
         .header { display: flex; justify-content: space-between; align-items: center; }
-        .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; height: 40px; padding: 0 14px; border-radius: 12px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
-        .balance-pill { display: flex; align-items: center; gap: 6px; background: rgba(0, 136, 255, 0.15); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 16px; border: 1px solid rgba(0, 136, 255, 0.3); }
-        .coin-icon { width: 18px; height: 18px; flex-shrink: 0; vertical-align: middle; }
+        .back-btn {
+            background: rgba(11, 24, 46, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.28);
+            color: #fff;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 11px;
+            font-size: 13.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+        }
+        .balance-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(0, 136, 255, 0.22), rgba(0, 217, 255, 0.1));
+            color: #e0f7ff;
+            padding: 6px 13px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 14.5px;
+            border: 1px solid rgba(0, 217, 255, 0.44);
+            box-shadow: 0 0 14px rgba(0, 136, 255, 0.22);
+        }
+        .coin-icon { width: 16px; height: 16px; flex-shrink: 0; vertical-align: middle; }
 
         .game-info-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 16px; border-radius: 14px;
-            backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .info-item { font-size: 13px; color: #8c97a7; display: flex; align-items: center; gap: 8px; }
-        .info-val { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 4px; }
-
-        /* Игровое поле БАШНИ */
-        .grid-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; flex: 1; }
-        
-        .towers-grid { 
-            display: flex; 
-            flex-direction: column-reverse; /* Ряд 0 будет внизу */
-            gap: 8px; 
-            width: 100%; 
-            max-width: 380px; 
-            margin: 0 auto; 
-        }
-
-        .tower-row {
             display: flex;
-            gap: 8px;
+            justify-content: space-between;
             align-items: center;
-            opacity: 0.4; /* Изначально ряды тусклые */
-            transition: opacity 0.3s ease;
-            pointer-events: none; /* Блокируем клики по умолчанию */
+            background: rgba(9, 20, 38, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.24);
+            padding: 9px 14px;
+            border-radius: 13px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        }
+        .info-item { font-size: 12px; color: #94b8db; display: flex; align-items: center; gap: 6px; }
+        .info-val { font-size: 14.5px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 4px; }
+
+        /* ================= ПОДЗЕМНЫЙ ВЫРЕЗ ШАХТЫ В ЗЕМЛЕ ================= */
+        .grid-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+            flex: 1;
         }
 
-        .tower-row.active {
-            opacity: 1;
-            pointer-events: auto; /* Разрешаем клик только на активном ряду */
+        .mine-cutaway {
+            width: 100%;
+            max-width: 390px;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #040b18;
+            border: 2px solid rgba(0, 195, 255, 0.34);
+            box-shadow:
+                0 16px 38px rgba(0, 0, 0, 0.82),
+                0 0 26px rgba(0, 136, 255, 0.16),
+                inset 0 0 28px rgba(0, 0, 0, 0.85);
         }
-        
-        .tower-row.completed {
-            opacity: 0.9;
+
+        .mine-cutaway.shake {
+            animation: mineShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+        @keyframes mineShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(3px); }
+        }
+
+        /* Верхний срез поверхности земли */
+        .mine-surface-cap {
+            position: relative;
+            z-index: 5;
+            padding: 7px 14px 8px 14px;
+            background:
+                linear-gradient(180deg, #0d2b52 0%, #091d3b 75%, #07152b 100%);
+            border-bottom: 3px solid #163d73;
+            box-shadow: inset 0 1px 0 rgba(125, 211, 252, 0.25), 0 4px 10px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #bae6fd;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+        .mine-surface-cap b { color: #00e5ff; font-weight: 900; }
+
+        /* Неровные каменные стены разреза по краям */
+        .rock-wall-svg {
+            position: absolute;
+            top: 28px;
+            bottom: 10px;
+            width: 16px;
+            height: calc(100% - 38px);
+            z-index: 4;
+            pointer-events: none;
+        }
+        .rock-wall-svg.left { left: 0; }
+        .rock-wall-svg.right { right: 0; transform: scaleX(-1); }
+
+        .towers-grid {
+            display: flex;
+            flex-direction: column-reverse;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Каждый уровень — выкопанный туннель в земле + толстый земляной пол снизу */
+        .mine-tunnel {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            height: 48px;
+            padding: 0 14px;
+            /* Задний фон туннеля: глубокая пещера + боковые подпорки */
+            background:
+                radial-gradient(ellipse at 54% 50%, rgba(14, 52, 98, 0.42) 0%, rgba(5, 16, 36, 0.92) 72%, #030a18 100%);
+            border-bottom: 7px solid #091b36;
+            box-shadow:
+                inset 0 6px 12px rgba(0, 0, 0, 0.65),
+                inset 0 -3px 0 rgba(0, 175, 255, 0.16),
+                0 2px 0 rgba(0, 0, 0, 0.8);
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Текстура земляной перегородки между ярусами */
+        .mine-tunnel::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -7px;
+            height: 7px;
+            background:
+                radial-gradient(circle at 18% 45%, rgba(56, 189, 248, 0.28) 0 1.5px, transparent 2px),
+                radial-gradient(circle at 46% 65%, rgba(56, 189, 248, 0.22) 0 1.2px, transparent 2px),
+                radial-gradient(circle at 78% 40%, rgba(56, 189, 248, 0.26) 0 1.5px, transparent 2px),
+                linear-gradient(180deg, #163b6d 0%, #0b2142 55%, #061226 100%);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        /* Неоткрытый туннель (засыпан породой / в темноте — лесенки скрыты!) */
+        .mine-tunnel.tunnel-hidden {
+            background:
+                repeating-linear-gradient(145deg, rgba(13, 34, 66, 0.45) 0px, rgba(13, 34, 66, 0.45) 8px, rgba(6, 16, 34, 0.78) 8px, rgba(6, 16, 34, 0.78) 18px),
+                linear-gradient(180deg, #061226 0%, #040b18 100%);
+            pointer-events: none;
+        }
+
+        /* Активный туннель (подсвечен синим фонарём, лесенки появились) */
+        .mine-tunnel.active {
+            background:
+                radial-gradient(ellipse at 56% 50%, rgba(0, 168, 255, 0.22) 0%, rgba(8, 29, 60, 0.94) 68%, #040d1e 100%);
+            border-bottom-color: #0284c7;
+            box-shadow:
+                inset 0 0 20px rgba(0, 217, 255, 0.18),
+                inset 0 -3px 0 rgba(56, 189, 248, 0.52);
+            pointer-events: auto;
+        }
+
+        .mine-tunnel.completed {
+            background:
+                radial-gradient(ellipse at 55% 50%, rgba(0, 217, 255, 0.14) 0%, rgba(6, 22, 46, 0.95) 75%, #030b19 100%);
+            pointer-events: none;
+        }
+
+        .mine-tunnel.failed {
+            background:
+                radial-gradient(ellipse at 55% 50%, rgba(244, 63, 94, 0.18) 0%, rgba(16, 12, 26, 0.95) 75%, #050a14 100%);
+            border-bottom-color: #be123c;
+            pointer-events: none;
+        }
+
+        /* Деревянно-стальная стойка и фонарь внутри каждого яруса */
+        .tunnel-post {
+            width: 58px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 6px 4px 2px;
+            border-right: 3px solid #163a68;
+            position: relative;
+        }
+        .mine-tunnel.active .tunnel-post { border-right-color: #0ea5e9; }
+        .mine-tunnel.completed .tunnel-post { border-right-color: #00e676; }
+
+        .tunnel-lantern {
+            width: 7px;
+            height: 11px;
+            border-radius: 3px;
+            background: #173052;
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+        .mine-tunnel.active .tunnel-lantern {
+            background: #00e5ff;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px #00e5ff, 0 0 18px rgba(0, 217, 255, 0.85);
+        }
+        .mine-tunnel.completed .tunnel-lantern {
+            background: #00e676;
+            border-color: #bbf7d0;
+            box-shadow: 0 0 8px rgba(0, 230, 118, 0.7);
         }
 
         .tower-mult-badge {
-            width: 52px;
-            height: 42px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.05;
+        }
+        .floor-num {
+            font-size: 8px;
+            font-weight: 800;
+            color: #6b8cb3;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .floor-mult {
+            font-size: 11px;
+            font-weight: 900;
+            color: #8cb4db;
+        }
+        .mine-tunnel.active .floor-num { color: #bae6fd; }
+        .mine-tunnel.active .floor-mult { color: #ffffff; text-shadow: 0 0 8px rgba(0, 217, 255, 0.7); }
+        .mine-tunnel.completed .floor-num { color: #86efac; }
+        .mine-tunnel.completed .floor-mult { color: #00e676; }
+        .mine-tunnel.failed .floor-mult { color: #fda4af; }
+
+        /* Пространство туннеля под лесенки или тёмную породу */
+        .ladders-bay {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            justify-content: space-evenly;
+            padding: 0 4px;
+        }
+
+        /* Сообщение темноты на неоткрытых ярусах (никаких подсказок числа лестниц!) */
+        .tunnel-fog {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            gap: 6px;
+            font-size: 10.5px;
             font-weight: 800;
-            color: #8c97a7;
-            flex-shrink: 0;
-            transition: all 0.3s;
+            color: rgba(125, 211, 252, 0.28);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            user-select: none;
+        }
+        .tunnel-fog-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(0, 217, 255, 0.26);
         }
 
-        .tower-row.active .tower-mult-badge {
-            background: rgba(0, 217, 255, 0.15);
-            border-color: var(--blue-main);
-            color: #fff;
-            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
-            transform: scale(1.05);
-        }
-
-        .tower-row.completed .tower-mult-badge {
-            color: #00cc66;
-            border-color: rgba(0, 204, 102, 0.3);
-        }
-
-        .tower-cells {
+        /* Слот под узкую вертикальную лестницу от пола до потолка */
+        .ladder-slot {
             display: flex;
-            gap: 8px;
+            align-items: stretch;
+            justify-content: center;
             flex: 1;
         }
 
-        .cell { 
-            background: var(--cell-bg); 
-            border-radius: 10px; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 22px; 
-            cursor: pointer; 
-            border: 1px solid rgba(255,255,255,0.08); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            transition: all 0.2s ease;
-            flex: 1;
-            height: 42px;
+        .ladder-btn {
+            width: 34px;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 5px;
+            border-radius: 4px;
+            transition: transform 0.14s ease, filter 0.2s ease;
+            animation: ladderSpawn 0.28s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
-        
-        .tower-row.active .cell:active { transform: scale(0.92); }
-
-        .cell.safe { 
-            background: var(--cell-safe); border: 1px solid var(--blue-main); 
-            box-shadow: inset 0 0 15px rgba(0,217,255,0.3); 
-            animation: pop 0.4s ease forwards; 
-        }
-        .cell.mine { 
-            background: var(--cell-mine); border: 1px solid #ff3366; 
-            box-shadow: inset 0 0 15px rgba(255,51,102,0.4); 
-            animation: shake 0.4s ease forwards; 
+        @keyframes ladderSpawn {
+            0% { opacity: 0; transform: translateY(10px) scaleY(0.7); }
+            100% { opacity: 1; transform: translateY(0) scaleY(1); }
         }
 
-        @keyframes pop { 
-            0% { transform: scale(0.8); opacity: 0; } 
-            50% { transform: scale(1.1); } 
-            100% { transform: scale(1); opacity: 1; } 
+        .mine-tunnel.active .ladder-btn:hover {
+            filter: brightness(1.22);
         }
-        @keyframes shake { 
-            0%, 100% { transform: translateX(0); } 
-            25% { transform: translateX(-4px); } 
-            75% { transform: translateX(4px); } 
+        .mine-tunnel.active .ladder-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* Две вертикальные тетивы лестницы */
+        .ladder-rail {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, #38bdf8 0%, #0284c7 60%, #093568 100%);
+            box-shadow: 0 0 8px rgba(0, 195, 255, 0.42);
+            transition: all 0.25s ease;
+        }
+        .ladder-rail.left { left: 4px; }
+        .ladder-rail.right { right: 4px; }
+
+        .ladder-rungs {
+            position: relative;
+            width: calc(100% - 8px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 3px 0;
+        }
+
+        .ladder-rung {
+            height: 3.5px;
+            width: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #0ea5e9, #bae6fd, #0ea5e9);
+            box-shadow: 0 1px 4px rgba(0, 175, 255, 0.5);
+            transition: transform 0.26s ease, background 0.25s ease;
+        }
+
+        .ladder-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            line-height: 1;
+            z-index: 4;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.9));
+        }
+
+        /* Искры подъёма шахтёра */
+        .ladder-btn.climbing .climber-spark {
+            position: absolute;
+            left: 50%;
+            bottom: 2px;
+            width: 13px;
+            height: 13px;
+            margin-left: -6.5px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 12%, #00e5ff 68%, transparent 100%);
+            box-shadow: 0 0 14px #00e5ff, 0 0 24px #38bdf8;
+            z-index: 6;
+            animation: climberAscend 0.3s ease-out forwards;
+        }
+        @keyframes climberAscend {
+            0% { bottom: 2px; opacity: 0.95; transform: scale(0.85); }
+            65% { bottom: 28px; opacity: 1; transform: scale(1.15); }
+            100% { bottom: 42px; opacity: 0.2; transform: scale(0.7); }
+        }
+
+        /* Пройденная целая лесенка */
+        .ladder-btn.safe {
+            background: rgba(0, 217, 255, 0.16);
+            box-shadow: 0 0 14px rgba(0, 229, 255, 0.36);
+        }
+        .ladder-btn.safe .ladder-rail {
+            background: linear-gradient(180deg, #e0fbff 0%, #00e5ff 55%, #0284c7 100%);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.85);
+        }
+        .ladder-btn.safe .ladder-rung {
+            background: linear-gradient(90deg, #00e5ff, #ffffff, #00e5ff);
+        }
+
+        /* Сломанная лесенка (поломка под ногами) */
+        .ladder-btn.broken {
+            background: rgba(244, 63, 94, 0.22);
+            box-shadow: 0 0 14px rgba(244, 63, 94, 0.42);
+        }
+        .ladder-btn.broken .ladder-rail.left {
+            background: linear-gradient(180deg, #fb7185, #be123c);
+            transform: rotate(-10deg) translateY(2px);
+        }
+        .ladder-btn.broken .ladder-rail.right {
+            background: linear-gradient(180deg, #fb7185, #be123c);
+            transform: rotate(10deg) translateY(2px);
+        }
+        .ladder-btn.broken .ladder-rung:nth-child(1),
+        .ladder-btn.broken .ladder-rung:nth-child(5) {
+            background: #fda4af;
+            opacity: 0.65;
+        }
+        .ladder-btn.broken .ladder-rung:nth-child(2) {
+            background: #fb7185;
+            width: 55%;
+            transform-origin: left center;
+            animation: snapLeft 0.34s ease forwards;
+        }
+        .ladder-btn.broken .ladder-rung:nth-child(3) {
+            background: #f43f5e;
+            width: 55%;
+            margin-left: auto;
+            transform-origin: right center;
+            animation: snapRight 0.34s ease forwards;
+        }
+        .ladder-btn.broken .ladder-rung:nth-child(4) {
+            background: #fb7185;
+            width: 52%;
+            transform-origin: left center;
+            animation: snapLeft 0.34s ease forwards;
+        }
+
+        @keyframes snapLeft {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(32deg) translateY(4px); }
+        }
+        @keyframes snapRight {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-32deg) translateY(4px); }
+        }
+
+        /* Показ хрупкой лесенки только на пройденном/текущем этаже */
+        .ladder-btn.revealed-broken {
+            opacity: 0.68;
+        }
+        .ladder-btn.revealed-broken .ladder-rail {
+            background: linear-gradient(180deg, #fb7185, #881337);
+            box-shadow: 0 0 6px rgba(244, 63, 94, 0.4);
+        }
+        .ladder-btn.revealed-broken .ladder-rung:nth-child(2),
+        .ladder-btn.revealed-broken .ladder-rung:nth-child(4) {
+            width: 52%;
+            background: #fb7185;
+            transform: rotate(26deg) translateY(2px);
+        }
+        .ladder-btn.revealed-broken .ladder-rung:nth-child(3) {
+            width: 52%;
+            margin-left: auto;
+            background: #f43f5e;
+            transform: rotate(-26deg) translateY(2px);
         }
 
         /* Управление ставкой */
-        .controls { background: rgba(20, 22, 28, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: auto; backdrop-filter: blur(10px); }
-        
-        .bet-options { display: flex; gap: 8px; margin-bottom: 15px; }
-        .bet-btn { background: #1a1d24; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; font-size: 15px;}
-        .bet-btn.active { background: rgba(0, 217, 255, 0.2); border-color: var(--blue-main); color: var(--blue-main); }
+        .controls {
+            background: rgba(9, 20, 38, 0.9);
+            border: 1px solid rgba(0, 217, 255, 0.25);
+            border-radius: 20px;
+            padding: 14px;
+            margin-top: auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.65);
+        }
+
+        .bet-options { display: flex; gap: 8px; margin-bottom: 11px; }
+        .bet-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 195, 255, 0.2);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            font-size: 14px;
+        }
+        .bet-btn.active {
+            background: rgba(0, 170, 255, 0.22);
+            border-color: #00d9ff;
+            color: #7dd3fc;
+            box-shadow: 0 0 12px rgba(0, 170, 255, 0.28);
+        }
         .bet-btn:disabled { opacity: 0.5; pointer-events: none; }
 
-        .action-btn { 
-            width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 800; 
-            color: #111; background: linear-gradient(90deg, #00ffff, #0088ff); cursor: pointer; 
-            box-shadow: 0 0 15px var(--blue-glow); transition: 0.2s; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            font-size: 15px;
+            font-weight: 900;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0095ff 0%, #005fd2 100%);
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 136, 255, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .action-btn:active { transform: scale(0.97); }
-        
-        .action-btn.cashout { background: #00cc66; color: #fff; box-shadow: 0 0 15px rgba(0, 204, 102, 0.4); }
-        .action-btn.bust { background: #ff3366; color: #fff; box-shadow: 0 0 15px rgba(255, 51, 102, 0.4); cursor: pointer; }
-        .action-btn:disabled { background: #2a2d35; color: #555; box-shadow: none; pointer-events: none; }
+        .action-btn.cashout { background: linear-gradient(135deg, #00e676, #00c853); color: #042111; box-shadow: 0 4px 18px rgba(0, 230, 118, 0.45); }
+        .action-btn.bust { background: linear-gradient(135deg, #fb7185, #e11d48); color: #fff; box-shadow: 0 4px 18px rgba(225, 29, 72, 0.45); cursor: pointer; }
+        .action-btn:disabled { background: #192538; color: #5b6e8a; box-shadow: none; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -179,7 +571,6 @@
     <div class="dark-overlay"></div>
 
     <div class="game-container">
-        
         <div class="top-section">
             <div class="header">
                 <button class="back-btn" onclick="goBack()">❮ Назад</button>
@@ -189,19 +580,39 @@
             </div>
 
             <div class="game-info-bar">
-                <div class="info-item">Ставка: 
+                <div class="info-item">Ставка:
                     <span class="info-val"><span id="infoBet">20</span> <img src="coins.png" class="coin-icon"></span>
                 </div>
-                <div class="info-item">Остаток: 
+                <div class="info-item">Остаток:
                     <span class="info-val"><span id="infoBalance">500</span> <img src="coins.png" class="coin-icon"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Сетка Башни -->
+        <!-- Подземный разрез шахты -->
         <div class="grid-wrapper">
-            <div class="towers-grid" id="grid">
-                <!-- Ряды генерируются через JS -->
+            <div class="mine-cutaway" id="mineCutaway">
+                <div class="mine-surface-cap">
+                    <span>⛏️ РАЗРЕЗ ШАХТЫ · 8 УРОВНЕЙ</span>
+                    <b>ДО x24.50</b>
+                </div>
+
+                <!-- Левая и правая скальные стены разреза в земле -->
+                <svg class="rock-wall-svg left" viewBox="0 0 20 400" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0,0 L16,0 L12,24 L17,52 L10,80 L16,112 L11,148 L17,184 L11,222 L16,258 L10,295 L16,332 L12,368 L16,400 L0,400 Z" fill="#081a34" stroke="#0e3a6d" stroke-width="1.2"/>
+                    <polygon points="8,48 16,52 10,60" fill="#00d9ff" opacity="0.5"/>
+                    <polygon points="7,178 16,184 9,192" fill="#38bdf8" opacity="0.45"/>
+                    <polygon points="8,326 16,332 9,339" fill="#00d9ff" opacity="0.5"/>
+                </svg>
+                <svg class="rock-wall-svg right" viewBox="0 0 20 400" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0,0 L16,0 L11,30 L17,64 L10,98 L16,132 L12,168 L17,204 L11,240 L16,276 L10,312 L16,350 L12,380 L16,400 L0,400 Z" fill="#081a34" stroke="#0e3a6d" stroke-width="1.2"/>
+                    <polygon points="8,92 16,98 10,105" fill="#38bdf8" opacity="0.45"/>
+                    <polygon points="8,234 16,240 10,247" fill="#00d9ff" opacity="0.5"/>
+                </svg>
+
+                <div class="towers-grid" id="grid">
+                    <!-- Уровни генерируются через JS; лесенки скрыты до перехода на уровень -->
+                </div>
             </div>
         </div>
 
@@ -214,28 +625,30 @@
                 <button class="bet-btn" onclick="setBet(200, this)">200</button>
             </div>
 
-            <button class="action-btn" id="actionBtn" onclick="handleAction()">НАЧАТЬ ИГРУ</button>
+            <button class="action-btn" id="actionBtn" onclick="handleAction()">ВОЙТИ В ШАХТУ</button>
         </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready(); tg.expand(); tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000');
+        tg.ready(); tg.expand(); tg.setHeaderColor('#050d1a'); tg.setBackgroundColor('#02050b');
 
         let balance = parseInt(localStorage.getItem('vetruch_balance')) || 500;
         let bet = 20;
-        
+
         let state = 'idle'; // idle, playing, finished
+        let isClimbing = false;
         let currentRow = 0;
         let currentWin = 0;
-        let bombPositions = []; // массив позиций бомб для каждого ряда (0, 1 или 2)
+        let brokenPositions = [];
 
-        // Настройки 8 рядов. Множители настроены так, чтобы держать баланс.
+        // 8 уровней: на 1-3 по 4 лестницы, на 4-6 по 3 лестницы, на 7-8 по 2 лестницы
         const ROW_COUNT = 8;
-        const COLS_PER_ROW = 3;
-        const MULTIPLIERS = [1.35, 1.82, 2.45, 3.30, 4.45, 6.00, 8.10, 10.93];
+        const LADDERS_PER_ROW = [4, 4, 4, 3, 3, 3, 2, 2];
+        const MULTIPLIERS = [1.28, 1.68, 2.20, 3.20, 4.65, 6.75, 12.80, 24.50];
 
         const gridEl = document.getElementById('grid');
+        const mineCutaway = document.getElementById('mineCutaway');
         const actionBtn = document.getElementById('actionBtn');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const infoBalance = document.getElementById('infoBalance');
@@ -262,51 +675,106 @@
         }
 
         function setBet(amount, btn) {
-            if(state === 'playing') return;
+            if (state === 'playing') return;
             bet = amount;
             infoBet.textContent = bet;
             betBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
+        function buildLadderElement(r, c, delayMs) {
+            const slot = document.createElement('div');
+            slot.className = 'ladder-slot';
+
+            const ladder = document.createElement('div');
+            ladder.className = 'ladder-btn';
+            ladder.id = `cell-${r}-${c}`;
+            ladder.style.animationDelay = delayMs + 'ms';
+            ladder.innerHTML = `
+                <span class="ladder-rail left"></span>
+                <span class="ladder-rail right"></span>
+                <div class="ladder-rungs">
+                    <span class="ladder-rung"></span>
+                    <span class="ladder-rung"></span>
+                    <span class="ladder-rung"></span>
+                    <span class="ladder-rung"></span>
+                    <span class="ladder-rung"></span>
+                </div>
+                <span class="ladder-badge"></span>
+            `;
+            ladder.onclick = () => clickLadder(r, c);
+            slot.appendChild(ladder);
+            return slot;
+        }
+
+        function renderFogBay(bayEl) {
+            bayEl.innerHTML = `
+                <div class="tunnel-fog">
+                    <span class="tunnel-fog-dot"></span>
+                    <span>ПОРОДА НЕ РАЗВЕДАНА · ?</span>
+                    <span class="tunnel-fog-dot"></span>
+                </div>
+            `;
+        }
+
         function drawInitialGrid() {
             gridEl.innerHTML = '';
-            for(let r = 0; r < ROW_COUNT; r++) {
-                let rowDiv = document.createElement('div');
-                rowDiv.className = 'tower-row';
+            for (let r = 0; r < ROW_COUNT; r++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'mine-tunnel tunnel-hidden';
                 rowDiv.id = `row-${r}`;
-                
-                let multBadge = document.createElement('div');
-                multBadge.className = 'tower-mult-badge';
-                multBadge.textContent = 'x' + MULTIPLIERS[r].toFixed(2);
-                rowDiv.appendChild(multBadge);
 
-                let cellsDiv = document.createElement('div');
-                cellsDiv.className = 'tower-cells';
+                const postDiv = document.createElement('div');
+                postDiv.className = 'tunnel-post';
+                postDiv.innerHTML = `
+                    <span class="tunnel-lantern"></span>
+                    <div class="tower-mult-badge">
+                        <span class="floor-num">УР. ${r + 1}</span>
+                        <span class="floor-mult">x${MULTIPLIERS[r].toFixed(2)}</span>
+                    </div>
+                `;
+                rowDiv.appendChild(postDiv);
 
-                for(let c = 0; c < COLS_PER_ROW; c++) {
-                    let cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.id = `cell-${r}-${c}`;
-                    // Клик привязан только к состоянию активного ряда
-                    cell.onclick = () => clickCell(r, c);
-                    cellsDiv.appendChild(cell);
-                }
-                rowDiv.appendChild(cellsDiv);
+                const bayDiv = document.createElement('div');
+                bayDiv.className = 'ladders-bay';
+                bayDiv.id = `bay-${r}`;
+                // Верхние и неначатые уровни НЕ содержат лестниц — только породу!
+                renderFogBay(bayDiv);
+                rowDiv.appendChild(bayDiv);
+
                 gridEl.appendChild(rowDiv);
+            }
+        }
+
+        function unlockFloor(r) {
+            if (r < 0 || r >= ROW_COUNT) return;
+            const rowEl = document.getElementById(`row-${r}`);
+            const bayEl = document.getElementById(`bay-${r}`);
+            if (!rowEl || !bayEl) return;
+
+            rowEl.className = 'mine-tunnel active';
+            bayEl.innerHTML = '';
+
+            // Только при переходе на этот уровень появляются лестницы этого яруса!
+            const count = LADDERS_PER_ROW[r];
+            for (let c = 0; c < count; c++) {
+                bayEl.appendChild(buildLadderElement(r, c, c * 45));
             }
         }
 
         function handleAction() {
             if (state === 'idle' || state === 'finished') {
                 startGame();
-            } else if (state === 'playing' && currentRow > 0) {
+            } else if (state === 'playing' && !isClimbing && currentRow > 0) {
                 cashout();
             }
         }
 
         function startGame() {
-            if (balance < bet) { tg.showAlert("Недостаточно монет!"); return; }
+            if (balance < bet) {
+                showAppAlert("Недостаточно монет!");
+                return;
+            }
 
             if (window.VETRUCH_ECONOMY) {
                 var check = VETRUCH_ECONOMY.checkAndUseAttempt('towers');
@@ -324,95 +792,143 @@
                 localStorage.setItem('vetruch_user_xp', curXp + expEarned);
             }
             updateBalanceUI();
-            
+
             state = 'playing';
+            isClimbing = false;
             currentRow = 0;
             currentWin = 0;
-            bombPositions = [];
+            brokenPositions = [];
+            if (mineCutaway) mineCutaway.classList.remove('shake');
 
             betBtns.forEach(b => b.disabled = true);
             actionBtn.classList.remove('cashout', 'bust');
-            actionBtn.style.background = '#2a2d35';
-            actionBtn.style.color = '#888';
-            actionBtn.innerHTML = 'ВЫБЕРИТЕ БЛОК';
+            actionBtn.style.background = '#1e2c44';
+            actionBtn.style.color = '#7da2c8';
+            actionBtn.innerHTML = 'ВЫБЕРИТЕ ЛЕСТНИЦУ';
             actionBtn.disabled = true;
 
-            // Генерируем бомбы: для каждого из 8 рядов выбираем 1 мину из 3 ячеек
-            for(let r = 0; r < ROW_COUNT; r++) {
-                bombPositions.push(Math.floor(Math.random() * COLS_PER_ROW));
+            // На каждом уровне ровно 1 сломанная лестница
+            for (let r = 0; r < ROW_COUNT; r++) {
+                brokenPositions.push(Math.floor(Math.random() * LADDERS_PER_ROW[r]));
             }
 
-            // Очищаем сетку визуально
-            for(let r = 0; r < ROW_COUNT; r++) {
-                let rowEl = document.getElementById(`row-${r}`);
-                rowEl.className = 'tower-row';
-                for(let c = 0; c < COLS_PER_ROW; c++) {
-                    let cellEl = document.getElementById(`cell-${r}-${c}`);
-                    cellEl.className = 'cell';
-                    cellEl.innerHTML = '';
-                }
+            // Прячем породой ВСЕ уровни и открываем ТОЛЬКО 1-й уровень
+            for (let r = 0; r < ROW_COUNT; r++) {
+                const rowEl = document.getElementById(`row-${r}`);
+                const bayEl = document.getElementById(`bay-${r}`);
+                if (rowEl) rowEl.className = 'mine-tunnel tunnel-hidden';
+                if (bayEl) renderFogBay(bayEl);
             }
 
-            // Активируем нулевой ряд
-            document.getElementById(`row-0`).classList.add('active');
+            unlockFloor(0);
         }
 
-        function clickCell(r, c) {
-            if (state !== 'playing' || r !== currentRow) return;
+        function clickLadder(r, c) {
+            if (state !== 'playing' || isClimbing || r !== currentRow) return;
+            isClimbing = true;
 
-            let isBomb = (bombPositions[r] === c);
+            const clickedLadder = document.getElementById(`cell-${r}-${c}`);
+            const spark = document.createElement('span');
+            spark.className = 'climber-spark';
+            clickedLadder.appendChild(spark);
+            clickedLadder.classList.add('climbing');
 
-            // RTP 60% контроль: если ячейка была безопасной, но выпал перевес дома 40% (RTP 60%),
-            // подставляем бомбу в выбранную позицию
-            if (!isBomb && Math.random() > 0.60) {
-                isBomb = true;
-                bombPositions[r] = c;
+            let isBroken = (brokenPositions[r] === c);
+
+            // RTP 60% контроль: если лестница была целой, с шансом house edge подламывается
+            if (!isBroken && Math.random() > 0.60) {
+                isBroken = true;
+                brokenPositions[r] = c;
             }
 
-            let clickedCell = document.getElementById(`cell-${r}-${c}`);
+            setTimeout(() => {
+                if (state !== 'playing') {
+                    isClimbing = false;
+                    return;
+                }
+                spark.remove();
+                clickedLadder.classList.remove('climbing');
 
-            if (isBomb) {
-                clickedCell.classList.add('mine');
-                clickedCell.innerHTML = '💣';
-                loseGame();
-            } else {
-                clickedCell.classList.add('safe');
-                clickedCell.innerHTML = '💎';
-                
-                document.getElementById(`row-${r}`).classList.remove('active');
-                document.getElementById(`row-${r}`).classList.add('completed');
-                
-                currentWin = Math.floor(bet * MULTIPLIERS[r]);
-                currentRow++;
+                const badge = clickedLadder.querySelector('.ladder-badge');
 
-                if (currentRow >= ROW_COUNT) {
-                    cashout(); // Прошел всю башню
+                if (isBroken) {
+                    clickedLadder.classList.add('broken');
+                    if (badge) badge.textContent = '💥';
+                    document.getElementById(`row-${r}`).classList.remove('active');
+                    document.getElementById(`row-${r}`).classList.add('failed');
+                    if (mineCutaway) {
+                        mineCutaway.classList.remove('shake');
+                        void mineCutaway.offsetWidth;
+                        mineCutaway.classList.add('shake');
+                    }
+                    isClimbing = false;
+                    loseGame();
                 } else {
-                    document.getElementById(`row-${currentRow}`).classList.add('active');
-                    
-                    actionBtn.disabled = false;
-                    actionBtn.className = 'action-btn cashout';
-                    actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
-                    actionBtn.style.background = ''; // сброс кастомного
-                    actionBtn.style.color = '';
+                    clickedLadder.classList.add('safe');
+                    if (badge) badge.textContent = '💎';
+
+                    // Отмечаем сломанную лестницу ТОЛЬКО на пройденном ярусе
+                    const badIdx = brokenPositions[r];
+                    if (badIdx !== c) {
+                        const badEl = document.getElementById(`cell-${r}-${badIdx}`);
+                        if (badEl) {
+                            badEl.classList.add('revealed-broken');
+                            const bBadge = badEl.querySelector('.ladder-badge');
+                            if (bBadge) bBadge.textContent = '⚠️';
+                        }
+                    }
+
+                    document.getElementById(`row-${r}`).classList.remove('active');
+                    document.getElementById(`row-${r}`).classList.add('completed');
+
+                    currentWin = Math.floor(bet * MULTIPLIERS[r]);
+                    currentRow++;
+                    isClimbing = false;
+
+                    if (currentRow >= ROW_COUNT) {
+                        cashout();
+                    } else {
+                        // Открываем и спавним лестницы ТОЛЬКО при переходе на следующий уровень!
+                        unlockFloor(currentRow);
+
+                        actionBtn.disabled = false;
+                        actionBtn.className = 'action-btn cashout';
+                        actionBtn.innerHTML = `ЗАБРАТЬ ${currentWin} <img src="coins.png" class="coin-icon">`;
+                        actionBtn.style.background = '';
+                        actionBtn.style.color = '';
+                    }
+                }
+            }, 300);
+        }
+
+        function revealCurrentFloorBroken() {
+            // Раскрываем хрупкую лестницу только на уже открытом текущем уровне (не на верхних закрытых!)
+            const r = currentRow;
+            if (r >= 0 && r < ROW_COUNT) {
+                const badCol = brokenPositions[r];
+                const ladder = document.getElementById(`cell-${r}-${badCol}`);
+                if (ladder && !ladder.classList.contains('broken') && !ladder.classList.contains('safe')) {
+                    ladder.classList.add('revealed-broken');
+                    const badge = ladder.querySelector('.ladder-badge');
+                    if (badge) badge.textContent = '⚠️';
                 }
             }
         }
 
         function cashout() {
             if (currentRow === 0 || state !== 'playing') return;
-            
+
             balance += currentWin;
             updateBalanceUI();
-            
+
             actionBtn.className = 'action-btn cashout';
-            actionBtn.innerHTML = `ВЫИГРЫШ ${currentWin}! ИГРАТЬ СНОВА`;
+            actionBtn.innerHTML = `ДОБЫЧА +${currentWin}! ИГРАТЬ СНОВА`;
             actionBtn.style.background = '';
-            
-            revealBombs();
+
+            revealCurrentFloorBroken();
             state = 'finished';
             betBtns.forEach(b => b.disabled = false);
-            
+
             if (currentRow < ROW_COUNT) {
                 document.getElementById(`row-${currentRow}`).classList.remove('active');
             }
@@ -420,30 +936,16 @@
 
         function loseGame() {
             actionBtn.className = 'action-btn bust';
-            actionBtn.innerHTML = 'ПРОИГРЫШ! ИГРАТЬ СНОВА';
+            actionBtn.innerHTML = 'ЛЕСТНИЦА СЛОМАЛАСЬ! СНОВА';
             actionBtn.style.background = '';
             actionBtn.disabled = false;
-            
+
             document.getElementById(`row-${currentRow}`).classList.remove('active');
-            revealBombs();
-            
             state = 'finished';
             betBtns.forEach(b => b.disabled = false);
         }
 
-        function revealBombs() {
-            // Показываем бомбы в рядах, которые игрок не прошел или на которых проиграл
-            for(let r = currentRow; r < ROW_COUNT; r++) {
-                let bombCol = bombPositions[r];
-                let cell = document.getElementById(`cell-${r}-${bombCol}`);
-                if (!cell.classList.contains('mine')) {
-                    cell.innerHTML = '💣';
-                    cell.style.opacity = '0.5'; // Тусклая бомба
-                }
-            }
-        }
-
-        // ================= Анимация звезд =================
+        // ================= Анимация частиц породы в шахте =================
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
         let stars = []; let w = 0; let h = 0;
@@ -455,13 +957,13 @@
         }
         function createStars() {
             stars = [];
-            for (let i = 0; i < 70; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, s: Math.random() * 0.1 + 0.02, o: Math.random() * 0.5 + 0.2 });
+            for (let i = 0; i < 65; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.2, s: Math.random() * 0.1 + 0.02, o: Math.random() * 0.45 + 0.15 });
         }
         function drawStars() {
             ctx.clearRect(0, 0, w, h);
             for (const star of stars) {
                 ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(100, 217, 255, ${star.o})`; ctx.fill();
+                ctx.fillStyle = `rgba(96, 195, 255, ${star.o})`; ctx.fill();
                 star.y += star.s;
                 if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
             }
